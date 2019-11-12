@@ -1,1 +1,6 @@
-export * from "./handles/index"; 
+export * from "./handles/index";
+import * as tsGlobals from "./globals";
+
+export {
+  tsGlobals
+}
