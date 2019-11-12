@@ -1,6 +1,6 @@
 {
   "name": "w3ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript API for Warcraft III custom maps.",
   "author": "TriggerHappy",
   "license": "MIT",
