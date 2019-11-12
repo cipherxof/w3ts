@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "es6"
+    ],
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "types": [
+      "lua-types/core/global",
+      "lua-types/core/math",
+      "lua-types/core/metatable",
+      "lua-types/core/modules",
+      "lua-types/core/string",
+      "lua-types/core/table",
+      "lua-types/core/debug",
+      "lua-types/core/os",
+      "lua-types/special/5.3",
+      "war3-types/core/compat",
+      "war3-types/core/common",
+      "war3-types/core/blizzard",
+      "war3-types/core/commonai",
+      "war3-types/core/polyfill",
+      "war3-types/special/ceres"
+    ]
+  },
+  "include": [
+    "src"
+  ],
+  "tstl": {
+    "luaTarget": "5.3",
+    "noHeader": true,
+    "luaLibImport": "require"
+  }
+}

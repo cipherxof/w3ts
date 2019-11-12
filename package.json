@@ -1,0 +1,15 @@
+{
+  "name": "w3ts",
+  "version": "1.0.0",
+  "description": "TypeScript API for Warcraft III custom maps.",
+  "author": "TriggerHappy",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tstl -p tsconfig.json"
+  },
+  "devDependencies": {
+    "lua-types": "^2.6.1",
+    "war3-types": "latest"
+  }
+}
