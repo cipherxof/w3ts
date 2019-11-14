@@ -463,7 +463,7 @@ export class Unit extends Handle<unit> {
   }
 
   public isAlive(): boolean {
-    return IsUnitAliveBJ(this.handle);
+    return UnitAlive(this.handle);
   }
 
   public isAlly(whichPlayer: MapPlayer) {
