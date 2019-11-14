@@ -462,6 +462,10 @@ export class Unit extends Handle<unit> {
     return IsUnitInForce(this.handle, whichForce.handle);
   }
 
+  public isAlive(): boolean {
+    return IsUnitAliveBJ(this.handle);
+  }
+
   public isAlly(whichPlayer: MapPlayer) {
     return IsUnitAlly(this.handle, whichPlayer.handle);
   }
