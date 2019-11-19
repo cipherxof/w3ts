@@ -323,7 +323,7 @@ export class Unit extends Handle<unit> {
   }
 
   public set paused(flag: boolean) {
-    PauseUnit(this.handle, true);
+    PauseUnit(this.handle, flag);
   }
 
   public get paused() {
