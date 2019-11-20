@@ -92,8 +92,8 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterPlayerMouseEventBJ(this.handle, whichPlayer.handle, whichMouseEvent);
   }
 
-  public registerPlayerKeyEvent(whichPlayer: MapPlayer, whichKey: oskeytype, fireOnKeyDown: boolean) {
-    return BlzTriggerRegisterPlayerKeyEvent(this.handle, whichPlayer.handle, whichKey, 0, fireOnKeyDown);
+  public registerPlayerKeyEvent(whichPlayer: MapPlayer, whichKey: oskeytype, metaKey: number, fireOnKeyDown: boolean) {
+    return BlzTriggerRegisterPlayerKeyEvent(this.handle, whichPlayer.handle, whichKey, metaKey, fireOnKeyDown);
   }
 
   public addAction(actionFunc: () => void) {
