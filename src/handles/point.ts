@@ -4,7 +4,6 @@ import { Handle } from "./handle";
 
 export class Point extends Handle<location> {
 
-  constructor();
   constructor(x: number, y: number);
   constructor(x?: number, y?: number) {
     super(Location, [x, y]);
@@ -12,7 +11,7 @@ export class Point extends Handle<location> {
 
   static fromHandle(handle: location): Point {
     this.setDefaultHandle(handle);
-    return new Point();
+    return new Point(0, 0);
   }
 
   public setPosition(x: number, y: number) {

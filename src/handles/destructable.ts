@@ -6,7 +6,6 @@ export class Destructable extends Handle<destructable> {
 
   private _visible = false;
 
-  constructor();
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number);
   constructor(objectId?: number, x?: number, y?: number, z?: number, face?: number, scale?: number, varation?: number) {
     super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
@@ -14,7 +13,7 @@ export class Destructable extends Handle<destructable> {
 
   public static fromHandle(handle: destructable): Destructable {
     this.setDefaultHandle(handle);
-    return new Destructable();
+    return new Destructable(0, 0, 0, 0, 0, 0, 0);
   }
 
   public static fromTrigger() {

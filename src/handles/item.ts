@@ -5,7 +5,6 @@ import { MapPlayer } from "./player";
 
 export class Item extends Handle<item> {
 
-  constructor();
   constructor(itemid: number, x: number, y: number);
   constructor(itemid?: number, x?: number, y?: number) {
     super(CreateItem, [itemid, x, y]);
@@ -13,7 +12,7 @@ export class Item extends Handle<item> {
 
   static fromHandle(handle: item): Item {
     this.setDefaultHandle(handle);
-    return new Item();
+    return new Item(0, 0, 0);
   }
 
   get name() {

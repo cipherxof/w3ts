@@ -11,7 +11,6 @@ import { Force } from "./force";
 
 export class Unit extends Handle<unit> {
 
-  constructor();
   constructor(id: MapPlayer, unitId: number, x: number, y: number, face: number);
   constructor(id?: MapPlayer, unitId?: number, x?: number, y?: number, face?: number) {
     super(CreateUnit, [id === undefined ? id : id.handle, unitId, x, y, face]);
@@ -19,7 +18,7 @@ export class Unit extends Handle<unit> {
 
   static fromHandle(handle: unit): Unit {
     this.setDefaultHandle(handle);
-    return new Unit();
+    return new Unit(MapPlayer.fromIndex(0), 0, 0, 0, 0);
   }
 
   get name() {
