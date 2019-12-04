@@ -6,8 +6,7 @@ export class Destructable extends Handle<destructable> {
 
   private _visible = false;
 
-  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number);
-  constructor(objectId?: number, x?: number, y?: number, z?: number, face?: number, scale?: number, varation?: number) {
+  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
     super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
   }
 

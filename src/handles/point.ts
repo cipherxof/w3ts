@@ -4,8 +4,7 @@ import { Handle } from "./handle";
 
 export class Point extends Handle<location> {
 
-  constructor(x: number, y: number);
-  constructor(x?: number, y?: number) {
+  constructor(x: number, y: number) {
     super(Location, [x, y]);
   }
 

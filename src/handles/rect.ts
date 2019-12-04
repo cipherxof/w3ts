@@ -5,8 +5,7 @@ import { Point } from "./point";
 
 export class Rectangle extends Handle<rect> {
 
-  constructor(minX: number, minY: number, maxX: number, maxY: number);
-  constructor(minX?: number, minY?: number, maxX?: number, maxY?: number) {
+  constructor(minX: number, minY: number, maxX: number, maxY: number) {
     super(Rect, [minX, minY, maxX, maxY]);
   }
 
