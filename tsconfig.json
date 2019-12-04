@@ -23,8 +23,7 @@
       "war3-types/core/common",
       "war3-types/core/blizzard",
       "war3-types/core/commonai",
-      "war3-types/core/polyfill",
-      "war3-types/special/ceres"
+      "war3-types/core/polyfill"
     ]
   },
   "include": [
@@ -33,6 +32,7 @@
   "tstl": {
     "luaTarget": "5.3",
     "noHeader": true,
-    "luaLibImport": "require"
+    "luaLibImport": "require",
+    "noImplicitSelf": true,
   }
 }
