@@ -28,11 +28,18 @@ function hookedConfig() {
 main = hookedMain;
 config = hookedConfig;
 
-var entryPoints: { [key: string]: Array<scriptHookSignature>; } = {
-  "main::before": hooksMainBefore,
-  "main::after": hooksMainAfter,
-  "config::before": hooksConfigBefore,
-  "config::after": hooksConfigAfter,
+export enum W3TS_HOOK {
+  MAIN_BEFORE = "main::before",
+  MAIN_AFTER = "main::after",
+  CONFIG_BEFORE = "config::before",
+  CONFIG_AFTER = "config::after"
+}
+
+const entryPoints: { [key: string]: Array<scriptHookSignature>; } = {
+  [W3TS_HOOK.MAIN_BEFORE]: hooksMainBefore,
+  [W3TS_HOOK.MAIN_AFTER]: hooksMainAfter,
+  [W3TS_HOOK.CONFIG_BEFORE]: hooksConfigBefore,
+  [W3TS_HOOK.CONFIG_AFTER]: hooksConfigAfter,
 };
 
 export function addScriptHook(entryPoint: string, hook: scriptHookSignature): boolean {
