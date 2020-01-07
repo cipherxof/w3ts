@@ -10,11 +10,6 @@ export class Destructable extends Handle<destructable> {
     super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
   }
 
-  public static fromHandle(handle: destructable): Destructable {
-    this.setDefaultHandle(handle);
-    return new Destructable(0, 0, 0, 0, 0, 0, 0);
-  }
-
   public static fromTrigger() {
     return this.fromHandle(GetTriggerDestructable());
   }

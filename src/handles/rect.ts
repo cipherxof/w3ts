@@ -9,11 +9,6 @@ export class Rectangle extends Handle<rect> {
     super(Rect, [minX, minY, maxX, maxY]);
   }
 
-  static fromHandle(handle: rect): Rectangle {
-    this.setDefaultHandle(handle);
-    return new Rectangle(0, 09, 0, 0);
-  }
-
   static fromPoint(min: Point, max: Point) {
     return this.fromHandle(RectFromLoc(min.handle, max.handle));
   }

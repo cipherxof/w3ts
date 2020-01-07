@@ -8,11 +8,6 @@ export class Widget extends Handle<widget> {
     super(() => { }, []);
   }
 
-  static fromHandle(handle: widget): Widget {
-    this.setDefaultHandle(handle);
-    return new Widget();
-  }
-
   public get life() {
     return GetWidgetLife(this.handle);
   }

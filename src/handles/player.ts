@@ -1,7 +1,7 @@
 /** @noSelfInFile **/
 
-import { Handle } from "./handle";
 import { Force } from "./force";
+import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class MapPlayer extends Handle<player> {
@@ -13,11 +13,6 @@ export class MapPlayer extends Handle<player> {
   }
 
   private scoreScreen = true;
-
-  static fromHandle(handle: player): MapPlayer {
-    this.setDefaultHandle(handle);
-    return new MapPlayer(GetPlayerId(handle));
-  }
 
   static fromIndex(index: number) {
     return this.fromHandle(Player(index));
@@ -206,6 +201,7 @@ export class MapPlayer extends Handle<player> {
   }
 
   public set onScoreScreen(flag: boolean) {
+    this.scoreScreen = flag;
     SetPlayerOnScoreScreen(this.handle, flag);
   }
 

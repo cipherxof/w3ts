@@ -8,11 +8,6 @@ export class Point extends Handle<location> {
     super(Location, [x, y]);
   }
 
-  static fromHandle(handle: location): Point {
-    this.setDefaultHandle(handle);
-    return new Point(0, 0);
-  }
-
   public setPosition(x: number, y: number) {
     MoveLocation(this.handle, x, y);
   }

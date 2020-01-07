@@ -9,11 +9,6 @@ export class Trigger extends Handle<trigger> {
     super(CreateTrigger, []);
   }
 
-  public static fromHandle(handle: trigger): Trigger {
-    this.setDefaultHandle(handle);
-    return new Trigger();
-  }
-
   public destroy() {
     DestroyTrigger(this.handle);
   }

@@ -13,11 +13,6 @@ export class Group extends Handle<group> {
     super(CreateGroup, []);
   }
 
-  static fromHandle(handle: group): Group {
-    this.setDefaultHandle(handle);
-    return new Group();
-  }
-
   public addUnit(whichUnit: Unit): boolean {
     return GroupAddUnit(this.handle, whichUnit.handle);
   }

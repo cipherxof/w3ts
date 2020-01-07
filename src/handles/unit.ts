@@ -14,11 +14,6 @@ export class Unit extends Handle<unit> {
     super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
   }
 
-  static fromHandle(handle: unit): Unit {
-    this.setDefaultHandle(handle);
-    return new Unit(0, 0, 0, 0, 0);
-  }
-
   get name() {
     return GetUnitName(this.handle);
   }

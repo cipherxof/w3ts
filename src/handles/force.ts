@@ -9,11 +9,6 @@ export class Force extends Handle<force> {
     super(CreateForce, []);
   }
 
-  static fromHandle(handle: force): Force {
-    this.setDefaultHandle(handle);
-    return new Force();
-  }
-
   public destroy() {
     DestroyForce(this.handle);
   }

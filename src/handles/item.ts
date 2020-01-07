@@ -9,11 +9,6 @@ export class Item extends Handle<item> {
     super(CreateItem, [itemid, x, y]);
   }
 
-  static fromHandle(handle: item): Item {
-    this.setDefaultHandle(handle);
-    return new Item(0, 0, 0);
-  }
-
   get name() {
     return GetItemName(this.handle);
   }

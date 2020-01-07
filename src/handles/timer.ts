@@ -8,11 +8,6 @@ export class Timer extends Handle<timer> {
     super(CreateTimer, []);
   }
 
-  static fromHandle(handle: timer): Timer {
-    this.setDefaultHandle(handle);
-    return new Timer();
-  }
-
   public start(timeout: number, periodic: boolean, handlerFunc: () => void) {
     TimerStart(this.handle, timeout, periodic, handlerFunc);
     return this;

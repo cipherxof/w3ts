@@ -1,19 +1,14 @@
 /** @noSelfInFile **/
 
 import { Handle } from "./handle";
-import { Rectangle } from "./rect";
 import { Point } from "./point";
+import { Rectangle } from "./rect";
 import { Unit } from "./unit";
 
 export class Region extends Handle<region> {
 
   constructor() {
     super(CreateRegion, []);
-  }
-
-  static fromHandle(handle: region): Region {
-    this.setDefaultHandle(handle);
-    return new Region();
   }
 
   public destroy() {
