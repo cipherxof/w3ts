@@ -88,6 +88,14 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterPlayerEvent(this.handle, whichPlayer.handle, whichPlayerEvent);
   }
 
+  public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | null) {
+    return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
+  }
+
+  public registerAnyUnitEventBJ(whichPlayerUnitEvent: playerunitevent) {
+    return TriggerRegisterAnyUnitEventBJ(this.handle, whichPlayerUnitEvent);
+  }
+
   public registerPlayerMouseEvent(whichPlayer: MapPlayer, whichMouseEvent: number) {
     return TriggerRegisterPlayerMouseEventBJ(this.handle, whichPlayer.handle, whichMouseEvent);
   }
