@@ -26,6 +26,10 @@ export class Group extends Handle<group> {
     return GroupRemoveUnit(this.handle, whichUnit.handle);
   }
 
+  public hasUnit(whichUnit: Unit) {
+    return IsUnitInGroup(whichUnit.handle, this.handle);
+  }
+
   public addGroupFast(addGroup: Group): number {
     return BlzGroupAddGroupFast(this.handle, addGroup.handle);
   }
@@ -60,7 +64,6 @@ export class Group extends Handle<group> {
 
   public enumUnitsInRect(r: Rectangle, filter: boolexpr) {
     GroupEnumUnitsInRect(this.handle, r.handle, filter);
-    return this;
   }
 
   public enumUnitsInRectCounted(r: Rectangle, filter: boolexpr, countLimit: number) {
@@ -69,12 +72,10 @@ export class Group extends Handle<group> {
 
   public enumUnitsInRange(x: number, y: number, radius: number, filter: boolexpr) {
     GroupEnumUnitsInRange(this.handle, x, y, radius, filter);
-    return this;
   }
 
   public enumUnitsInRangeOfPoint(whichPoint: Point, radius: number, filter: boolexpr) {
     GroupEnumUnitsInRangeOfLoc(this.handle, whichPoint.handle, radius, filter);
-    return this;
   }
 
   public enumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr, countLimit: number) {
