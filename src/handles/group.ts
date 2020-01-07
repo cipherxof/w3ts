@@ -1,16 +1,21 @@
 /** @noSelfInFile **/
 
-import { Rectangle } from "./rect";
-import { Unit } from "./unit";
-import { Point } from "./point";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
+import { Point } from "./point";
+import { Rectangle } from "./rect";
+import { Unit } from "./unit";
 import { Widget } from "./widget";
 
 export class Group extends Handle<group> {
 
   constructor() {
     super(CreateGroup, []);
+  }
+
+  static fromHandle(handle: group): Group {
+    this.setDefaultHandle(handle);
+    return new Group();
   }
 
   public addUnit(whichUnit: Unit): boolean {

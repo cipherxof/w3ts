@@ -1,24 +1,22 @@
 /** @noSelfInFile **/
 
+import { Destructable } from "./destructable";
+import { Force } from "./force";
+import { Group } from "./group";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 import { Point } from "./point";
-import { Destructable } from "./destructable";
 import { Widget } from "./widget";
-import { Item } from "./item";
-import { Group } from "./group";
-import { Force } from "./force";
 
 export class Unit extends Handle<unit> {
 
-  constructor(id: MapPlayer, unitId: number, x: number, y: number, face: number);
-  constructor(id?: MapPlayer, unitId?: number, x?: number, y?: number, face?: number) {
-    super(CreateUnit, [id === undefined ? id : id.handle, unitId, x, y, face]);
+  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
+    super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
   }
 
   static fromHandle(handle: unit): Unit {
     this.setDefaultHandle(handle);
-    return new Unit(MapPlayer.fromIndex(0), 0, 0, 0, 0);
+    return new Unit(0, 0, 0, 0, 0);
   }
 
   get name() {
