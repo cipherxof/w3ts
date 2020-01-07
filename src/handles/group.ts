@@ -77,7 +77,7 @@ export class Group extends Handle<group> {
     return this;
   }
 
-  public GroupEnumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr, countLimit: number) {
+  public enumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr, countLimit: number) {
     GroupEnumUnitsInRangeCounted(this.handle, x, y, radius, filter, countLimit);
   }
 

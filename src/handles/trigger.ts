@@ -92,7 +92,7 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
   }
 
-  public registerAnyUnitEventBJ(whichPlayerUnitEvent: playerunitevent) {
+  public registerAnyUnitEvent(whichPlayerUnitEvent: playerunitevent) {
     return TriggerRegisterAnyUnitEventBJ(this.handle, whichPlayerUnitEvent);
   }
 
