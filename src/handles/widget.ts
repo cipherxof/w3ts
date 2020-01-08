@@ -5,7 +5,7 @@ import { Handle } from "./handle";
 export class Widget extends Handle<widget> {
 
   private constructor() {
-    super(() => { }, []);
+    super(() => undefined, []);
   }
 
   public get life() {

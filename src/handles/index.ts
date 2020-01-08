@@ -10,4 +10,4 @@ export * from "./region";
 export * from "./timer";
 export * from "./trigger";
 export * from "./unit";
-export * from "./widget"; 
+export * from "./widget";

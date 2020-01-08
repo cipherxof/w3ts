@@ -9,14 +9,6 @@ export class Trigger extends Handle<trigger> {
     super(CreateTrigger, []);
   }
 
-  public destroy() {
-    DestroyTrigger(this.handle);
-  }
-
-  public reset() {
-    ResetTrigger(this.handle);
-  }
-
   public set enabled(flag: boolean) {
     if (flag) {
       EnableTrigger(this.handle);
@@ -37,12 +29,12 @@ export class Trigger extends Handle<trigger> {
     return IsTriggerWaitOnSleeps(this.handle);
   }
 
-  public static fromEvent() {
-    return Trigger.fromHandle(GetTriggeringTrigger());
+  public destroy() {
+    DestroyTrigger(this.handle);
   }
 
-  public static getEventId() {
-    return GetTriggerEventId();
+  public reset() {
+    ResetTrigger(this.handle);
   }
 
   public getEvalCount() {
@@ -129,6 +121,14 @@ export class Trigger extends Handle<trigger> {
 
   public exec() {
     return TriggerExecute(this.handle);
+  }
+
+  public static fromEvent() {
+    return Trigger.fromHandle(GetTriggeringTrigger());
+  }
+
+  public static getEventId() {
+    return GetTriggerEventId();
   }
 
 }

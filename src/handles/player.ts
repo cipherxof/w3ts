@@ -6,32 +6,55 @@ import { Point } from "./point";
 
 export class MapPlayer extends Handle<player> {
 
-  private constructor();
-  private constructor(index: number);
+  private scoreScreen = true;
+
   private constructor(index?: number) {
     super(Player, [index]);
   }
 
-  private scoreScreen = true;
-
-  static fromIndex(index: number) {
-    return this.fromHandle(Player(index));
+  public get id() {
+    return GetPlayerId(this.handle);
   }
 
-  static fromLocal() {
-    return this.fromHandle(GetLocalPlayer());
+  public get name() {
+    return GetPlayerName(this.handle);
   }
 
-  public static fromFilter() {
-    return MapPlayer.fromHandle(GetFilterPlayer());
+  public set name(value: string) {
+    SetPlayerName(this.handle, value);
   }
 
-  public static fromEnum() {
-    return MapPlayer.fromHandle(GetEnumPlayer());
+  public get handicap() {
+    return GetPlayerHandicap(this.handle);
   }
 
-  public static fromTrigger() {
-    return MapPlayer.fromHandle(GetTriggerPlayer());
+  public set handicap(handicap: number) {
+    SetPlayerHandicap(this.handle, handicap);
+  }
+
+  public get handicapXp() {
+    return GetPlayerHandicapXP(this.handle);
+  }
+
+  public set handicapXp(handicap: number) {
+    SetPlayerHandicapXP(this.handle, handicap);
+  }
+
+  public set color(color: playercolor) {
+    SetPlayerColor(this.handle, color);
+  }
+
+  public get color() {
+    return GetPlayerColor(this.handle);
+  }
+
+  public get onScoreScreen() {
+    return this.scoreScreen;
+  }
+
+  public set onScoreScreen(flag: boolean) {
+    this.scoreScreen = flag;
+    SetPlayerOnScoreScreen(this.handle, flag);
   }
 
   public isPlayerAlly(otherPlayer: MapPlayer) {
@@ -78,18 +101,6 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerRace(this.handle);
   }
 
-  public get id() {
-    return GetPlayerId(this.handle);
-  }
-
-  public get name() {
-    return GetPlayerName(this.handle);
-  }
-
-  public set name(value: string) {
-    SetPlayerName(this.handle, value);
-  }
-
   public getUnitCount(includeIncomplete: boolean) {
     return GetPlayerUnitCount(this.handle, includeIncomplete);
   }
@@ -112,22 +123,6 @@ export class MapPlayer extends Handle<player> {
 
   public compareAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype) {
     return GetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting);
-  }
-
-  public get handicap() {
-    return GetPlayerHandicap(this.handle);
-  }
-
-  public set handicap(handicap: number) {
-    SetPlayerHandicap(this.handle, handicap);
-  }
-
-  public get handicapXp() {
-    return GetPlayerHandicapXP(this.handle);
-  }
-
-  public set handicapXp(handicap: number) {
-    SetPlayerHandicapXP(this.handle, handicap);
   }
 
   public setTechMaxAllowed(techId: number, maximum: number) {
@@ -180,29 +175,12 @@ export class MapPlayer extends Handle<player> {
     CachePlayerHeroData(this.handle);
   }
 
-  public set color(color: playercolor) {
-    SetPlayerColor(this.handle, color);
-  }
-
-  public get color() {
-    return GetPlayerColor(this.handle);
-  }
-
   public setAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype, value: boolean) {
     SetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting, value);
   }
 
   public setTaxRate(otherPlayer: MapPlayer, whichResource: playerstate, rate: number) {
     SetPlayerTaxRate(this.handle, otherPlayer.handle, whichResource, rate);
-  }
-
-  public get onScoreScreen() {
-    return this.scoreScreen;
-  }
-
-  public set onScoreScreen(flag: boolean) {
-    this.scoreScreen = flag;
-    SetPlayerOnScoreScreen(this.handle, flag);
   }
 
   public getTeam() {
@@ -235,6 +213,26 @@ export class MapPlayer extends Handle<player> {
 
   public removeAllGuardPositions() {
     RemoveAllGuardPositions(this.handle);
+  }
+
+  public static fromIndex(index: number) {
+    return this.fromHandle(Player(index));
+  }
+
+  public static fromLocal() {
+    return this.fromHandle(GetLocalPlayer());
+  }
+
+  public static fromFilter() {
+    return MapPlayer.fromHandle(GetFilterPlayer());
+  }
+
+  public static fromEnum() {
+    return MapPlayer.fromHandle(GetEnumPlayer());
+  }
+
+  public static fromTrigger() {
+    return MapPlayer.fromHandle(GetTriggerPlayer());
   }
 
 }

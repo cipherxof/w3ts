@@ -1,22 +1,21 @@
 /** @noSelfInFile **/
 
-
 export class Handle<T extends handle> {
-  protected _handle: T;
+
+  public get handle(): T {
+    return this.handleVar;
+  }
+  private handleVar: T;
   protected static initHandle: any | undefined;
   protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
 
   protected constructor(initFunc: (...args: any) => any, initArgs: any[]) {
     if (Handle.initHandle === undefined) {
-      this._handle = initFunc(...initArgs);
+      this.handleVar = initFunc(...initArgs);
     } else {
-      this._handle = Handle.initHandle as T;
+      this.handleVar = Handle.initHandle as T;
     }
     Handle.initHandle = undefined;
-  }
-
-  protected static setDefaultHandle(handle: handle) {
-    Handle.initHandle = handle;
   }
 
   public static fromHandle(handle: handle) {
@@ -25,13 +24,13 @@ export class Handle<T extends handle> {
       return obj;
     }
     this.setDefaultHandle(handle);
-    const newObj = new Handle(() => { }, []);
+    const newObj = new Handle(() => undefined, []);
     this.map.set(handle, newObj);
     return newObj;
   }
 
-  public get handle(): T {
-    return this._handle;
+  protected static setDefaultHandle(handle: handle) {
+    Handle.initHandle = handle;
   }
 
 }

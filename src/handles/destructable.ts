@@ -4,22 +4,10 @@ import { Handle } from "./handle";
 
 export class Destructable extends Handle<destructable> {
 
-  private _visible = false;
+  private isVisible = false;
 
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
     super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
-  }
-
-  public static fromTrigger() {
-    return this.fromHandle(GetTriggerDestructable());
-  }
-
-  public destroy() {
-    RemoveDestructable(this.handle);
-  }
-
-  public kill() {
-    KillDestructable(this.handle);
   }
 
   public set invulnerable(flag: boolean) {
@@ -28,18 +16,6 @@ export class Destructable extends Handle<destructable> {
 
   public get invulnerable() {
     return IsDestructableInvulnerable(this.handle);
-  }
-
-  public get typeId() {
-    return GetDestructableTypeId(this.handle);
-  }
-
-  public get x() {
-    return GetDestructableX(this.handle);
-  }
-
-  public get y() {
-    return GetDestructableY(this.handle);
   }
 
   public get life() {
@@ -58,8 +34,49 @@ export class Destructable extends Handle<destructable> {
     SetDestructableMaxLife(this.handle, value);
   }
 
+  public get name() {
+    return GetDestructableName(this.handle);
+  }
+
+  public get occluderHeight() {
+    return GetDestructableOccluderHeight(this.handle);
+  }
+
+  public set occluderHeight(value: number) {
+    SetDestructableOccluderHeight(this.handle, value);
+  }
+
+  public get typeId() {
+    return GetDestructableTypeId(this.handle);
+  }
+
+  public get visible() {
+    return this.isVisible;
+  }
+
+  public set visible(flag: boolean) {
+    this.isVisible = flag;
+    ShowDestructable(this.handle, flag);
+  }
+
+  public get x() {
+    return GetDestructableX(this.handle);
+  }
+
+  public get y() {
+    return GetDestructableY(this.handle);
+  }
+
+  public destroy() {
+    RemoveDestructable(this.handle);
+  }
+
   public heal(life: number, birth: boolean) {
-    DestructableRestoreLife(this.handle, life, birth)
+    DestructableRestoreLife(this.handle, life, birth);
+  }
+
+  public kill() {
+    KillDestructable(this.handle);
   }
 
   public queueAnim(whichAnimation: string) {
@@ -74,25 +91,8 @@ export class Destructable extends Handle<destructable> {
     SetDestructableAnimationSpeed(this.handle, speedFactor);
   }
 
-  public get visible() {
-    return this._visible;
-  }
-
-  public set visible(flag: boolean) {
-    this._visible = flag;
-    ShowDestructable(this.handle, flag);
-  }
-
-  public get occluderHeight() {
-    return GetDestructableOccluderHeight(this.handle);
-  }
-
-  public set occluderHeight(value: number) {
-    SetDestructableOccluderHeight(this.handle, value);
-  }
-
-  public get name() {
-    return GetDestructableName(this.handle);
+  public static fromTrigger() {
+    return this.fromHandle(GetTriggerDestructable());
   }
 
 }

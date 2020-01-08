@@ -9,10 +9,6 @@ export class Rectangle extends Handle<rect> {
     super(Rect, [minX, minY, maxX, maxY]);
   }
 
-  static fromPoint(min: Point, max: Point) {
-    return this.fromHandle(RectFromLoc(min.handle, max.handle));
-  }
-
   public destroy() {
     RemoveRect(this.handle);
   }
@@ -34,27 +30,27 @@ export class Rectangle extends Handle<rect> {
   }
 
   public getCenterX() {
-    return GetRectCenterX(this._handle);
+    return GetRectCenterX(this.handle);
   }
 
   public getCenterY() {
-    return GetRectCenterY(this._handle);
+    return GetRectCenterY(this.handle);
   }
 
   public getMinX() {
-    return GetRectMinX(this._handle);
+    return GetRectMinX(this.handle);
   }
 
   public getMinY() {
-    return GetRectMinY(this._handle);
+    return GetRectMinY(this.handle);
   }
 
   public getMaxX() {
-    return GetRectMaxX(this._handle);
+    return GetRectMaxX(this.handle);
   }
 
   public getMaxY() {
-    return GetRectMaxY(this._handle);
+    return GetRectMaxY(this.handle);
   }
 
   // Returns full map bounds, including unplayable borders, in world coordinates
@@ -68,6 +64,10 @@ export class Rectangle extends Handle<rect> {
 
   public enumItems(filter: boolexpr, actionFunc: () => void) {
     EnumItemsInRect(this.handle, filter, actionFunc);
+  }
+
+  public static fromPoint(min: Point, max: Point) {
+    return this.fromHandle(RectFromLoc(min.handle, max.handle));
   }
 
 }

@@ -9,32 +9,16 @@ export class Force extends Handle<force> {
     super(CreateForce, []);
   }
 
-  public destroy() {
-    DestroyForce(this.handle);
-  }
-
   public addPlayer(whichPlayer: MapPlayer) {
     ForceAddPlayer(this.handle, whichPlayer.handle);
-  }
-
-  public removePlayer(whichPlayer: MapPlayer) {
-    ForceRemovePlayer(this.handle, whichPlayer.handle);
-  }
-
-  public hasPlayer(whichPlayer: MapPlayer) {
-    return IsPlayerInForce(whichPlayer.handle, this.handle);
   }
 
   public clear() {
     ForceClear(this.handle);
   }
 
-  public enumPlayers(filter: boolexpr) {
-    ForceEnumPlayers(this.handle, filter);
-  }
-
-  public enumPlayersCounted(filter: boolexpr, countLimit: number) {
-    ForceEnumPlayersCounted(this.handle, filter, countLimit);
+  public destroy() {
+    DestroyForce(this.handle);
   }
 
   public enumAllies(whichPlayer: MapPlayer, filter: boolexpr) {
@@ -45,8 +29,24 @@ export class Force extends Handle<force> {
     ForceEnumEnemies(this.handle, whichPlayer.handle, filter);
   }
 
+  public enumPlayers(filter: boolexpr) {
+    ForceEnumPlayers(this.handle, filter);
+  }
+
+  public enumPlayersCounted(filter: boolexpr, countLimit: number) {
+    ForceEnumPlayersCounted(this.handle, filter, countLimit);
+  }
+
   public for(callback: () => void) {
     ForForce(this.handle, callback);
+  }
+
+  public hasPlayer(whichPlayer: MapPlayer) {
+    return IsPlayerInForce(whichPlayer.handle, this.handle);
+  }
+
+  public removePlayer(whichPlayer: MapPlayer) {
+    ForceRemovePlayer(this.handle, whichPlayer.handle);
   }
 
 }

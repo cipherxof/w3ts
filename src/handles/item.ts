@@ -17,14 +17,6 @@ export class Item extends Handle<item> {
     BlzSetItemName(this.handle, value);
   }
 
-  public destroy() {
-    RemoveItem(this.handle);
-  }
-
-  public getPlayer() {
-    return GetItemPlayer(this.handle);
-  }
-
   public get typeId() {
     return GetItemTypeId(this.handle);
   }
@@ -33,20 +25,16 @@ export class Item extends Handle<item> {
     return GetItemX(this.handle);
   }
 
-  public get y() {
-    return GetItemY(this.handle);
-  }
-
   public set x(value: number) {
     SetItemPosition(this.handle, value, this.y);
   }
 
-  public set y(value: number) {
-    SetItemPosition(this.handle, this.x, value);
+  public get y() {
+    return GetItemY(this.handle);
   }
 
-  public setPosition(x: number, y: number) {
-    SetItemPosition(this.handle, x, y);
+  public set y(value: number) {
+    SetItemPosition(this.handle, this.x, value);
   }
 
   public set dropOnDeath(flag: boolean) {
@@ -59,10 +47,6 @@ export class Item extends Handle<item> {
 
   public set pawnable(flag: boolean) {
     SetItemPawnable(this.handle, flag);
-  }
-
-  public setOwner(whichPlayer: MapPlayer, changeColor: boolean) {
-    SetItemPlayer(this.handle, whichPlayer.handle, changeColor);
   }
 
   public set invulnerable(flag: boolean) {
@@ -81,44 +65,12 @@ export class Item extends Handle<item> {
     SetItemVisible(this.handle, flag);
   }
 
-  public isOwned() {
-    return IsItemOwned(this.handle);
-  }
-
-  public isPowerup() {
-    return IsItemPowerup(this.handle);
-  }
-
-  public isSellable() {
-    return IsItemSellable(this.handle);
-  }
-
-  public isPawnable() {
-    return IsItemPawnable(this.handle);
-  }
-
-  public static isIdPowerup(itemId: number) {
-    return IsItemIdPowerup(itemId);
-  }
-
-  public static isIdSellable(itemId: number) {
-    return IsItemIdSellable(itemId);
-  }
-
-  public static isIdPawnable(itemId: number) {
-    return IsItemIdPawnable(itemId);
-  }
-
   public get level() {
     return GetItemLevel(this.handle);
   }
 
   public get type() {
     return GetItemType(this.handle);
-  }
-
-  public setDropId(unitId: number) {
-    SetItemDropID(this.handle, unitId);
   }
 
   public get charges() {
@@ -135,6 +87,54 @@ export class Item extends Handle<item> {
 
   public set userData(value: number) {
     SetItemUserData(this.handle, value);
+  }
+
+  public destroy() {
+    RemoveItem(this.handle);
+  }
+
+  public getPlayer() {
+    return GetItemPlayer(this.handle);
+  }
+
+  public setPosition(x: number, y: number) {
+    SetItemPosition(this.handle, x, y);
+  }
+
+  public setOwner(whichPlayer: MapPlayer, changeColor: boolean) {
+    SetItemPlayer(this.handle, whichPlayer.handle, changeColor);
+  }
+
+  public isOwned() {
+    return IsItemOwned(this.handle);
+  }
+
+  public isPowerup() {
+    return IsItemPowerup(this.handle);
+  }
+
+  public isSellable() {
+    return IsItemSellable(this.handle);
+  }
+
+  public isPawnable() {
+    return IsItemPawnable(this.handle);
+  }
+
+  public setDropId(unitId: number) {
+    SetItemDropID(this.handle, unitId);
+  }
+
+  public static isIdPowerup(itemId: number) {
+    return IsItemIdPowerup(itemId);
+  }
+
+  public static isIdSellable(itemId: number) {
+    return IsItemIdSellable(itemId);
+  }
+
+  public static isIdPawnable(itemId: number) {
+    return IsItemIdPawnable(itemId);
   }
 
 }

@@ -8,21 +8,21 @@ const oldConfig = config;
 
 type scriptHookSignature = () => void;
 
-const hooksMainBefore: Array<scriptHookSignature> = [];
-const hooksMainAfter: Array<scriptHookSignature> = [];
-const hooksConfigBefore: Array<scriptHookSignature> = [];
-const hooksConfigAfter: Array<scriptHookSignature> = [];
+const hooksMainBefore: scriptHookSignature[] = [];
+const hooksMainAfter: scriptHookSignature[] = [];
+const hooksConfigBefore: scriptHookSignature[] = [];
+const hooksConfigAfter: scriptHookSignature[] = [];
 
 function hookedMain() {
-  hooksMainBefore.forEach(func => func());
+  hooksMainBefore.forEach((func) => func());
   oldMain();
-  hooksMainAfter.forEach(func => func());
+  hooksMainAfter.forEach((func) => func());
 }
 
 function hookedConfig() {
-  hooksConfigBefore.forEach(func => func());
+  hooksConfigBefore.forEach((func) => func());
   oldConfig();
-  hooksConfigAfter.forEach(func => func());
+  hooksConfigAfter.forEach((func) => func());
 }
 
 main = hookedMain;
@@ -35,7 +35,7 @@ export enum W3TS_HOOK {
   CONFIG_AFTER = "config::after"
 }
 
-const entryPoints: { [key: string]: Array<scriptHookSignature>; } = {
+const entryPoints: { [key: string]: scriptHookSignature[]; } = {
   [W3TS_HOOK.MAIN_BEFORE]: hooksMainBefore,
   [W3TS_HOOK.MAIN_AFTER]: hooksMainAfter,
   [W3TS_HOOK.CONFIG_BEFORE]: hooksConfigBefore,

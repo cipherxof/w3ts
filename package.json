@@ -6,10 +6,12 @@
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tstl -p tsconfig.json"
+    "build": "tslint -c tslint.json -p tsconfig.json"
   },
   "devDependencies": {
     "lua-types": "^2.6.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4",
     "war3-types": "latest"
   }
 }

@@ -10,24 +10,12 @@ import { Widget } from "./widget";
 
 export class Unit extends Handle<unit> {
 
-  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
-    super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
-  }
-
   get name() {
     return GetUnitName(this.handle);
   }
 
   set name(value: string) {
     BlzSetUnitName(this.handle, value);
-  }
-
-  public kill() {
-    KillUnit(this.handle);
-  }
-
-  public destroy() {
-    RemoveUnit(this.handle);
   }
 
   public set show(flag: boolean) {
@@ -38,28 +26,20 @@ export class Unit extends Handle<unit> {
     return IsUnitHidden(this.handle);
   }
 
-  public setState(whichUnitState: unitstate, newVal: number) {
-    SetUnitState(this.handle, whichUnitState, newVal);
-  }
-
   public get x() {
     return GetUnitX(this.handle);
-  }
-
-  public get y() {
-    return GetUnitY(this.handle);
   }
 
   public set x(value: number) {
     SetUnitX(this.handle, value);
   }
 
-  public set y(value: number) {
-    SetUnitY(this.handle, value);
+  public get y() {
+    return GetUnitY(this.handle);
   }
 
-  public setPosition(x: number, y: number) {
-    SetUnitPosition(this.handle, x, y);
+  public set y(value: number) {
+    SetUnitY(this.handle, value);
   }
 
   public set facing(value: number) {
@@ -80,14 +60,6 @@ export class Unit extends Handle<unit> {
 
   public get defaultMoveSpeed() {
     return GetUnitDefaultMoveSpeed(this.handle);
-  }
-
-  public setflyHeight(value: number, rate: number) {
-    SetUnitFlyHeight(this.handle, value, rate);
-  }
-
-  public getflyHeight() {
-    return GetUnitFlyHeight(this.handle);
   }
 
   public set turnSpeed(value: number) {
@@ -112,6 +84,200 @@ export class Unit extends Handle<unit> {
 
   public get acquireRange() {
     return GetUnitPropWindow(this.handle);
+  }
+
+  public set color(whichColor: playercolor) {
+    SetUnitColor(this.handle, whichColor);
+  }
+
+  public get level() {
+    return GetUnitLevel(this.handle);
+  }
+
+  public set nameProper(value: string) {
+    BlzSetHeroProperName(this.handle, value);
+  }
+
+  public get nameProper() {
+    return GetHeroProperName(this.handle);
+  }
+
+  public set invulnerable(flag: boolean) {
+    SetUnitInvulnerable(this.handle, true);
+  }
+
+  public get invulnerable() {
+    return BlzIsUnitInvulnerable(this.handle);
+  }
+
+  public set paused(flag: boolean) {
+    PauseUnit(this.handle, flag);
+  }
+
+  public get paused() {
+    return IsUnitPaused(this.handle);
+  }
+
+  public get pointValue() {
+    return GetUnitPointValue(this.handle);
+  }
+
+  public get inventorySize() {
+    return UnitInventorySize(this.handle);
+  }
+
+  public get point() {
+    return Point.fromHandle(GetUnitLoc(this.handle));
+  }
+
+  public set point(whichPoint: Point) {
+    SetUnitPositionLoc(this.handle, whichPoint.handle);
+  }
+
+  public get typeId() {
+    return GetUnitTypeId(this.handle);
+  }
+
+  public get race() {
+    return GetUnitRace(this.handle);
+  }
+
+  public get foodUsed() {
+    return GetUnitFoodUsed(this.handle);
+  }
+
+  public get foodMade() {
+    return GetUnitFoodMade(this.handle);
+  }
+
+  public set canSleep(flag: boolean) {
+    UnitAddSleep(this.handle, flag);
+  }
+
+  public get canSleep() {
+    return UnitCanSleep(this.handle);
+  }
+
+  public get sleeping() {
+    return UnitIsSleeping(this.handle);
+  }
+
+  public get ignoreAlarmToggled() {
+    return UnitIgnoreAlarmToggled(this.handle);
+  }
+
+  public get currentOrder() {
+    return GetUnitCurrentOrder(this.handle);
+  }
+
+  public set waygateActive(flag: boolean) {
+    WaygateActivate(this.handle, flag);
+  }
+
+  public get waygateActive() {
+    return WaygateIsActive(this.handle);
+  }
+
+  public get userData() {
+    return GetUnitUserData(this.handle);
+  }
+
+  public set userData(value: number) {
+    SetUnitUserData(this.handle, value);
+  }
+
+  public get maxLife() {
+    return BlzGetUnitMaxHP(this.handle);
+  }
+
+  public set maxLife(value: number) {
+    BlzSetUnitMaxHP(this.handle, value);
+  }
+
+  public get maxMana() {
+    return BlzGetUnitMaxMana(this.handle);
+  }
+
+  public set maxMana(value: number) {
+    BlzSetUnitMaxMana(this.handle, value);
+  }
+
+  public get life() {
+    return this.getState(UNIT_STATE_LIFE);
+  }
+
+  public set life(value: number) {
+    this.setState(UNIT_STATE_LIFE, value);
+  }
+
+  public get mana() {
+    return this.getState(UNIT_STATE_MANA);
+  }
+
+  public set mana(value: number) {
+    this.setState(UNIT_STATE_MANA, value);
+  }
+
+  public get armor() {
+    return BlzGetUnitArmor(this.handle);
+  }
+
+  public set armor(armorAmount: number) {
+    BlzSetUnitArmor(this.handle, armorAmount);
+  }
+
+  public get selectable() {
+    return BlzIsUnitSelectable(this.handle);
+  }
+
+  public get collisionSize() {
+    return BlzGetUnitCollisionSize(this.handle);
+  }
+
+  public get localZ() {
+    return BlzGetLocalUnitZ(this.handle);
+  }
+
+  // Add this function to follow the style of GetUnitX and GetUnitY, it has the same result as BlzGetLocalUnitZ
+  public get z() {
+    return BlzGetUnitZ(this.handle);
+  }
+
+  public set selectionScale(scale: number) {
+    this.setField(UNIT_RF_SELECTION_SCALE, scale);
+  }
+
+  public get selectionScale() {
+    const result = this.getField(UNIT_RF_SELECTION_SCALE);
+    return typeof result === "number" ? result : 0;
+  }
+
+  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
+    super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
+  }
+
+  public kill() {
+    KillUnit(this.handle);
+  }
+
+  public destroy() {
+    RemoveUnit(this.handle);
+  }
+
+  public setState(whichUnitState: unitstate, newVal: number) {
+    SetUnitState(this.handle, whichUnitState, newVal);
+  }
+
+  public setPosition(x: number, y: number) {
+    SetUnitPosition(this.handle, x, y);
+  }
+
+  public setflyHeight(value: number, rate: number) {
+    SetUnitFlyHeight(this.handle, value, rate);
+  }
+
+  public getflyHeight() {
+    return GetUnitFlyHeight(this.handle);
   }
 
   public setCreepGuard(creepGuard: boolean) {
@@ -142,10 +308,6 @@ export class Unit extends Handle<unit> {
     return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
   }
 
-  public set color(whichColor: playercolor) {
-    SetUnitColor(this.handle, whichColor);
-  }
-
   public setScale(scaleX: number, scaleY: number, scaleZ: number) {
     SetUnitScale(this.handle, scaleX, scaleY, scaleZ);
   }
@@ -167,7 +329,7 @@ export class Unit extends Handle<unit> {
   }
 
   public setAnimation(whichAnimation: string | number) {
-    if (typeof whichAnimation == 'string') {
+    if (typeof whichAnimation === "string") {
       SetUnitAnimation(this.handle, whichAnimation);
     } else {
       SetUnitAnimationByIndex(this.handle, whichAnimation);
@@ -254,24 +416,12 @@ export class Unit extends Handle<unit> {
     SetHeroLevel(this.handle, level, showEyeCandy);
   }
 
-  public get level() {
-    return GetUnitLevel(this.handle);
-  }
-
-  public set nameProper(value: string) {
-    BlzSetHeroProperName(this.handle, value);
-  }
-
-  public get nameProper() {
-    return GetHeroProperName(this.handle);
-  }
-
   public suspendExperience(flag: boolean) {
-    SuspendHeroXP(this.handle, flag)
+    SuspendHeroXP(this.handle, flag);
   }
 
   public isExperienceSuspended() {
-    return IsSuspendedXP(this.handle)
+    return IsSuspendedXP(this.handle);
   }
 
   public selectSkill(abilCode: number) {
@@ -306,36 +456,12 @@ export class Unit extends Handle<unit> {
     SetUnitExploded(this.handle, exploded);
   }
 
-  public set invulnerable(flag: boolean) {
-    SetUnitInvulnerable(this.handle, true);
-  }
-
-  public get invulnerable() {
-    return BlzIsUnitInvulnerable(this.handle);
-  }
-
-  public set paused(flag: boolean) {
-    PauseUnit(this.handle, flag);
-  }
-
-  public get paused() {
-    return IsUnitPaused(this.handle);
-  }
-
   public setPathing(flag: boolean) {
     SetUnitPathing(this.handle, flag);
   }
 
   public select(flag: boolean) {
     SelectUnit(this.handle, flag);
-  }
-
-  public get pointValue() {
-    return GetUnitPointValue(this.handle);
-  }
-
-  public static getPointValueByType(unitType: number) {
-    return GetUnitPointValueByType(unitType);
   }
 
   public addItem(whichItem: item) {
@@ -366,10 +492,6 @@ export class Unit extends Handle<unit> {
     return UnitItemInSlot(this.handle, slot);
   }
 
-  public get inventorySize() {
-    return UnitInventorySize(this.handle);
-  }
-
   public dropItem(whichItem: item, x: number, y: number) {
     return UnitDropItemPoint(this.handle, whichItem, x, y);
   }
@@ -394,44 +516,12 @@ export class Unit extends Handle<unit> {
     return UnitUseItemTarget(this.handle, whichItem, target.handle);
   }
 
-  public get point() {
-    return Point.fromHandle(GetUnitLoc(this.handle));
-  }
-
-  public set point(whichPoint: Point) {
-    SetUnitPositionLoc(this.handle, whichPoint.handle);
-  }
-
   public getState(whichUnitState: unitstate) {
     return GetUnitState(this.handle, whichUnitState);
   }
 
-  public get typeId() {
-    return GetUnitTypeId(this.handle);
-  }
-
-  public get race() {
-    return GetUnitRace(this.handle);
-  }
-
-  public get foodUsed() {
-    return GetUnitFoodUsed(this.handle);
-  }
-
-  public get foodMade() {
-    return GetUnitFoodMade(this.handle);
-  }
-
-  public static foodMadeByType(unitId: number) {
-    return GetFoodMade(unitId);
-  }
-
-  public static foodUsedByType(unitId: number) {
-    return GetFoodUsed(unitId);
-  }
-
   public setUseFood(useFood: boolean) {
-    SetUnitUseFood(this.handle, useFood)
+    SetUnitUseFood(this.handle, useFood);
   }
 
   public getRallyPoint() {
@@ -518,14 +608,6 @@ export class Unit extends Handle<unit> {
     return IsHeroUnitId(this.typeId);
   }
 
-  public static isUnitIdHero(unitId: number) {
-    return IsHeroUnitId(unitId);
-  }
-
-  public static isUnitIdType(unitId: number, whichUnitType: unittype) {
-    return IsUnitIdType(unitId, whichUnitType);
-  }
-
   public shareVision(whichPlayer: MapPlayer, share: boolean) {
     UnitShareVision(this.handle, whichPlayer.handle, share);
   }
@@ -570,24 +652,12 @@ export class Unit extends Handle<unit> {
     return UnitCountBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
   }
 
-  public set canSleep(flag: boolean) {
-    UnitAddSleep(this.handle, flag);
-  }
-
-  public get canSleep() {
-    return UnitCanSleep(this.handle);
-  }
-
   public addSleepPerm(add: boolean) {
     UnitAddSleepPerm(this.handle, add);
   }
 
   public canSleepPerm() {
     return UnitCanSleepPerm(this.handle);
-  }
-
-  public get sleeping() {
-    return UnitIsSleeping(this.handle);
   }
 
   public wakeUp() {
@@ -600,10 +670,6 @@ export class Unit extends Handle<unit> {
 
   public getIgnoreAlarm(flag: boolean) {
     return UnitIgnoreAlarm(this.handle, flag);
-  }
-
-  public get ignoreAlarmToggled() {
-    return UnitIgnoreAlarmToggled(this.handle);
   }
 
   public resetCooldown() {
@@ -635,35 +701,31 @@ export class Unit extends Handle<unit> {
   }
 
   public issueImmediateOrder(order: string | number) {
-    return typeof order === 'string' ? IssueImmediateOrder(this.handle, order) : IssueImmediateOrderById(this.handle, order);
+    return typeof order === "string" ? IssueImmediateOrder(this.handle, order) : IssueImmediateOrderById(this.handle, order);
   }
 
   public issueOrderAt(order: string | number, x: number, y: number) {
-    return typeof order === 'string' ? IssuePointOrder(this.handle, order, x, y) : IssuePointOrderById(this.handle, order, x, y);
+    return typeof order === "string" ? IssuePointOrder(this.handle, order, x, y) : IssuePointOrderById(this.handle, order, x, y);
   }
 
   public issuePointOrder(order: string | number, whichPoint: Point) {
-    return typeof order === 'string' ? IssuePointOrderLoc(this.handle, order, whichPoint.handle) : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
+    return typeof order === "string" ? IssuePointOrderLoc(this.handle, order, whichPoint.handle) : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
   }
 
   public issueTargetOrder(order: string | number, targetWidget: Widget) {
-    return typeof order === 'string' ? IssueTargetOrder(this.handle, order, targetWidget.handle) : IssueTargetOrderById(this.handle, order, targetWidget.handle);
+    return typeof order === "string" ? IssueTargetOrder(this.handle, order, targetWidget.handle) : IssueTargetOrderById(this.handle, order, targetWidget.handle);
   }
 
   public issueInstantOrderAt(order: string | number, x: number, y: number, instantTargetWidget: Widget) {
-    return typeof order === 'string' ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle) : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
+    return typeof order === "string" ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle) : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
   }
 
   public issueInstantTargetOrder(order: string | number, targetWidget: Widget, instantTargetWidget: Widget) {
-    return typeof order === 'string' ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle) : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
+    return typeof order === "string" ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle) : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
   }
 
   public issueBuildOrder(unit: string | number, x: number, y: number) {
-    return typeof unit === 'string' ? IssueBuildOrder(this.handle, unit, x, y) : IssueBuildOrderById(this.handle, unit, x, y);
-  }
-
-  public get currentOrder() {
-    return GetUnitCurrentOrder(this.handle);
+    return typeof unit === "string" ? IssueBuildOrder(this.handle, unit, x, y) : IssueBuildOrderById(this.handle, unit, x, y);
   }
 
   public setResourceAmount(amount: number) {
@@ -690,14 +752,6 @@ export class Unit extends Handle<unit> {
     WaygateSetDestination(this.handle, x, y);
   }
 
-  public set waygateActive(flag: boolean) {
-    WaygateActivate(this.handle, flag);
-  }
-
-  public get waygateActive() {
-    return WaygateIsActive(this.handle);
-  }
-
   public addItemToStock(itemId: number, currentStock: number, stockMax: number) {
     AddItemToStock(this.handle, itemId, currentStock, stockMax);
   }
@@ -722,14 +776,6 @@ export class Unit extends Handle<unit> {
     SetUnitTypeSlots(this.handle, slots);
   }
 
-  public get userData() {
-    return GetUnitUserData(this.handle);
-  }
-
-  public set userData(value: number) {
-    SetUnitUserData(this.handle, value);
-  }
-
   public addIndicator(red: number, blue: number, green: number, alpha: number, ) {
     UnitAddIndicator(this.handle, red, blue, green, alpha);
   }
@@ -740,38 +786,6 @@ export class Unit extends Handle<unit> {
 
   public recycleGuardPosition() {
     RecycleGuardPosition(this.handle);
-  }
-
-  public get maxLife() {
-    return BlzGetUnitMaxHP(this.handle);
-  }
-
-  public set maxLife(value: number) {
-    BlzSetUnitMaxHP(this.handle, value);
-  }
-
-  public get maxMana() {
-    return BlzGetUnitMaxMana(this.handle);
-  }
-
-  public set maxMana(value: number) {
-    BlzSetUnitMaxMana(this.handle, value);
-  }
-
-  public get life() {
-    return this.getState(UNIT_STATE_LIFE);
-  }
-
-  public set life(value: number) {
-    this.setState(UNIT_STATE_LIFE, value);
-  }
-
-  public get mana() {
-    return this.getState(UNIT_STATE_MANA);
-  }
-
-  public set mana(value: number) {
-    this.setState(UNIT_STATE_MANA, value);
   }
 
   public getBaseDamage(weaponIndex: number) {
@@ -806,14 +820,6 @@ export class Unit extends Handle<unit> {
     BlzSetUnitAttackCooldown(this.handle, cooldown, weaponIndex);
   }
 
-  public get armor() {
-    return BlzGetUnitArmor(this.handle);
-  }
-
-  public set armor(armorAmount: number) {
-    BlzSetUnitArmor(this.handle, armorAmount);
-  }
-
   public hideAbility(abilId: number, flag: boolean) {
     BlzUnitHideAbility(this.handle, abilId, flag);
   }
@@ -826,16 +832,8 @@ export class Unit extends Handle<unit> {
     BlzUnitCancelTimedLife(this.handle);
   }
 
-  public get selectable() {
-    return BlzIsUnitSelectable(this.handle);
-  }
-
   public interruptAttack() {
     BlzUnitInterruptAttack(this.handle);
-  }
-
-  public get collisionSize() {
-    return BlzGetUnitCollisionSize(this.handle);
   }
 
   public setAbilityCooldown(abilId: number, level: number, cooldown: number) {
@@ -862,15 +860,6 @@ export class Unit extends Handle<unit> {
     return BlzGetUnitAbilityManaCost(this.handle, abilId, level);
   }
 
-  public get localZ() {
-    return BlzGetLocalUnitZ(this.handle);
-  }
-
-  // Add this function to follow the style of GetUnitX and GetUnitY, it has the same result as BlzGetLocalUnitZ
-  public get z() {
-    return BlzGetUnitZ(this.handle);
-  }
-
   public getAbility(abilId: number) {
     return BlzGetUnitAbility(this.handle, abilId);
   }
@@ -884,25 +873,25 @@ export class Unit extends Handle<unit> {
   }
 
   public getField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield) {
-    const fieldType = tostring(field).split(':')[0];
+    const fieldType = tostring(field).split(":")[0];
 
     switch (fieldType) {
-      case 'unitbooleanfield':
+      case "unitbooleanfield":
         // @ts-ignore
         const fieldBool: unitbooleanfield = field;
         return BlzGetUnitBooleanField(this.handle, fieldBool);
 
-      case 'unitintegerfield':
+      case "unitintegerfield":
         // @ts-ignore
         const fieldInt: unitintegerfield = field;
         return BlzGetUnitIntegerField(this.handle, fieldInt);
 
-      case 'unitrealfield':
+      case "unitrealfield":
         // @ts-ignore
         const fieldReal: unitrealfield = field;
         return BlzGetUnitRealField(this.handle, fieldReal);
 
-      case 'unitstringfield':
+      case "unitstringfield":
         // @ts-ignore
         const fieldString: unitstringfield = field;
         return BlzGetUnitStringField(this.handle, fieldString);
@@ -913,24 +902,24 @@ export class Unit extends Handle<unit> {
   }
 
   public setField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield, value: boolean | number | string) {
-    const fieldType = tostring(field).split(':')[0];
+    const fieldType = tostring(field).split(":")[0];
 
-    if (fieldType === 'unitbooleanfield' && typeof value === "boolean") {
+    if (fieldType === "unitbooleanfield" && typeof value === "boolean") {
       // @ts-ignore
       const fieldBool: unitbooleanfield = field;
 
       return BlzSetUnitBooleanField(this.handle, fieldBool, value);
-    } else if (fieldType === 'unitintegerfield' && typeof value === "number") {
+    } else if (fieldType === "unitintegerfield" && typeof value === "number") {
       // @ts-ignore
       const fieldInt: unitintegerfield = field;
 
       return BlzSetUnitIntegerField(this.handle, fieldInt, value);
-    } else if (fieldType === 'unitrealfield' && typeof value === "number") {
+    } else if (fieldType === "unitrealfield" && typeof value === "number") {
       // @ts-ignore
       const fieldReal: unitrealfield = field;
 
       return BlzSetUnitRealField(this.handle, fieldReal, value);
-    } else if (fieldType === 'unitstringfield' && typeof value === "string") {
+    } else if (fieldType === "unitstringfield" && typeof value === "string") {
       // @ts-ignore
       const fieldStr: unitstringfield = field;
 
@@ -940,12 +929,23 @@ export class Unit extends Handle<unit> {
     return false;
   }
 
-  public set selectionScale(scale: number) {
-    this.setField(UNIT_RF_SELECTION_SCALE, scale);
+  public static getPointValueByType(unitType: number) {
+    return GetUnitPointValueByType(unitType);
   }
 
-  public get selectionScale() {
-    const result = this.getField(UNIT_RF_SELECTION_SCALE);
-    return typeof result === 'number' ? result : 0;
+  public static foodMadeByType(unitId: number) {
+    return GetFoodMade(unitId);
+  }
+
+  public static foodUsedByType(unitId: number) {
+    return GetFoodUsed(unitId);
+  }
+
+  public static isUnitIdHero(unitId: number) {
+    return IsHeroUnitId(unitId);
+  }
+
+  public static isUnitIdType(unitId: number, whichUnitType: unittype) {
+    return IsUnitIdType(unitId, whichUnitType);
   }
 }
