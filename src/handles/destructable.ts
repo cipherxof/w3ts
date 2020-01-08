@@ -11,7 +11,7 @@ export class Destructable extends Handle<destructable> {
   }
 
   public set invulnerable(flag: boolean) {
-    SetDestructableInvulnerable(this.handle, true);
+    SetDestructableInvulnerable(this.handle, flag);
   }
 
   public get invulnerable() {
