@@ -4,12 +4,6 @@ import { Handle } from "./handle";
 
 export class Destructable extends Handle<destructable> {
 
-  private isVisible = false;
-
-  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
-    super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
-  }
-
   public set invulnerable(flag: boolean) {
     SetDestructableInvulnerable(this.handle, flag);
   }
@@ -67,6 +61,12 @@ export class Destructable extends Handle<destructable> {
     return GetDestructableY(this.handle);
   }
 
+  private isVisible = false;
+
+  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
+    super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
+  }
+
   public destroy() {
     RemoveDestructable(this.handle);
   }
@@ -91,12 +91,12 @@ export class Destructable extends Handle<destructable> {
     SetDestructableAnimationSpeed(this.handle, speedFactor);
   }
 
-  public static fromHandle(handle: destructable): Destructable {
-    return this.get(handle);
+  public static fromEvent() {
+    return this.fromHandle(GetTriggerDestructable());
   }
 
-  public static fromTrigger() {
-    return this.fromHandle(GetTriggerDestructable());
+  public static fromHandle(handle: destructable): Destructable {
+    return this.get(handle);
   }
 
 }

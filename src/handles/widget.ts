@@ -4,16 +4,16 @@ import { Handle } from "./handle";
 
 export class Widget extends Handle<widget> {
 
-  private constructor() {
-    super();
-  }
-
   public get life() {
     return GetWidgetLife(this.handle);
   }
 
   public set life(value: number) {
     SetWidgetLife(this.handle, value);
+  }
+
+  private constructor() {
+    super();
   }
 
   public getX() {
@@ -24,12 +24,12 @@ export class Widget extends Handle<widget> {
     return GetWidgetY(this.handle);
   }
 
-  public static fromHandle(handle: widget): Widget {
-    return this.get(handle);
+  public static fromEvent() {
+    return this.fromHandle(GetTriggerWidget());
   }
 
-  public static fromTrigger() {
-    return this.fromHandle(GetTriggerWidget());
+  public static fromHandle(handle: widget): Widget {
+    return this.get(handle);
   }
 
 }

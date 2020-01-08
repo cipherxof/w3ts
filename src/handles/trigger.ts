@@ -1,13 +1,10 @@
 /** @noSelfInFile **/
 
+import { Frame } from "./frame";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class Trigger extends Handle<trigger> {
-
-  constructor() {
-    super(CreateTrigger, []);
-  }
 
   public set enabled(flag: boolean) {
     if (flag) {
@@ -29,12 +26,28 @@ export class Trigger extends Handle<trigger> {
     return IsTriggerWaitOnSleeps(this.handle);
   }
 
+  constructor() {
+    super(CreateTrigger, []);
+  }
+
+  public addAction(actionFunc: () => void) {
+    return TriggerAddAction(this.handle, actionFunc);
+  }
+
+  public addCondition(condition: boolexpr) {
+    return TriggerAddCondition(this.handle, condition);
+  }
+
   public destroy() {
     DestroyTrigger(this.handle);
   }
 
-  public reset() {
-    ResetTrigger(this.handle);
+  public eval() {
+    return TriggerEvaluate(this.handle);
+  }
+
+  public exec() {
+    return TriggerExecute(this.handle);
   }
 
   public getEvalCount() {
@@ -45,8 +58,36 @@ export class Trigger extends Handle<trigger> {
     return GetTriggerExecCount(this.handle);
   }
 
-  public registerVariableEvent(varName: string, opcode: limitop, limitval: number) {
-    return TriggerRegisterVariableEvent(this.handle, varName, opcode, limitval);
+  public registerAnyUnitEvent(whichPlayerUnitEvent: playerunitevent) {
+    return TriggerRegisterAnyUnitEventBJ(this.handle, whichPlayerUnitEvent);
+  }
+
+  public registerDialogButtonEvent(whichButton: button) {
+    return TriggerRegisterDialogButtonEvent(this.handle, whichButton);
+  }
+
+  public registerDialogEvent(whichDialog: dialog) {
+    return TriggerRegisterDialogEvent(this.handle, whichDialog);
+  }
+
+  public registerGameStateEvent(whichState: gamestate, opcode: limitop, limitval: number) {
+    return TriggerRegisterGameStateEvent(this.handle, whichState, opcode, limitval);
+  }
+
+  public registerPlayerEvent(whichPlayer: MapPlayer, whichPlayerEvent: playerevent) {
+    return TriggerRegisterPlayerEvent(this.handle, whichPlayer.handle, whichPlayerEvent);
+  }
+
+  public registerPlayerKeyEvent(whichPlayer: MapPlayer, whichKey: oskeytype, metaKey: number, fireOnKeyDown: boolean) {
+    return BlzTriggerRegisterPlayerKeyEvent(this.handle, whichPlayer.handle, whichKey, metaKey, fireOnKeyDown);
+  }
+
+  public registerPlayerMouseEvent(whichPlayer: MapPlayer, whichMouseEvent: number) {
+    return TriggerRegisterPlayerMouseEventBJ(this.handle, whichPlayer.handle, whichMouseEvent);
+  }
+
+  public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | null) {
+    return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
   }
 
   // Creates it's own timer and triggers when it expires
@@ -59,40 +100,8 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterTimerExpireEvent(this.handle, t);
   }
 
-  public registerGameStateEvent(whichState: gamestate, opcode: limitop, limitval: number) {
-    return TriggerRegisterGameStateEvent(this.handle, whichState, opcode, limitval);
-  }
-
-  public registerDialogEvent(whichDialog: dialog) {
-    return TriggerRegisterDialogEvent(this.handle, whichDialog);
-  }
-
-  public registerDialogButtonEvent(whichButton: button) {
-    return TriggerRegisterDialogButtonEvent(this.handle, whichButton);
-  }
-
-  public registerPlayerEvent(whichPlayer: MapPlayer, whichPlayerEvent: playerevent) {
-    return TriggerRegisterPlayerEvent(this.handle, whichPlayer.handle, whichPlayerEvent);
-  }
-
-  public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | null) {
-    return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
-  }
-
-  public registerAnyUnitEvent(whichPlayerUnitEvent: playerunitevent) {
-    return TriggerRegisterAnyUnitEventBJ(this.handle, whichPlayerUnitEvent);
-  }
-
-  public registerPlayerMouseEvent(whichPlayer: MapPlayer, whichMouseEvent: number) {
-    return TriggerRegisterPlayerMouseEventBJ(this.handle, whichPlayer.handle, whichMouseEvent);
-  }
-
-  public registerPlayerKeyEvent(whichPlayer: MapPlayer, whichKey: oskeytype, metaKey: number, fireOnKeyDown: boolean) {
-    return BlzTriggerRegisterPlayerKeyEvent(this.handle, whichPlayer.handle, whichKey, metaKey, fireOnKeyDown);
-  }
-
-  public addAction(actionFunc: () => void) {
-    return TriggerAddAction(this.handle, actionFunc);
+  public registerVariableEvent(varName: string, opcode: limitop, limitval: number) {
+    return TriggerRegisterVariableEvent(this.handle, varName, opcode, limitval);
   }
 
   public removeAction(whichAction: triggeraction) {
@@ -103,10 +112,6 @@ export class Trigger extends Handle<trigger> {
     return TriggerClearActions(this.handle);
   }
 
-  public addCondition(condition: boolexpr) {
-    return TriggerAddCondition(this.handle, condition);
-  }
-
   public removeCondition(whichCondition: triggercondition) {
     return TriggerRemoveCondition(this.handle, whichCondition);
   }
@@ -115,20 +120,20 @@ export class Trigger extends Handle<trigger> {
     return TriggerClearConditions(this.handle);
   }
 
-  public eval() {
-    return TriggerEvaluate(this.handle);
+  public reset() {
+    ResetTrigger(this.handle);
   }
 
-  public exec() {
-    return TriggerExecute(this.handle);
-  }
-
-  public static fromHandle(handle: trigger): Trigger {
-    return this.get(handle);
+  public triggerRegisterFrameEvent(frame: Frame, eventId: frameeventtype) {
+    return BlzTriggerRegisterFrameEvent(this.handle, frame.handle, eventId);
   }
 
   public static fromEvent() {
     return this.fromHandle(GetTriggeringTrigger());
+  }
+
+  public static fromHandle(handle: trigger): Trigger {
+    return this.get(handle);
   }
 
   public static getEventId() {

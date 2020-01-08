@@ -34,7 +34,8 @@
           "public-static-method",
           "private-static-method",
           "protected-static-method"
-        ]
+        ],
+        "alphabetize": true
       }
     ],
     "no-bitwise": false,

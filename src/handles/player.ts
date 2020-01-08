@@ -6,22 +6,12 @@ import { Point } from "./point";
 
 export class MapPlayer extends Handle<player> {
 
-  private scoreScreen = true;
-
-  private constructor(index?: number) {
-    super(Player, [index]);
+  public set color(color: playercolor) {
+    SetPlayerColor(this.handle, color);
   }
 
-  public get id() {
-    return GetPlayerId(this.handle);
-  }
-
-  public get name() {
-    return GetPlayerName(this.handle);
-  }
-
-  public set name(value: string) {
-    SetPlayerName(this.handle, value);
+  public get color() {
+    return GetPlayerColor(this.handle);
   }
 
   public get handicap() {
@@ -40,12 +30,16 @@ export class MapPlayer extends Handle<player> {
     SetPlayerHandicapXP(this.handle, handicap);
   }
 
-  public set color(color: playercolor) {
-    SetPlayerColor(this.handle, color);
+  public get id() {
+    return GetPlayerId(this.handle);
   }
 
-  public get color() {
-    return GetPlayerColor(this.handle);
+  public get name() {
+    return GetPlayerName(this.handle);
+  }
+
+  public set name(value: string) {
+    SetPlayerName(this.handle, value);
   }
 
   public get onScoreScreen() {
@@ -57,48 +51,88 @@ export class MapPlayer extends Handle<player> {
     SetPlayerOnScoreScreen(this.handle, flag);
   }
 
-  public isPlayerAlly(otherPlayer: MapPlayer) {
-    return IsPlayerAlly(this.handle, otherPlayer.handle);
+  private scoreScreen = true;
+
+  private constructor(index?: number) {
+    super(Player, [index]);
   }
 
-  public isPlayerEnemy(otherPlayer: MapPlayer) {
-    return IsPlayerEnemy(this.handle, otherPlayer.handle);
+  public addTechResearched(techId: number, levels: number) {
+    AddPlayerTechResearched(this.handle, techId, levels);
   }
 
-  public inForce(whichForce: Force) {
-    return IsPlayerInForce(this.handle, whichForce.handle);
+  // Used to store hero level data for the scorescreen
+  // before units are moved to neutral passive in melee games
+  public cacheHeroData() {
+    CachePlayerHeroData(this.handle);
   }
 
-  public isObserver() {
-    return IsPlayerObserver(this.handle);
-  }
-
-  public coordsVisible(x: number, y: number) {
-    return IsVisibleToPlayer(x, y, this.handle);
-  }
-
-  public pointVisible(whichPoint: Point) {
-    return IsLocationVisibleToPlayer(whichPoint.handle, this.handle);
+  public compareAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype) {
+    return GetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting);
   }
 
   public coordsFogged(x: number, y: number) {
     return IsFoggedToPlayer(x, y, this.handle);
   }
 
-  public pointFogged(whichPoint: Point) {
-    return IsLocationFoggedToPlayer(whichPoint.handle, this.handle);
-  }
-
   public coordsMasked(x: number, y: number) {
     return IsMaskedToPlayer(x, y, this.handle);
   }
 
-  public pointMasked(whichPoint: Point) {
-    return IsLocationMaskedToPlayer(whichPoint.handle, this.handle);
+  public coordsVisible(x: number, y: number) {
+    return IsVisibleToPlayer(x, y, this.handle);
+  }
+
+  public cripple(toWhichPlayers: Force, flag: boolean) {
+    CripplePlayer(this.handle, toWhichPlayers.handle, flag);
+  }
+
+  public getController() {
+    return GetPlayerController(this.handle);
   }
 
   public getRace() {
     return GetPlayerRace(this.handle);
+  }
+
+  public getScore(whichPlayerScore: playerscore) {
+    return GetPlayerScore(this.handle, whichPlayerScore);
+  }
+
+  public getSlotState() {
+    return GetPlayerSlotState(this.handle);
+  }
+
+  public getStartLocation() {
+    return GetPlayerStartLocation(this.handle);
+  }
+
+  public getState(whichPlayerState: playerstate) {
+    return GetPlayerState(this.handle, whichPlayerState);
+  }
+
+  public getStructureCount(includeIncomplete: boolean) {
+    return GetPlayerStructureCount(this.handle, includeIncomplete);
+  }
+
+  public getTaxRate(otherPlayer: player, whichResource: playerstate) {
+    return GetPlayerTaxRate(this.handle, otherPlayer, whichResource);
+  }
+
+  public getTeam() {
+    return GetPlayerTeam(this.handle);
+  }
+
+  public getTechCount(techId: number, specificonly: boolean) {
+    GetPlayerTechCount(this.handle, techId, specificonly);
+  }
+
+  public getTechMaxAllowed(techId: number) {
+    GetPlayerTechMaxAllowed(this.handle, techId);
+  }
+
+  public getTechResearched(techId: number, specificonly: boolean) {
+    GetPlayerTechResearched(this.handle, techId, specificonly);
   }
 
   public getUnitCount(includeIncomplete: boolean) {
@@ -109,110 +143,88 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerTypedUnitCount(this.handle, unitName, includeIncomplete, includeUpgrades);
   }
 
-  public getStructureCount(includeIncomplete: boolean) {
-    return GetPlayerStructureCount(this.handle, includeIncomplete);
+  public inForce(whichForce: Force) {
+    return IsPlayerInForce(this.handle, whichForce.handle);
   }
 
-  public getState(whichPlayerState: playerstate) {
-    return GetPlayerState(this.handle, whichPlayerState);
+  public isObserver() {
+    return IsPlayerObserver(this.handle);
   }
 
-  public getScore(whichPlayerScore: playerscore) {
-    return GetPlayerScore(this.handle, whichPlayerScore);
+  public isPlayerAlly(otherPlayer: MapPlayer) {
+    return IsPlayerAlly(this.handle, otherPlayer.handle);
   }
 
-  public compareAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype) {
-    return GetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting);
-  }
-
-  public setTechMaxAllowed(techId: number, maximum: number) {
-    SetPlayerTechMaxAllowed(this.handle, techId, maximum);
-  }
-
-  public getTechMaxAllowed(techId: number) {
-    GetPlayerTechMaxAllowed(this.handle, techId);
-  }
-
-  public addTechResearched(techId: number, levels: number) {
-    AddPlayerTechResearched(this.handle, techId, levels);
-  }
-
-  public setTechResearched(techId: number, setToLevel: number) {
-    SetPlayerTechResearched(this.handle, techId, setToLevel);
-  }
-
-  public getTechResearched(techId: number, specificonly: boolean) {
-    GetPlayerTechResearched(this.handle, techId, specificonly);
-  }
-
-  public getTechCount(techId: number, specificonly: boolean) {
-    GetPlayerTechCount(this.handle, techId, specificonly);
-  }
-
-  public setUnitsOwner(newOwner: number) {
-    SetPlayerUnitsOwner(this.handle, newOwner);
-  }
-
-  public cripple(toWhichPlayers: Force, flag: boolean) {
-    CripplePlayer(this.handle, toWhichPlayers.handle, flag);
-  }
-
-  public setAbilityAvailable(abilId: number, avail: boolean) {
-    SetPlayerAbilityAvailable(this.handle, abilId, avail);
-  }
-
-  public setState(whichPlayerState: playerstate, value: number) {
-    SetPlayerState(this.handle, whichPlayerState, value);
-  }
-
-  public remove(gameResult: playergameresult) {
-    RemovePlayer(this.handle, gameResult);
-  }
-
-  // Used to store hero level data for the scorescreen
-  // before units are moved to neutral passive in melee games
-  public cacheHeroData() {
-    CachePlayerHeroData(this.handle);
-  }
-
-  public setAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype, value: boolean) {
-    SetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting, value);
-  }
-
-  public setTaxRate(otherPlayer: MapPlayer, whichResource: playerstate, rate: number) {
-    SetPlayerTaxRate(this.handle, otherPlayer.handle, whichResource, rate);
-  }
-
-  public getTeam() {
-    return GetPlayerTeam(this.handle);
-  }
-
-  public getStartLocation() {
-    return GetPlayerStartLocation(this.handle);
-  }
-
-  public isSelectable() {
-    return GetPlayerSelectable(this.handle);
-  }
-
-  public getController() {
-    return GetPlayerController(this.handle);
-  }
-
-  public getSlotState() {
-    return GetPlayerSlotState(this.handle);
-  }
-
-  public getTaxRate(otherPlayer: player, whichResource: playerstate) {
-    return GetPlayerTaxRate(this.handle, otherPlayer, whichResource);
+  public isPlayerEnemy(otherPlayer: MapPlayer) {
+    return IsPlayerEnemy(this.handle, otherPlayer.handle);
   }
 
   public isRacePrefSet(pref: racepreference) {
     return IsPlayerRacePrefSet(this.handle, pref);
   }
 
+  public isSelectable() {
+    return GetPlayerSelectable(this.handle);
+  }
+
+  public pointFogged(whichPoint: Point) {
+    return IsLocationFoggedToPlayer(whichPoint.handle, this.handle);
+  }
+
+  public pointMasked(whichPoint: Point) {
+    return IsLocationMaskedToPlayer(whichPoint.handle, this.handle);
+  }
+
+  public pointVisible(whichPoint: Point) {
+    return IsLocationVisibleToPlayer(whichPoint.handle, this.handle);
+  }
+
+  public remove(gameResult: playergameresult) {
+    RemovePlayer(this.handle, gameResult);
+  }
+
   public removeAllGuardPositions() {
     RemoveAllGuardPositions(this.handle);
+  }
+
+  public setAbilityAvailable(abilId: number, avail: boolean) {
+    SetPlayerAbilityAvailable(this.handle, abilId, avail);
+  }
+
+  public setAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype, value: boolean) {
+    SetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting, value);
+  }
+
+  public setState(whichPlayerState: playerstate, value: number) {
+    SetPlayerState(this.handle, whichPlayerState, value);
+  }
+
+  public setTaxRate(otherPlayer: MapPlayer, whichResource: playerstate, rate: number) {
+    SetPlayerTaxRate(this.handle, otherPlayer.handle, whichResource, rate);
+  }
+
+  public setTechMaxAllowed(techId: number, maximum: number) {
+    SetPlayerTechMaxAllowed(this.handle, techId, maximum);
+  }
+
+  public setTechResearched(techId: number, setToLevel: number) {
+    SetPlayerTechResearched(this.handle, techId, setToLevel);
+  }
+
+  public setUnitsOwner(newOwner: number) {
+    SetPlayerUnitsOwner(this.handle, newOwner);
+  }
+
+  public static fromEnum() {
+    return MapPlayer.fromHandle(GetEnumPlayer());
+  }
+
+  public static fromEvent() {
+    return MapPlayer.fromHandle(GetTriggerPlayer());
+  }
+
+  public static fromFilter() {
+    return MapPlayer.fromHandle(GetFilterPlayer());
   }
 
   public static fromHandle(handle: player): MapPlayer {
@@ -225,18 +237,6 @@ export class MapPlayer extends Handle<player> {
 
   public static fromLocal() {
     return this.fromHandle(GetLocalPlayer());
-  }
-
-  public static fromFilter() {
-    return MapPlayer.fromHandle(GetFilterPlayer());
-  }
-
-  public static fromEnum() {
-    return MapPlayer.fromHandle(GetEnumPlayer());
-  }
-
-  public static fromTrigger() {
-    return MapPlayer.fromHandle(GetTriggerPlayer());
   }
 
 }
