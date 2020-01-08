@@ -6,11 +6,11 @@ export class Handle<T extends handle> {
     return this.handleVar;
   }
   private handleVar: T;
-  protected static initHandle: any | undefined;
   protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
+  protected static initHandle: handle | undefined;
 
-  protected constructor(initFunc: (...args: any) => any, initArgs: any[]) {
-    if (Handle.initHandle === undefined) {
+  protected constructor(initFunc?: (...args: any) => any, initArgs?: any[]) {
+    if (Handle.initHandle === undefined && initFunc !== undefined && initArgs !== undefined) {
       this.handleVar = initFunc(...initArgs);
     } else {
       this.handleVar = Handle.initHandle as T;
@@ -18,19 +18,15 @@ export class Handle<T extends handle> {
     Handle.initHandle = undefined;
   }
 
-  public static fromHandle(handle: handle) {
+  protected static get(handle: handle) {
     const obj = this.map.get(handle);
     if (obj !== undefined) {
       return obj;
     }
-    this.setDefaultHandle(handle);
-    const newObj = new Handle(() => undefined, []);
+    Handle.initHandle = handle;
+    const newObj = new this();
     this.map.set(handle, newObj);
     return newObj;
-  }
-
-  protected static setDefaultHandle(handle: handle) {
-    Handle.initHandle = handle;
   }
 
 }

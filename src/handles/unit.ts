@@ -253,6 +253,10 @@ export class Unit extends Handle<unit> {
   }
 
   constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
+    if (x === undefined) {
+      super();
+      return;
+    }
     super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
   }
 
@@ -927,6 +931,10 @@ export class Unit extends Handle<unit> {
     }
 
     return false;
+  }
+
+  public static fromHandle(handle: unit): Unit {
+    return this.get(handle);
   }
 
   public static getPointValueByType(unitType: number) {

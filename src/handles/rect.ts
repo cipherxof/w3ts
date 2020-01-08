@@ -66,6 +66,10 @@ export class Rectangle extends Handle<rect> {
     EnumItemsInRect(this.handle, filter, actionFunc);
   }
 
+  public static fromHandle(handle: rect): Rectangle {
+    return this.get(handle);
+  }
+
   public static fromPoint(min: Point, max: Point) {
     return this.fromHandle(RectFromLoc(min.handle, max.handle));
   }

@@ -51,4 +51,8 @@ export class Region extends Handle<region> {
     IsLocationInRegion(this.handle, whichPoint.handle);
   }
 
+  public static fromHandle(handle: region): Region {
+    return this.get(handle);
+  }
+
 }

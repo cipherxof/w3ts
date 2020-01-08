@@ -38,4 +38,8 @@ export class Point extends Handle<location> {
     return GetLocationZ(this.handle);
   }
 
+  public static fromHandle(handle: location): Point {
+    return this.get(handle);
+  }
+
 }

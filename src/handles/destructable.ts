@@ -91,6 +91,10 @@ export class Destructable extends Handle<destructable> {
     SetDestructableAnimationSpeed(this.handle, speedFactor);
   }
 
+  public static fromHandle(handle: destructable): Destructable {
+    return this.get(handle);
+  }
+
   public static fromTrigger() {
     return this.fromHandle(GetTriggerDestructable());
   }

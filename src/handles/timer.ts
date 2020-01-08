@@ -40,6 +40,10 @@ export class Timer extends Handle<timer> {
     return TimerGetTimeout(this.handle);
   }
 
+  public static fromHandle(handle: timer): Timer {
+    return this.get(handle);
+  }
+
   public static fromExpired(): Timer {
     return this.fromHandle(GetExpiredTimer());
   }

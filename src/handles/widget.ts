@@ -5,7 +5,7 @@ import { Handle } from "./handle";
 export class Widget extends Handle<widget> {
 
   private constructor() {
-    super(() => undefined, []);
+    super();
   }
 
   public get life() {
@@ -24,8 +24,12 @@ export class Widget extends Handle<widget> {
     return GetWidgetY(this.handle);
   }
 
+  public static fromHandle(handle: widget): Widget {
+    return this.get(handle);
+  }
+
   public static fromTrigger() {
-    return Widget.fromHandle(GetTriggerWidget());
+    return this.fromHandle(GetTriggerWidget());
   }
 
 }

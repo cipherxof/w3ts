@@ -49,4 +49,8 @@ export class Force extends Handle<force> {
     ForceRemovePlayer(this.handle, whichPlayer.handle);
   }
 
+  public static fromHandle(handle: force): Force {
+    return this.get(handle);
+  }
+
 }

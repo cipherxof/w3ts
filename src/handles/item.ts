@@ -137,4 +137,8 @@ export class Item extends Handle<item> {
     return IsItemIdPawnable(itemId);
   }
 
+  public static fromHandle(handle: item): Item {
+    return this.get(handle);
+  }
+
 }

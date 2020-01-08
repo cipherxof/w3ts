@@ -123,8 +123,12 @@ export class Trigger extends Handle<trigger> {
     return TriggerExecute(this.handle);
   }
 
+  public static fromHandle(handle: trigger): Trigger {
+    return this.get(handle);
+  }
+
   public static fromEvent() {
-    return Trigger.fromHandle(GetTriggeringTrigger());
+    return this.fromHandle(GetTriggeringTrigger());
   }
 
   public static getEventId() {

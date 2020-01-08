@@ -215,6 +215,10 @@ export class MapPlayer extends Handle<player> {
     RemoveAllGuardPositions(this.handle);
   }
 
+  public static fromHandle(handle: player): MapPlayer {
+    return this.get(handle);
+  }
+
   public static fromIndex(index: number) {
     return this.fromHandle(Player(index));
   }

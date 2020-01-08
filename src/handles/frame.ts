@@ -8,4 +8,8 @@ export class Frame extends Handle<framehandle> {
     super(BlzCreateFrame, [name, owner.handle, priority, createContext]);
   }
 
+  public static fromHandle(handle: framehandle): Frame {
+    return this.get(handle);
+  }
+
 }

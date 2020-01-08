@@ -129,6 +129,10 @@ export class Group extends Handle<group> {
     return GroupRemoveUnit(this.handle, whichUnit.handle);
   }
 
+  public static fromHandle(handle: group): Group {
+    return this.get(handle);
+  }
+
   public static getEnumUnit(): Unit {
     return Unit.fromHandle(GetEnumUnit());
   }
