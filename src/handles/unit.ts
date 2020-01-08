@@ -10,6 +10,14 @@ import { Widget } from "./widget";
 
 export class Unit extends Handle<unit> {
 
+  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
+    if (Handle.initHandle !== undefined) {
+      super();
+    } else {
+      super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
+    }
+  }
+
   get name() {
     return GetUnitName(this.handle);
   }
@@ -250,14 +258,6 @@ export class Unit extends Handle<unit> {
   public get selectionScale() {
     const result = this.getField(UNIT_RF_SELECTION_SCALE);
     return typeof result === "number" ? result : 0;
-  }
-
-  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
-    if (x === undefined) {
-      super();
-      return;
-    }
-    super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
   }
 
   public kill() {

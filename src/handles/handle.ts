@@ -2,9 +2,6 @@
 
 export class Handle<T extends handle> {
 
-  public get handle(): T {
-    return this.handleVar;
-  }
   private handleVar: T;
   protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
   protected static initHandle: handle | undefined;
@@ -16,6 +13,14 @@ export class Handle<T extends handle> {
       this.handleVar = Handle.initHandle as T;
     }
     Handle.initHandle = undefined;
+  }
+
+  public get handle(): T {
+    return this.handleVar;
+  }
+
+  public get id() {
+    return GetHandleId(this.handleVar);
   }
 
   protected static get(handle: handle) {
