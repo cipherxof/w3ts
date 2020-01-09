@@ -9,8 +9,7 @@ export class Effect extends Handle<effect> {
   constructor(m: string, s: number | widget, t: number | string) {
     if (typeof s == "number" && typeof t == "number") {
       super(AddSpecialEffect, [m, s, t]);
-    // TODO
-    // } else if (typeof s == "widget" && typeof t == "string") {
+    // TODO: Find a better solution, if possible.
     } else {
       super(AddSpecialEffectTarget, [m, s, t]);
     }
@@ -18,19 +17,6 @@ export class Effect extends Handle<effect> {
 
   public destroy() {
     DestroyEffect(this.handle);
-  }
-
-  // native BlzGetLocalSpecialEffectX                   takes effect whichEffect returns real
-  // native BlzGetLocalSpecialEffectY                   takes effect whichEffect returns real
-  // native BlzGetLocalSpecialEffectZ                   takes effect whichEffect returns real
-  // native BlzSetSpecialEffectX                        takes effect whichEffect, real x returns nothing
-  // native BlzSetSpecialEffectY                        takes effect whichEffect, real y returns nothing
-  // native BlzSetSpecialEffectZ                        takes effect whichEffect, real z returns nothing
-  // native BlzSetSpecialEffectPosition                 takes effect whichEffect, real x, real y, real z returns nothing
-  // native BlzSetSpecialEffectPositionLoc              takes effect whichEffect, location loc returns nothing
- 
-  public get x() {
-    return BlzGetLocalSpecialEffectX(this.handle);
   }
 
   public set x(x: number) {
@@ -61,11 +47,6 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectPositionLoc(this.handle, p.handle);
   }
 
-  // native BlzSetSpecialEffectOrientation              takes effect whichEffect, real yaw, real pitch, real roll returns nothing
-  // native BlzSetSpecialEffectYaw                      takes effect whichEffect, real yaw returns nothing
-  // native BlzSetSpecialEffectPitch                    takes effect whichEffect, real pitch returns nothing
-  // native BlzSetSpecialEffectRoll                     takes effect whichEffect, real roll returns nothing
-
   public setOrientation(yaw: number, pitch: number, roll: number) {
     BlzSetSpecialEffectOrientation(this.handle, yaw, pitch, roll);
   }
@@ -81,15 +62,6 @@ export class Effect extends Handle<effect> {
   public set roll(r: number) {
     BlzSetSpecialEffectRoll(this.handle, r);
   }
-
-  // native BlzSetSpecialEffectAlpha                    takes effect whichEffect, integer alpha returns nothing
-  // native BlzSetSpecialEffectScale                    takes effect whichEffect, real scale returns nothing
-  // native BlzSetSpecialEffectHeight                   takes effect whichEffect, real height returns nothing
-  // native BlzSetSpecialEffectTimeScale                takes effect whichEffect, real timeScale returns nothing
-  // native BlzSetSpecialEffectTime                     takes effect whichEffect, real time returns nothing
-  // native BlzGetSpecialEffectScale                    takes effect whichEffect returns real
-  // native BlzSetSpecialEffectMatrixScale              takes effect whichEffect, real x, real y, real z returns nothing
-  // native BlzResetSpecialEffectMatrix                 takes effect whichEffect returns nothing
 
   public set alpha(a: number) {
     BlzSetSpecialEffectAlpha(this.handle, a);
@@ -122,24 +94,33 @@ export class Effect extends Handle<effect> {
   public resetScaleMatrix() {
     BlzResetSpecialEffectMatrix(this.handle);
   }
-  
-  // TODO
 
-  // native BlzPlaySpecialEffect                        takes effect whichEffect, animtype whichAnim returns nothing
-  // native BlzPlaySpecialEffectWithTimeScale           takes effect whichEffect, animtype whichAnim, real timeScale returns nothing
+  public playAnimation(anim: animtype) {
+    BlzPlaySpecialEffect(this.handle, anim);
+  }
 
-  // native BlzSetSpecialEffectColorByPlayer            takes effect whichEffect, player whichPlayer returns nothing
-  // native BlzSetSpecialEffectColor                    takes effect whichEffect, integer r, integer g, integer b returns nothing
-  // native BlzSpecialEffectClearSubAnimations          takes effect whichEffect returns nothing
-  // native BlzSpecialEffectRemoveSubAnimation          takes effect whichEffect, subanimtype whichSubAnim returns nothing
-  // native BlzSpecialEffectAddSubAnimation             takes effect whichEffect, subanimtype whichSubAnim returns nothing
+  public playWithTimeScale(anim: animtype, timeScale: number) {
+    BlzPlaySpecialEffectWithTimeScale(this.handle, anim, timeScale);
+  }
 
   public setColorByPlayer(whichPlayer: MapPlayer | number) {
     BlzSetSpecialEffectColorByPlayer(this.handle, typeof whichPlayer === "number" ? Player(whichPlayer) : whichPlayer.handle);
   }
 
   public setColor(red: number, green: number, blue: number) {
-    BlzSetSpecialEffectColor(this.handle, red, green, blue)
+    BlzSetSpecialEffectColor(this.handle, red, green, blue);
+  }
+
+  public addSubAnimation(anim: subanimtype) {
+    BlzSpecialEffectAddSubAnimation(this.handle, anim);
+  }
+
+  public removeSubAnimation(anim: subanimtype) {
+    BlzSpecialEffectRemoveSubAnimation(this.handle, anim);
+  }
+
+  public clearSubAnimations() {
+    BlzSpecialEffectClearSubAnimations(this.handle);
   }
 
   public static fromHandle(handle: effect): Effect {
