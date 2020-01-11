@@ -42,16 +42,9 @@ export class MapPlayer extends Handle<player> {
     SetPlayerName(this.handle, value);
   }
 
-  public get onScoreScreen() {
-    return this.scoreScreen;
-  }
-
-  public set onScoreScreen(flag: boolean) {
-    this.scoreScreen = flag;
+  public setOnScoreScreen(flag: boolean) {
     SetPlayerOnScoreScreen(this.handle, flag);
   }
-
-  private scoreScreen = true;
 
   private constructor(index?: number) {
     super(Player, [index]);
