@@ -87,11 +87,11 @@ export class MapPlayer extends Handle<player> {
     CripplePlayer(this.handle, toWhichPlayers.handle, flag);
   }
 
-  public getController() {
+  public get controller() {
     return GetPlayerController(this.handle);
   }
 
-  public getRace() {
+  public get race() {
     return GetPlayerRace(this.handle);
   }
 
@@ -99,11 +99,11 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerScore(this.handle, whichPlayerScore);
   }
 
-  public getSlotState() {
+  public get slotState() {
     return GetPlayerSlotState(this.handle);
   }
 
-  public getStartLocation() {
+  public get startLocation() {
     return GetPlayerStartLocation(this.handle);
   }
 
@@ -119,7 +119,7 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerTaxRate(this.handle, otherPlayer, whichResource);
   }
 
-  public getTeam() {
+  public get team() {
     return GetPlayerTeam(this.handle);
   }
 

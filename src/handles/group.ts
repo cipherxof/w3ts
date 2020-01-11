@@ -73,11 +73,11 @@ export class Group extends Handle<group> {
     ForGroup(this.handle, callback);
   }
 
-  public getFirstUnit() {
+  public get first() {
     return FirstOfGroup(this.handle);
   }
 
-  public getSize(): number {
+  public get size(): number {
     return BlzGroupGetSize(this.handle);
   }
 

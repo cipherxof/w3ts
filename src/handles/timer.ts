@@ -28,15 +28,15 @@ export class Timer extends Handle<timer> {
     return this;
   }
 
-  public getElapsed(): number {
+  public get elapsed(): number {
     return TimerGetElapsed(this.handle);
   }
 
-  public getRemaining(): number {
+  public get remaining(): number {
     return TimerGetRemaining(this.handle);
   }
 
-  public getTimeout(): number {
+  public get timeout(): number {
     return TimerGetTimeout(this.handle);
   }
 

@@ -288,19 +288,19 @@ export class Unit extends Handle<unit> {
     SetUnitCreepGuard(this.handle, creepGuard);
   }
 
-  public getDefaultAcquireRange() {
+  public get defaultAcquireRange() {
     return GetUnitDefaultAcquireRange(this.handle);
   }
 
-  public getDefaultTurnSpeed() {
+  public get defaultTurnSpeed() {
     return GetUnitDefaultTurnSpeed(this.handle);
   }
 
-  public getDefaultPropWindow() {
+  public get defaultPropWindow() {
     return GetUnitDefaultPropWindow(this.handle);
   }
 
-  public getDefaultFlyHeight() {
+  public get defaultFlyHeight() {
     return GetUnitDefaultFlyHeight(this.handle);
   }
 
@@ -308,7 +308,11 @@ export class Unit extends Handle<unit> {
     SetUnitOwner(this.handle, whichPlayer.handle, changeColor);
   }
 
-  public getOwner() {
+  public set owner(whichPlayer: MapPlayer) {
+    SetUnitOwner(this.handle, whichPlayer.handle, true);
+  }
+
+  public get owner() {
     return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
   }
 
@@ -388,12 +392,28 @@ export class Unit extends Handle<unit> {
     return GetHeroInt(this.handle, includeBonuses);
   }
 
+  public get strength() {
+    return GetHeroStr(this.handle, false);
+  }
+
+  public get agility() {
+    return GetHeroAgi(this.handle, false);
+  }
+
+  public get intelligence() {
+    return GetHeroInt(this.handle, false);
+  }
+
   public stripLevels(howManyLevels: number) {
     return UnitStripHeroLevel(this.handle, howManyLevels);
   }
 
-  public getExperience() {
+  public get experience() {
     return GetHeroXP(this.handle);
+  }
+
+  public set experience(newXpVal: number) {
+    SetHeroXP(this.handle, newXpVal, true);
   }
 
   public setExperience(newXpVal: number, showEyeCandy: boolean) {
@@ -404,8 +424,12 @@ export class Unit extends Handle<unit> {
     AddHeroXP(this.handle, xpToAdd, showEyeCandy);
   }
 
-  public getSkillPoints() {
+  public get skillPoints() {
     return GetHeroSkillPoints(this.handle);
+  }
+
+  public set skillPoints(skillPointDelta: number) {
+    UnitModifySkillPoints(this.handle, skillPointDelta);
   }
 
   public modifySkillPoints(skillPointDelta: number) {
@@ -528,15 +552,15 @@ export class Unit extends Handle<unit> {
     SetUnitUseFood(this.handle, useFood);
   }
 
-  public getRallyPoint() {
+  public get rallyPoint() {
     return Point.fromHandle(GetUnitRallyPoint(this.handle));
   }
 
-  public getRallyUnit() {
+  public get rallyUnit() {
     return Unit.fromHandle(GetUnitRallyUnit(this.handle));
   }
 
-  public getRallyDestructable() {
+  public get rallyDestructable() {
     return Destructable.fromHandle(GetUnitRallyDestructable(this.handle));
   }
 
@@ -732,7 +756,7 @@ export class Unit extends Handle<unit> {
     return typeof unit === "string" ? IssueBuildOrder(this.handle, unit, x, y) : IssueBuildOrderById(this.handle, unit, x, y);
   }
 
-  public setResourceAmount(amount: number) {
+  public set resourceAmount(amount: number) {
     SetResourceAmount(this.handle, amount);
   }
 
@@ -740,7 +764,7 @@ export class Unit extends Handle<unit> {
     AddResourceAmount(this.handle, amount);
   }
 
-  public getResourceAmount() {
+  public get resourceAmount() {
     return GetResourceAmount(this.handle);
   }
 
