@@ -877,55 +877,47 @@ export class Unit extends Handle<unit> {
   }
 
   public getField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield) {
-    const fieldType = tostring(field).split(":")[0];
+    const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     switch (fieldType) {
       case "unitbooleanfield":
-        // @ts-ignore
-        const fieldBool: unitbooleanfield = field;
+        const fieldBool: unitbooleanfield = field as unitbooleanfield;
+
         return BlzGetUnitBooleanField(this.handle, fieldBool);
-
       case "unitintegerfield":
-        // @ts-ignore
-        const fieldInt: unitintegerfield = field;
+        const fieldInt: unitintegerfield = field as unitintegerfield;
+
         return BlzGetUnitIntegerField(this.handle, fieldInt);
-
       case "unitrealfield":
-        // @ts-ignore
-        const fieldReal: unitrealfield = field;
+        const fieldReal: unitrealfield = field as unitrealfield;
+
         return BlzGetUnitRealField(this.handle, fieldReal);
-
       case "unitstringfield":
-        // @ts-ignore
-        const fieldString: unitstringfield = field;
-        return BlzGetUnitStringField(this.handle, fieldString);
+        const fieldString: unitstringfield = field as unitstringfield;
 
+        return BlzGetUnitStringField(this.handle, fieldString);
       default:
         return 0;
     }
   }
 
   public setField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield, value: boolean | number | string) {
-    const fieldType = tostring(field).split(":")[0];
+    const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     if (fieldType === "unitbooleanfield" && typeof value === "boolean") {
-      // @ts-ignore
-      const fieldBool: unitbooleanfield = field;
+      const fieldBool: unitbooleanfield = field as unitbooleanfield;
 
       return BlzSetUnitBooleanField(this.handle, fieldBool, value);
     } else if (fieldType === "unitintegerfield" && typeof value === "number") {
-      // @ts-ignore
-      const fieldInt: unitintegerfield = field;
+      const fieldInt: unitintegerfield = field as unitintegerfield;
 
       return BlzSetUnitIntegerField(this.handle, fieldInt, value);
     } else if (fieldType === "unitrealfield" && typeof value === "number") {
-      // @ts-ignore
-      const fieldReal: unitrealfield = field;
+      const fieldReal: unitrealfield = field as unitrealfield;
 
       return BlzSetUnitRealField(this.handle, fieldReal, value);
     } else if (fieldType === "unitstringfield" && typeof value === "string") {
-      // @ts-ignore
-      const fieldStr: unitstringfield = field;
+      const fieldStr: unitstringfield = field as unitstringfield;
 
       return BlzSetUnitStringField(this.handle, fieldStr, value);
     }
