@@ -19,6 +19,10 @@ export class Effect extends Handle<effect> {
     DestroyEffect(this.handle);
   }
 
+  public get x() {
+    return BlzGetLocalSpecialEffectX(this.handle);
+  }
+
   public set x(x: number) {
     BlzSetSpecialEffectX(this.handle, x);
   }
