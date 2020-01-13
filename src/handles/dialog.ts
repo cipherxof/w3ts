@@ -32,6 +32,10 @@ export class Dialog extends Handle<dialog> {
     DialogSetMessage(this.handle, whichMessage);
   }
 
+  public addButton(text: string, hotkey: number, quit: boolean = false, score: boolean = false) {
+    return new DialogButton(this, text, hotkey, quit, score);
+  }
+
   public clear() {
     DialogClear(this.handle);
   }
