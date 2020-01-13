@@ -2,9 +2,9 @@
 
 export class Handle<T extends handle> {
 
-  readonly handle: T;
-  protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
+  public readonly handle: T;
   private static initHandle: handle | undefined;
+  protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
 
   protected constructor(handle?: T) {
     this.handle = handle === undefined ? Handle.initHandle as T : handle;

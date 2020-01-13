@@ -8,8 +8,20 @@ export class Timer extends Handle<timer> {
     super(Handle.initFromHandle() ? undefined : CreateTimer());
   }
 
-  public start(timeout: number, periodic: boolean, handlerFunc: () => void) {
-    TimerStart(this.handle, timeout, periodic, handlerFunc);
+  public get elapsed(): number {
+    return TimerGetElapsed(this.handle);
+  }
+
+  public get remaining(): number {
+    return TimerGetRemaining(this.handle);
+  }
+
+  public get timeout(): number {
+    return TimerGetTimeout(this.handle);
+  }
+
+  public destroy() {
+    DestroyTimer(this.handle);
     return this;
   }
 
@@ -23,28 +35,16 @@ export class Timer extends Handle<timer> {
     return this;
   }
 
-  public destroy() {
-    DestroyTimer(this.handle);
+  public start(timeout: number, periodic: boolean, handlerFunc: () => void) {
+    TimerStart(this.handle, timeout, periodic, handlerFunc);
     return this;
-  }
-
-  public get elapsed(): number {
-    return TimerGetElapsed(this.handle);
-  }
-
-  public get remaining(): number {
-    return TimerGetRemaining(this.handle);
-  }
-
-  public get timeout(): number {
-    return TimerGetTimeout(this.handle);
-  }
-
-  public static fromHandle(handle: timer): Timer {
-    return this.getObject(handle);
   }
 
   public static fromExpired(): Timer {
     return this.fromHandle(GetExpiredTimer());
+  }
+
+  public static fromHandle(handle: timer): Timer {
+    return this.getObject(handle);
   }
 }

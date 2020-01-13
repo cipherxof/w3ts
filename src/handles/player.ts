@@ -18,6 +18,10 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerColor(this.handle);
   }
 
+  public get controller() {
+    return GetPlayerController(this.handle);
+  }
+
   public get handicap() {
     return GetPlayerHandicap(this.handle);
   }
@@ -46,8 +50,20 @@ export class MapPlayer extends Handle<player> {
     SetPlayerName(this.handle, value);
   }
 
-  public setOnScoreScreen(flag: boolean) {
-    SetPlayerOnScoreScreen(this.handle, flag);
+  public get race() {
+    return GetPlayerRace(this.handle);
+  }
+
+  public get slotState() {
+    return GetPlayerSlotState(this.handle);
+  }
+
+  public get startLocation() {
+    return GetPlayerStartLocation(this.handle);
+  }
+
+  public get team() {
+    return GetPlayerTeam(this.handle);
   }
 
   public addTechResearched(techId: number, levels: number) {
@@ -80,24 +96,8 @@ export class MapPlayer extends Handle<player> {
     CripplePlayer(this.handle, toWhichPlayers.handle, flag);
   }
 
-  public get controller() {
-    return GetPlayerController(this.handle);
-  }
-
-  public get race() {
-    return GetPlayerRace(this.handle);
-  }
-
   public getScore(whichPlayerScore: playerscore) {
     return GetPlayerScore(this.handle, whichPlayerScore);
-  }
-
-  public get slotState() {
-    return GetPlayerSlotState(this.handle);
-  }
-
-  public get startLocation() {
-    return GetPlayerStartLocation(this.handle);
   }
 
   public getState(whichPlayerState: playerstate) {
@@ -110,10 +110,6 @@ export class MapPlayer extends Handle<player> {
 
   public getTaxRate(otherPlayer: player, whichResource: playerstate) {
     return GetPlayerTaxRate(this.handle, otherPlayer, whichResource);
-  }
-
-  public get team() {
-    return GetPlayerTeam(this.handle);
   }
 
   public getTechCount(techId: number, specificonly: boolean) {
@@ -186,6 +182,10 @@ export class MapPlayer extends Handle<player> {
 
   public setAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype, value: boolean) {
     SetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting, value);
+  }
+
+  public setOnScoreScreen(flag: boolean) {
+    SetPlayerOnScoreScreen(this.handle, flag);
   }
 
   public setState(whichPlayerState: playerstate, value: number) {

@@ -10,7 +10,7 @@ import { Widget } from "./widget";
 
 export class Unit extends Widget {
 
-  readonly handle!: unit;
+  public readonly handle!: unit;
 
   constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
     super(Handle.initFromHandle() ? undefined : CreateUnit(typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face));

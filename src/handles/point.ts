@@ -8,14 +8,6 @@ export class Point extends Handle<location> {
     super(Handle.initFromHandle() ? undefined : Location(x, y));
   }
 
-  public setPosition(x: number, y: number) {
-    MoveLocation(this.handle, x, y);
-  }
-
-  public destroy() {
-    RemoveLocation(this.handle);
-  }
-
   public get x(): number {
     return GetLocationX(this.handle);
   }
@@ -36,6 +28,14 @@ export class Point extends Handle<location> {
   // If you attempt to use it in a synchronous manner, it may cause a desync.
   public get z(): number {
     return GetLocationZ(this.handle);
+  }
+
+  public destroy() {
+    RemoveLocation(this.handle);
+  }
+
+  public setPosition(x: number, y: number) {
+    MoveLocation(this.handle, x, y);
   }
 
   public static fromHandle(handle: location): Point {

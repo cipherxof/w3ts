@@ -11,24 +11,16 @@ export class Region extends Handle<region> {
     super(Handle.initFromHandle() ? undefined : CreateRegion());
   }
 
-  public destroy() {
-    RemoveRegion(this.handle);
-  }
-
-  public addRect(r: Rectangle) {
-    RegionAddRect(this.handle, r.handle);
-  }
-
-  public clearRect(r: Rectangle) {
-    RegionClearRect(this.handle, r.handle);
-  }
-
   public addCell(x: number, y: number) {
     RegionAddCell(this.handle, x, y);
   }
 
   public addCellPoint(whichPoint: Point) {
     RegionAddCellAtLoc(this.handle, whichPoint.handle);
+  }
+
+  public addRect(r: Rectangle) {
+    RegionAddRect(this.handle, r.handle);
   }
 
   public clearCell(x: number, y: number) {
@@ -39,8 +31,8 @@ export class Region extends Handle<region> {
     RegionClearCellAtLoc(this.handle, whichPoint.handle);
   }
 
-  public containsUnit(whichUnit: Unit) {
-    return IsUnitInRegion(this.handle, whichUnit.handle);
+  public clearRect(r: Rectangle) {
+    RegionClearRect(this.handle, r.handle);
   }
 
   public containsCoords(x: number, y: number) {
@@ -49,6 +41,14 @@ export class Region extends Handle<region> {
 
   public containsPoint(whichPoint: Point) {
     IsLocationInRegion(this.handle, whichPoint.handle);
+  }
+
+  public containsUnit(whichUnit: Unit) {
+    return IsUnitInRegion(this.handle, whichUnit.handle);
+  }
+
+  public destroy() {
+    RemoveRegion(this.handle);
   }
 
   public static fromHandle(handle: region): Region {

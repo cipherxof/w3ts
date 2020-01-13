@@ -5,7 +5,7 @@ import { Widget } from "./widget";
 
 export class Destructable extends Widget {
 
-  readonly handle!: destructable;
+  public readonly handle!: destructable;
   private isVisible: boolean = false;
 
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
