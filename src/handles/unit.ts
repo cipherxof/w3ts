@@ -133,14 +133,6 @@ export class Unit extends Widget {
     return GetUnitLevel(this.handle);
   }
 
-  public get life() {
-    return this.getState(UNIT_STATE_LIFE);
-  }
-
-  public set life(value: number) {
-    this.setState(UNIT_STATE_LIFE, value);
-  }
-
   public get localZ() {
     return BlzGetLocalUnitZ(this.handle);
   }
