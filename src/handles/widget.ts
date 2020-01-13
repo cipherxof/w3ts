@@ -16,11 +16,11 @@ export class Widget extends Handle<widget> {
     super();
   }
 
-  public getX() {
+  public get x() {
     return GetWidgetX(this.handle);
   }
 
-  public getY() {
+  public get y() {
     return GetWidgetY(this.handle);
   }
 

@@ -93,7 +93,7 @@ export class Item extends Handle<item> {
     RemoveItem(this.handle);
   }
 
-  public getPlayer() {
+  public get player() {
     return GetItemPlayer(this.handle);
   }
 
