@@ -1,5 +1,6 @@
 /** @noSelfInFile **/
 
+import { Dialog, DialogButton } from "./dialog";
 import { Frame } from "./frame";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
@@ -50,11 +51,11 @@ export class Trigger extends Handle<trigger> {
     return TriggerExecute(this.handle);
   }
 
-  public getEvalCount() {
+  public get evalCount() {
     return GetTriggerEvalCount(this.handle);
   }
 
-  public getExecCount() {
+  public get execCount() {
     return GetTriggerExecCount(this.handle);
   }
 
@@ -62,12 +63,12 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterAnyUnitEventBJ(this.handle, whichPlayerUnitEvent);
   }
 
-  public registerDialogButtonEvent(whichButton: button) {
-    return TriggerRegisterDialogButtonEvent(this.handle, whichButton);
+  public registerDialogButtonEvent(whichButton: DialogButton) {
+    return TriggerRegisterDialogButtonEvent(this.handle, whichButton.handle);
   }
 
-  public registerDialogEvent(whichDialog: dialog) {
-    return TriggerRegisterDialogEvent(this.handle, whichDialog);
+  public registerDialogEvent(whichDialog: Dialog) {
+    return TriggerRegisterDialogEvent(this.handle, whichDialog.handle);
   }
 
   public registerGameStateEvent(whichState: gamestate, opcode: limitop, limitval: number) {
@@ -136,7 +137,7 @@ export class Trigger extends Handle<trigger> {
     return this.get(handle);
   }
 
-  public static getEventId() {
+  public static get eventId() {
     return GetTriggerEventId();
   }
 
