@@ -8,7 +8,7 @@ import { Unit } from "./unit";
 export class Region extends Handle<region> {
 
   constructor() {
-    super(CreateRegion, []);
+    super(Handle.initFromHandle() ? undefined : CreateRegion());
   }
 
   public destroy() {
@@ -52,7 +52,7 @@ export class Region extends Handle<region> {
   }
 
   public static fromHandle(handle: region): Region {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
 }

@@ -7,23 +7,25 @@ export class DialogButton extends Handle<button> {
   dialog: Dialog;
 
   constructor(whichDialog: Dialog, text: string, hotkey: number, quit: boolean = false, score: boolean = false) {
-    if (! quit) {
-      super(DialogAddButton, [whichDialog.handle, text, hotkey]);
+    if (Handle.initFromHandle()) {
+      super();
+    } else if (!quit) {
+      super(DialogAddButton(whichDialog.handle, text, hotkey));
     } else {
-      super(DialogAddQuitButton, [whichDialog.handle, score, text, hotkey]);
+      super(DialogAddQuitButton(whichDialog.handle, score, text, hotkey));
     }
     this.dialog = whichDialog;
   }
-  
+
   public static fromHandle(handle: button): DialogButton {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 }
 
 export class Dialog extends Handle<dialog> {
 
   constructor() {
-    super(DialogCreate, []);
+    super(Handle.initFromHandle() ? undefined : DialogCreate());
   }
 
   public destroy() {
@@ -33,7 +35,7 @@ export class Dialog extends Handle<dialog> {
   public clear() {
     DialogClear(this.handle);
   }
-  
+
   public display(whichPlayer: MapPlayer, flag: boolean) {
     DialogDisplay(whichPlayer.handle, this.handle, flag);
   }
@@ -43,6 +45,6 @@ export class Dialog extends Handle<dialog> {
   }
 
   public static fromHandle(handle: dialog): Dialog {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 }

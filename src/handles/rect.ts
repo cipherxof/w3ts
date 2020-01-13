@@ -6,7 +6,7 @@ import { Point } from "./point";
 export class Rectangle extends Handle<rect> {
 
   constructor(minX: number, minY: number, maxX: number, maxY: number) {
-    super(Rect, [minX, minY, maxX, maxY]);
+    super(Handle.initFromHandle() ? undefined : Rect(minX, minY, maxX, maxY));
   }
 
   public destroy() {
@@ -67,7 +67,7 @@ export class Rectangle extends Handle<rect> {
   }
 
   public static fromHandle(handle: rect): Rectangle {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static fromPoint(min: Point, max: Point) {

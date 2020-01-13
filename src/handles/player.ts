@@ -6,6 +6,10 @@ import { Point } from "./point";
 
 export class MapPlayer extends Handle<player> {
 
+  private constructor(index: number) {
+    super(Handle.initFromHandle() ? undefined : Player(index));
+  }
+
   public set color(color: playercolor) {
     SetPlayerColor(this.handle, color);
   }
@@ -44,10 +48,6 @@ export class MapPlayer extends Handle<player> {
 
   public setOnScoreScreen(flag: boolean) {
     SetPlayerOnScoreScreen(this.handle, flag);
-  }
-
-  private constructor(index?: number) {
-    super(Player, [index]);
   }
 
   public addTechResearched(techId: number, levels: number) {
@@ -221,7 +221,7 @@ export class MapPlayer extends Handle<player> {
   }
 
   public static fromHandle(handle: player): MapPlayer {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static fromIndex(index: number) {

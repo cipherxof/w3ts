@@ -12,10 +12,6 @@ export class Widget extends Handle<widget> {
     SetWidgetLife(this.handle, value);
   }
 
-  private constructor() {
-    super();
-  }
-
   public get x() {
     return GetWidgetX(this.handle);
   }
@@ -29,7 +25,7 @@ export class Widget extends Handle<widget> {
   }
 
   public static fromHandle(handle: widget): Widget {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
 }

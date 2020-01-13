@@ -5,7 +5,7 @@ import { Handle } from "./handle";
 export class Timer extends Handle<timer> {
 
   constructor() {
-    super(CreateTimer, []);
+    super(Handle.initFromHandle() ? undefined : CreateTimer());
   }
 
   public start(timeout: number, periodic: boolean, handlerFunc: () => void) {
@@ -41,7 +41,7 @@ export class Timer extends Handle<timer> {
   }
 
   public static fromHandle(handle: timer): Timer {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static fromExpired(): Timer {

@@ -1,8 +1,16 @@
+import { Handle } from "./handle";
+import { Widget } from "./widget";
+
 /** @noSelfInFile **/
 
-import { Handle } from "./handle";
+export class Destructable extends Widget {
 
-export class Destructable extends Handle<destructable> {
+  readonly handle!: destructable;
+  private isVisible: boolean = false;
+
+  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
+    super(Handle.initFromHandle() ? undefined : CreateDestructableZ(objectId, x, y, z, face, scale, varation));
+  }
 
   public set invulnerable(flag: boolean) {
     SetDestructableInvulnerable(this.handle, flag);
@@ -61,12 +69,6 @@ export class Destructable extends Handle<destructable> {
     return GetDestructableY(this.handle);
   }
 
-  private isVisible = false;
-
-  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
-    super(CreateDestructableZ, [objectId, x, y, z, face, scale, varation]);
-  }
-
   public destroy() {
     RemoveDestructable(this.handle);
   }
@@ -96,7 +98,7 @@ export class Destructable extends Handle<destructable> {
   }
 
   public static fromHandle(handle: destructable): Destructable {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
 }

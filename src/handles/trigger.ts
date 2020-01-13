@@ -7,6 +7,10 @@ import { MapPlayer } from "./player";
 
 export class Trigger extends Handle<trigger> {
 
+  constructor() {
+    super(Handle.initFromHandle() ? undefined : CreateTrigger());
+  }
+
   public set enabled(flag: boolean) {
     if (flag) {
       EnableTrigger(this.handle);
@@ -25,10 +29,6 @@ export class Trigger extends Handle<trigger> {
 
   public get waitOnSleeps() {
     return IsTriggerWaitOnSleeps(this.handle);
-  }
-
-  constructor() {
-    super(CreateTrigger, []);
   }
 
   public addAction(actionFunc: () => void) {
@@ -134,7 +134,7 @@ export class Trigger extends Handle<trigger> {
   }
 
   public static fromHandle(handle: trigger): Trigger {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static get eventId() {

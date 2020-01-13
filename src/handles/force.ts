@@ -6,7 +6,7 @@ import { MapPlayer } from "./player";
 export class Force extends Handle<force> {
 
   constructor() {
-    super(CreateForce, []);
+    super(Handle.initFromHandle() ? undefined : CreateForce());
   }
 
   public addPlayer(whichPlayer: MapPlayer) {
@@ -50,7 +50,7 @@ export class Force extends Handle<force> {
   }
 
   public static fromHandle(handle: force): Force {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
 }

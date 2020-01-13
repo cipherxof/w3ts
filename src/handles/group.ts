@@ -10,7 +10,7 @@ import { Widget } from "./widget";
 export class Group extends Handle<group> {
 
   constructor() {
-    super(CreateGroup, []);
+    super(Handle.initFromHandle() ? undefined : CreateGroup());
   }
 
   public addGroupFast(addGroup: Group): number {
@@ -130,7 +130,7 @@ export class Group extends Handle<group> {
   }
 
   public static fromHandle(handle: group): Group {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static getEnumUnit(): Unit {

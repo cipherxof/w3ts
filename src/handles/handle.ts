@@ -2,34 +2,30 @@
 
 export class Handle<T extends handle> {
 
-  private handleVar: T;
+  readonly handle: T;
   protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
-  protected static initHandle: handle | undefined;
+  private static initHandle: handle | undefined;
 
-  protected constructor(initFunc?: (...args: any) => any, initArgs?: any[]) {
-    if (Handle.initHandle === undefined && initFunc !== undefined && initArgs !== undefined) {
-      this.handleVar = initFunc(...initArgs);
-    } else {
-      this.handleVar = Handle.initHandle as T;
-    }
-    Handle.initHandle = undefined;
-  }
-
-  public get handle(): T {
-    return this.handleVar;
+  protected constructor(handle?: T) {
+    this.handle = handle === undefined ? Handle.initHandle as T : handle;
   }
 
   public get id() {
-    return GetHandleId(this.handleVar);
+    return GetHandleId(this.handle);
   }
 
-  protected static get(handle: handle) {
+  public static initFromHandle(): boolean {
+    return Handle.initHandle !== undefined;
+  }
+
+  protected static getObject(handle: handle) {
     const obj = this.map.get(handle);
     if (obj !== undefined) {
       return obj;
     }
     Handle.initHandle = handle;
     const newObj = new this();
+    Handle.initHandle = undefined;
     this.map.set(handle, newObj);
     return newObj;
   }

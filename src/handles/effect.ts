@@ -6,13 +6,13 @@ import { Point } from "./point";
 
 export class Effect extends Handle<effect> {
 
-  constructor(m: string, x: number, y: number);
-  constructor(m: string, w: widget, ap: string);
-  constructor(m: string, a: number | widget, b: number | string) {
-    if (typeof a == "number") {
-      super(AddSpecialEffect, [m, a, b]);
-    } else {
-      super(AddSpecialEffectTarget, [m, a, b]);
+  constructor(modelName: string, x: number, y: number);
+  constructor(modelName: string, targetWidget: widget, attachPointName: string);
+  constructor(modelName: string, a: number | widget, b: number | string) {
+    if (typeof a === "number" && typeof b === "number") {
+      super(AddSpecialEffect(modelName, a, b));
+    } else if (typeof a !== "number" && typeof b === "string") {
+      super(AddSpecialEffectTarget(modelName, a, b));
     }
   }
 
@@ -129,6 +129,6 @@ export class Effect extends Handle<effect> {
   }
 
   public static fromHandle(handle: effect): Effect {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 }

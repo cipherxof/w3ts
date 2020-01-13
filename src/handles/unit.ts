@@ -8,14 +8,12 @@ import { MapPlayer } from "./player";
 import { Point } from "./point";
 import { Widget } from "./widget";
 
-export class Unit extends Handle<unit> {
+export class Unit extends Widget {
+
+  readonly handle!: unit;
 
   constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
-    if (Handle.initHandle !== undefined) {
-      super();
-    } else {
-      super(CreateUnit, [typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face]);
-    }
+    super(Handle.initFromHandle() ? undefined : CreateUnit(typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face));
   }
 
   public set acquireRange(value: number) {
@@ -970,7 +968,7 @@ export class Unit extends Handle<unit> {
   }
 
   public static fromHandle(handle: unit): Unit {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static getPointValueByType(unitType: number) {

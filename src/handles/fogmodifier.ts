@@ -3,8 +3,9 @@ import { MapPlayer } from "./player";
 import { Rectangle } from "./rect";
 
 export class FogModifier extends Handle<fogmodifier> {
-  constructor(forWhichPlayer: MapPlayer, whichState: fogstate, centerX: number, centerY: number, useSharedVision: boolean, afterUnits: boolean) {
-    super(CreateFogModifierRadius, [forWhichPlayer, whichState, centerX, centerY, useSharedVision, afterUnits]);
+
+  constructor(forWhichPlayer: MapPlayer, whichState: fogstate, centerX: number, centerY: number, radius: number, useSharedVision: boolean, afterUnits: boolean) {
+    super(Handle.initFromHandle() ? undefined : CreateFogModifierRadius(forWhichPlayer.handle, whichState, centerX, centerY, radius, useSharedVision, afterUnits));
   }
 
   public destroy() {
@@ -20,10 +21,10 @@ export class FogModifier extends Handle<fogmodifier> {
   }
 
   public static fromHandle(handle: fogmodifier): FogModifier {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
-  public static fromRect(forWhichPlayer: MapPlayer, whichState: fogstate, where: Rectangle, useSharedVision: boolean, afterUnits: boolean): FogModifier {
+  static fromRect(forWhichPlayer: MapPlayer, whichState: fogstate, where: Rectangle, useSharedVision: boolean, afterUnits: boolean): FogModifier {
     return this.fromHandle(CreateFogModifierRect(forWhichPlayer.handle, whichState, where.handle, useSharedVision, afterUnits));
   }
 

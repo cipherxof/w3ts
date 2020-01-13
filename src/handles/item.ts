@@ -2,11 +2,14 @@
 
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
+import { Widget } from "./widget";
 
-export class Item extends Handle<item> {
+export class Item extends Widget {
+
+  readonly handle!: item;
 
   constructor(itemid: number, x: number, y: number) {
-    super(CreateItem, [itemid, x, y]);
+    super(Handle.initFromHandle() ? undefined : CreateItem(itemid, x, y));
   }
 
   get name() {
@@ -138,7 +141,7 @@ export class Item extends Handle<item> {
   }
 
   public static fromHandle(handle: item): Item {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
 }

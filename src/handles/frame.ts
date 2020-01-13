@@ -4,6 +4,10 @@ import { Handle } from "./handle";
 
 export class Frame extends Handle<framehandle> {
 
+  constructor(name: string, owner: Frame, priority: number, createContext: number) {
+    super(Handle.initFromHandle() ? undefined : BlzCreateFrame(name, owner.handle, priority, createContext));
+  }
+
   public set alpha(alpha: number) {
     BlzFrameSetAlpha(this.handle, alpha);
   }
@@ -74,14 +78,6 @@ export class Frame extends Handle<framehandle> {
 
   public get width() {
     return BlzFrameGetWidth(this.handle);
-  }
-
-  constructor(name: string, owner: Frame, priority: number, createContext: number) {
-    if (Handle.initHandle !== undefined) {
-      super();
-    } else {
-      super(BlzCreateFrame, [name, owner.handle, priority, createContext]);
-    }
   }
 
   public addText(text: string) {
@@ -176,7 +172,7 @@ export class Frame extends Handle<framehandle> {
   }
 
   public static fromHandle(handle: framehandle): Frame {
-    return this.get(handle);
+    return this.getObject(handle);
   }
 
   public static fromName(name: string, createContext: number) {
