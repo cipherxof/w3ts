@@ -4,6 +4,7 @@ import { Destructable } from "./destructable";
 import { Force } from "./force";
 import { Group } from "./group";
 import { Handle } from "./handle";
+import { Item } from "./item";
 import { MapPlayer } from "./player";
 import { Point } from "./point";
 import { Widget } from "./widget";
@@ -358,8 +359,8 @@ export class Unit extends Widget {
     UnitAddIndicator(this.handle, red, blue, green, alpha);
   }
 
-  public addItem(whichItem: item) {
-    return UnitAddItem(this.handle, whichItem);
+  public addItem(whichItem: Item) {
+    return UnitAddItem(this.handle, whichItem.handle);
   }
 
   public addItemById(itemId: number) {
@@ -426,16 +427,16 @@ export class Unit extends Widget {
     BlzUnitHideAbility(this.handle, abilId, flag);
   }
 
-  public dropItem(whichItem: item, x: number, y: number) {
-    return UnitDropItemPoint(this.handle, whichItem, x, y);
+  public dropItem(whichItem: Item, x: number, y: number) {
+    return UnitDropItemPoint(this.handle, whichItem.handle, x, y);
   }
 
-  public dropItemFromSlot(whichItem: item, slot: number) {
-    return UnitDropItemSlot(this.handle, whichItem, slot);
+  public dropItemFromSlot(whichItem: Item, slot: number) {
+    return UnitDropItemSlot(this.handle, whichItem.handle, slot);
   }
 
-  public dropItemTarget(whichItem: item, target: Widget/* | Unit | Item | Destructable*/) {
-    return UnitDropItemTarget(this.handle, whichItem, target.handle);
+  public dropItemTarget(whichItem: Item, target: Widget/* | Unit | Item | Destructable*/) {
+    return UnitDropItemTarget(this.handle, whichItem.handle, target.handle);
   }
 
   public endAbilityCooldown(abilCode: number) {
@@ -543,8 +544,8 @@ export class Unit extends Widget {
     return UnitHasBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
   }
 
-  public hasItem(whichItem: item) {
-    return UnitHasItem(this.handle, whichItem);
+  public hasItem(whichItem: Item) {
+    return UnitHasItem(this.handle, whichItem.handle);
   }
 
   public hideAbility(abilId: number, flag: boolean) {
@@ -711,8 +712,8 @@ export class Unit extends Widget {
     RemoveGuardPosition(this.handle);
   }
 
-  public removeItem(whichItem: item) {
-    UnitRemoveItem(this.handle, whichItem);
+  public removeItem(whichItem: Item) {
+    UnitRemoveItem(this.handle, whichItem.handle);
   }
 
   public removeItemFromSlot(itemSlot: number) {
@@ -931,16 +932,16 @@ export class Unit extends Widget {
     SuspendHeroXP(this.handle, flag);
   }
 
-  public useItem(whichItem: item) {
-    return UnitUseItem(this.handle, whichItem);
+  public useItem(whichItem: Item) {
+    return UnitUseItem(this.handle, whichItem.handle);
   }
 
-  public useItemAt(whichItem: item, x: number, y: number) {
-    return UnitUseItemPoint(this.handle, whichItem, x, y);
+  public useItemAt(whichItem: Item, x: number, y: number) {
+    return UnitUseItemPoint(this.handle, whichItem.handle, x, y);
   }
 
-  public useItemTarget(whichItem: item, target: Widget) {
-    return UnitUseItemTarget(this.handle, whichItem, target.handle);
+  public useItemTarget(whichItem: Item, target: Widget) {
+    return UnitUseItemTarget(this.handle, whichItem.handle, target.handle);
   }
 
   public wakeUp() {
