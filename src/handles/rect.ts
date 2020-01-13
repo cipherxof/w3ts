@@ -29,27 +29,27 @@ export class Rectangle extends Handle<rect> {
     MoveRectToLoc(this.handle, newCenterPoint.handle);
   }
 
-  public getCenterX() {
+  public get centerX() {
     return GetRectCenterX(this.handle);
   }
 
-  public getCenterY() {
+  public get centerY() {
     return GetRectCenterY(this.handle);
   }
 
-  public getMinX() {
+  public get minX() {
     return GetRectMinX(this.handle);
   }
 
-  public getMinY() {
+  public get minY() {
     return GetRectMinY(this.handle);
   }
 
-  public getMaxX() {
+  public get maxX() {
     return GetRectMaxX(this.handle);
   }
 
-  public getMaxY() {
+  public get maxY() {
     return GetRectMaxY(this.handle);
   }
 
