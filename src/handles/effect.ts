@@ -3,16 +3,19 @@
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 import { Point } from "./point";
+import { Widget } from "./widget";
 
 export class Effect extends Handle<effect> {
 
   constructor(modelName: string, x: number, y: number);
-  constructor(modelName: string, targetWidget: widget, attachPointName: string);
-  constructor(modelName: string, a: number | widget, b: number | string) {
-    if (typeof a === "number" && typeof b === "number") {
+  constructor(modelName: string, targetWidget: Widget, attachPointName: string);
+  constructor(modelName: string, a: number | Widget, b: number | string) {
+    if (Handle.initFromHandle()) {
+      super();
+    } else if (typeof a === "number" && typeof b === "number") {
       super(AddSpecialEffect(modelName, a, b));
     } else if (typeof a !== "number" && typeof b === "string") {
-      super(AddSpecialEffectTarget(modelName, a, b));
+      super(AddSpecialEffectTarget(modelName, a.handle, b));
     }
   }
 
