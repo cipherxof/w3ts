@@ -1,6 +1,7 @@
 /** @noSelfInFile **/
 
 import { Handle } from "./handle";
+import { MapPlayer } from "./player";
 
 export class DialogButton extends Handle<button> {
   dialog: Dialog;
@@ -33,8 +34,8 @@ export class Dialog extends Handle<dialog> {
     DialogClear(this.handle);
   }
   
-  public display(whichPlayer: player, flag: boolean) {
-    DialogDisplay(whichPlayer, this.handle, flag);
+  public display(whichPlayer: MapPlayer, flag: boolean) {
+    DialogDisplay(whichPlayer.handle, this.handle, flag);
   }
 
   public set message(whichMessage: string) {
