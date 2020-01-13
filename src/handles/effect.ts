@@ -6,12 +6,13 @@ import { Point } from "./point";
 
 export class Effect extends Handle<effect> {
 
-  constructor(m: string, s: number | widget, t: number | string) {
-    if (typeof s == "number" && typeof t == "number") {
-      super(AddSpecialEffect, [m, s, t]);
-    // TODO: Find a better solution, if possible.
+  constructor(m: string, x: number, y: number);
+  constructor(m: string, w: widget, ap: string);
+  constructor(m: string, a: number | widget, b: number | string) {
+    if (typeof a == "number") {
+      super(AddSpecialEffect, [m, a, b]);
     } else {
-      super(AddSpecialEffectTarget, [m, s, t]);
+      super(AddSpecialEffectTarget, [m, a, b]);
     }
   }
 
