@@ -46,7 +46,7 @@ export class Rectangle extends Handle<rect> {
   }
 
   // Returns full map bounds, including unplayable borders, in world coordinates
-  public getWorldBounds() {
+  public static getWorldBounds() {
     return Rectangle.fromHandle(GetWorldBounds());
   }
 

@@ -776,6 +776,10 @@ export class Unit extends Widget {
     SetUnitAnimationWithRarity(this.handle, whichAnimation, rarity);
   }
 
+  public setAttackCooldown(cooldown: number, weaponIndex: number) {
+    BlzSetUnitAttackCooldown(this.handle, cooldown, weaponIndex);
+  }
+
   public setBaseDamage(baseDamage: number, weaponIndex: number) {
     BlzSetUnitBaseDamage(this.handle, baseDamage, weaponIndex);
   }
