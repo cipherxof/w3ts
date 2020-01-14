@@ -4,6 +4,7 @@ import { Dialog, DialogButton } from "./dialog";
 import { Frame } from "./frame";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
+import { Unit } from "./unit";
 
 export class Trigger extends Handle<trigger> {
 
@@ -99,6 +100,10 @@ export class Trigger extends Handle<trigger> {
   // Triggers when the timer you tell it about expires
   public registerTimerExpireEvent(t: timer) {
     return TriggerRegisterTimerExpireEvent(this.handle, t);
+  }
+
+  public registerUnitEvent(whichUnit: Unit, whichEvent: unitevent) {
+    return TriggerRegisterUnitEvent(this.handle, whichUnit.handle, whichEvent);
   }
 
   public registerVariableEvent(varName: string, opcode: limitop, limitval: number) {
