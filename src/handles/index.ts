@@ -10,6 +10,7 @@ export * from "./handle";
 export * from "./item";
 export * from "./player";
 export * from "./point";
+export * from "./quest";
 export * from "./rect";
 export * from "./region";
 export * from "./timer";
