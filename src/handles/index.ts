@@ -14,6 +14,7 @@ export * from "./quest";
 export * from "./rect";
 export * from "./region";
 export * from "./timer";
+export * from "./timerdialog";
 export * from "./trigger";
 export * from "./unit";
 export * from "./widget";
