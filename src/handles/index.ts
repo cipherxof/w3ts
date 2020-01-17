@@ -7,6 +7,7 @@ export * from "./frame";
 export * from "./group";
 export * from "./handle";
 export * from "./item";
+export * from "./multiboard";
 export * from "./player";
 export * from "./point";
 export * from "./rect";
