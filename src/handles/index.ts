@@ -11,6 +11,7 @@ export * from "./player";
 export * from "./point";
 export * from "./rect";
 export * from "./region";
+export * from "./texttag";
 export * from "./timer";
 export * from "./trigger";
 export * from "./unit";
