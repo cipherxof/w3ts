@@ -11,12 +11,16 @@ export class TimerDialog extends Handle<timerdialog> {
     DestroyTimerDialog(this.handle);
   }
 
-  public setTitle(title: string) {
-    TimerDialogSetTitle(this.handle, title);
-  }
-
   public setSpeed(speedMultFactor: number) {
     TimerDialogSetSpeed(this.handle, speedMultFactor);
+  }
+
+  public setTimeRemaining(value: number) {
+    TimerDialogSetRealTimeRemaining(this.handle, value);
+  }
+
+  public setTitle(title: string) {
+    TimerDialogSetTitle(this.handle, title);
   }
 
   public get display() {
@@ -25,10 +29,6 @@ export class TimerDialog extends Handle<timerdialog> {
 
   public set display(display: boolean) {
     TimerDialogDisplay(this.handle, display);
-  }
-
-  public setTimeRemaining(value: number) {
-    TimerDialogSetRealTimeRemaining(this.handle, value);
   }
 
   public static fromHandle(handle: timerdialog): TimerDialog {

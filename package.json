@@ -1,8 +1,8 @@
 {
   "name": "@voces/w3ts",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "TypeScript API for Warcraft III custom maps.",
-  "author": "TriggerHappy",
+  "author": "voces",
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
@@ -10,8 +10,16 @@
   },
   "devDependencies": {
     "lua-types": "^2.6.1",
-    "tslint": "^5.20.1",
+    "tslint": "^6.1.0",
     "typescript": "^3.7.4",
     "war3-types": "latest"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voces/w3api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voces/w3api/issues"
+  },
+  "homepage": "https://github.com/voces/w3api#readme"
 }
