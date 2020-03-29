@@ -19,38 +19,45 @@ export class Effect extends Handle<effect> {
     }
   }
 
-  public set alpha(a: number) {
-    BlzSetSpecialEffectAlpha(this.handle, a);
+  public setAlpha(alpha: number) {
+    BlzSetSpecialEffectAlpha(this.handle, alpha);
   }
 
-  public set height(h: number) {
-    BlzSetSpecialEffectHeight(this.handle, h);
+  public setHeight(height: number) {
+    BlzSetSpecialEffectHeight(this.handle, height);
   }
 
-  public set pitch(p: number) {
-    BlzSetSpecialEffectPitch(this.handle, p);
+  public setPitch(pitch: number) {
+    BlzSetSpecialEffectPitch(this.handle, pitch);
   }
 
-  public set roll(r: number) {
-    BlzSetSpecialEffectRoll(this.handle, r);
+  public setRoll(roll: number) {
+    BlzSetSpecialEffectRoll(this.handle, roll);
   }
 
   public get scale() {
     return BlzGetSpecialEffectScale(this.handle);
   }
 
-  public set scale(s: number) {
-    BlzSetSpecialEffectScale(this.handle, s);
+  public set scale(scale: number) {
+    BlzSetSpecialEffectScale(this.handle, scale);
   }
 
-  public set time(t: number) {
-    BlzSetSpecialEffectTime(this.handle, t);
+  public setTime(value: number) {
+    BlzSetSpecialEffectTime(this.handle, value);
   }
 
-  public set timeScale(ts: number) {
-    BlzSetSpecialEffectTimeScale(this.handle, ts);
+  public setTimeScale(timeScale: number) {
+    BlzSetSpecialEffectTimeScale(this.handle, timeScale);
   }
 
+  public setYaw(y: number) {
+    BlzSetSpecialEffectYaw(this.handle, y);
+  }
+
+  /**
+   * Warning: asynchronous
+   */
   public get x() {
     return BlzGetLocalSpecialEffectX(this.handle);
   }
@@ -59,6 +66,9 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectX(this.handle, x);
   }
 
+  /**
+   * Warning: asynchronous
+   */
   public get y() {
     return BlzGetLocalSpecialEffectY(this.handle);
   }
@@ -67,10 +77,9 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectY(this.handle, y);
   }
 
-  public set yaw(y: number) {
-    BlzSetSpecialEffectYaw(this.handle, y);
-  }
-
+  /**
+   * Warning: asynchronous
+   */
   public get z() {
     return BlzGetLocalSpecialEffectZ(this.handle);
   }
@@ -79,8 +88,8 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectZ(this.handle, z);
   }
 
-  public addSubAnimation(anim: subanimtype) {
-    BlzSpecialEffectAddSubAnimation(this.handle, anim);
+  public addSubAnimation(subAnim: subanimtype) {
+    BlzSpecialEffectAddSubAnimation(this.handle, subAnim);
   }
 
   public clearSubAnimations() {
@@ -91,16 +100,16 @@ export class Effect extends Handle<effect> {
     DestroyEffect(this.handle);
   }
 
-  public playAnimation(anim: animtype) {
-    BlzPlaySpecialEffect(this.handle, anim);
+  public playAnimation(animType: animtype) {
+    BlzPlaySpecialEffect(this.handle, animType);
   }
 
-  public playWithTimeScale(anim: animtype, timeScale: number) {
-    BlzPlaySpecialEffectWithTimeScale(this.handle, anim, timeScale);
+  public playWithTimeScale(animType: animtype, timeScale: number) {
+    BlzPlaySpecialEffectWithTimeScale(this.handle, animType, timeScale);
   }
 
-  public removeSubAnimation(anim: subanimtype) {
-    BlzSpecialEffectRemoveSubAnimation(this.handle, anim);
+  public removeSubAnimation(subAnim: subanimtype) {
+    BlzSpecialEffectRemoveSubAnimation(this.handle, subAnim);
   }
 
   public resetScaleMatrix() {
@@ -111,8 +120,8 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectColor(this.handle, red, green, blue);
   }
 
-  public setColorByPlayer(whichPlayer: MapPlayer | number) {
-    BlzSetSpecialEffectColorByPlayer(this.handle, typeof whichPlayer === "number" ? Player(whichPlayer) : whichPlayer.handle);
+  public setColorByPlayer(whichPlayer: MapPlayer) {
+    BlzSetSpecialEffectColorByPlayer(this.handle, whichPlayer.handle);
   }
 
   public setOrientation(yaw: number, pitch: number, roll: number) {
@@ -123,7 +132,7 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectPosition(this.handle, x, y, z);
   }
 
-  public setPositionLoc(p: Point) {
+  public setPoint(p: Point) {
     BlzSetSpecialEffectPositionLoc(this.handle, p.handle);
   }
 

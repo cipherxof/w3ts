@@ -6,7 +6,6 @@ import { Widget } from "./widget";
 export class Destructable extends Widget {
 
   public readonly handle!: destructable;
-  private isVisible: boolean = false;
 
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
     super(Handle.initFromHandle() ? undefined : CreateDestructableZ(objectId, x, y, z, face, scale, varation));
@@ -52,15 +51,6 @@ export class Destructable extends Widget {
     return GetDestructableTypeId(this.handle);
   }
 
-  public get visible() {
-    return this.isVisible;
-  }
-
-  public set visible(flag: boolean) {
-    this.isVisible = flag;
-    ShowDestructable(this.handle, flag);
-  }
-
   public get x() {
     return GetDestructableX(this.handle);
   }
@@ -91,6 +81,10 @@ export class Destructable extends Widget {
 
   public setAnimSpeed(speedFactor: number) {
     SetDestructableAnimationSpeed(this.handle, speedFactor);
+  }
+
+  public show(flag: boolean) {
+    ShowDestructable(this.handle, flag);
   }
 
   public static fromEvent() {

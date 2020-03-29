@@ -26,7 +26,7 @@ export class Dialog extends Handle<dialog> {
     super(Handle.initFromHandle() ? undefined : DialogCreate());
   }
 
-  public set message(whichMessage: string) {
+  public setMessage(whichMessage: string) {
     DialogSetMessage(this.handle, whichMessage);
   }
 

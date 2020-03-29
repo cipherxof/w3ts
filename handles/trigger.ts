@@ -5,6 +5,7 @@ import { Frame } from "./frame";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 import { Unit } from "./unit";
+import { Widget } from "./widget";
 
 export class Trigger extends Handle<trigger> {
 
@@ -84,12 +85,52 @@ export class Trigger extends Handle<trigger> {
     return BlzTriggerRegisterPlayerKeyEvent(this.handle, whichPlayer.handle, whichKey, metaKey, fireOnKeyDown);
   }
 
+  public registerPlayerSyncEvent(whichPlayer: MapPlayer, prefix: string, fromServer: boolean) {
+    return BlzTriggerRegisterPlayerSyncEvent(this.handle, whichPlayer.handle, prefix, fromServer);
+  }
+
   public registerPlayerMouseEvent(whichPlayer: MapPlayer, whichMouseEvent: number) {
     return TriggerRegisterPlayerMouseEventBJ(this.handle, whichPlayer.handle, whichMouseEvent);
   }
 
   public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | null) {
     return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
+  }
+
+  public registerUnitInRage(whichUnit: unit, range: number, filter: boolexpr | null) {
+    return TriggerRegisterUnitInRange(this.handle, whichUnit, range, filter);
+  }
+
+  public registerFilterUnitEvent(whichUnit: unit, whichEvent: unitevent, filter: boolexpr | null) {
+    return TriggerRegisterFilterUnitEvent(this.handle, whichUnit, whichEvent, filter);
+  }
+
+  public registerUpgradeCommandEvent(whichUpgrade: number) {
+    return TriggerRegisterUpgradeCommandEvent(this.handle, whichUpgrade);
+  }
+
+  public registerTrackableTrackEvent(whichTrackable: trackable) {
+    return TriggerRegisterTrackableTrackEvent(this.handle, whichTrackable);
+  }
+
+  public registerTrackableHitEvent(whichTrackable: trackable) {
+    return TriggerRegisterTrackableHitEvent(this.handle, whichTrackable);
+  }
+
+  public registerLeaveRegion(whichRegion: region, filter: boolexpr | null) {
+    return TriggerRegisterLeaveRegion(this.handle, whichRegion, filter);
+  }
+
+  public registerEnterRegion(whichRegion: region, filter: boolexpr | null) {
+    return TriggerRegisterEnterRegion(this.handle, whichRegion, filter);
+  }
+
+  public registerGameEvent(whichGameEvent: gameevent) {
+    return TriggerRegisterGameEvent(this.handle, whichGameEvent);
+  }
+
+  public registerCommandEvent(whichAbility: number, order: string) {
+    return TriggerRegisterCommandEvent(this.handle, whichAbility, order);
   }
 
   // Creates it's own timer and triggers when it expires
@@ -104,6 +145,26 @@ export class Trigger extends Handle<trigger> {
 
   public registerUnitEvent(whichUnit: Unit, whichEvent: unitevent) {
     return TriggerRegisterUnitEvent(this.handle, whichUnit.handle, whichEvent);
+  }
+
+  public registerUnitStateEvent(whichUnit: Unit, whichState: unitstate, opcode: limitop, limitval: number) {
+    return TriggerRegisterUnitStateEvent(this.handle, whichUnit.handle, whichState, opcode, limitval);
+  }
+
+  public registerDeathEvent(whichWidget: Widget) {
+    return TriggerRegisterDeathEvent(this.handle, whichWidget.handle);
+  }
+
+  public registerPlayerChatEvent(whichPlayer: MapPlayer, chatMessageToDetect: string, exactMatchOnly: boolean) {
+    return TriggerRegisterPlayerChatEvent(this.handle, whichPlayer.handle, chatMessageToDetect, exactMatchOnly);
+  }
+
+  public registerPlayerStateEvent(whichPlayer: MapPlayer, whichState: playerstate, opcode: limitop, limitval: number) {
+    return TriggerRegisterPlayerStateEvent(this.handle, whichPlayer.handle, whichState, opcode, limitval);
+  }
+
+  public registerPlayerAllianceChange(whichPlayer: MapPlayer, whichAlliance: alliancetype) {
+    return TriggerRegisterPlayerAllianceChange(this.handle, whichPlayer.handle, whichAlliance);
   }
 
   public registerVariableEvent(varName: string, opcode: limitop, limitval: number) {

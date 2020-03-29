@@ -330,7 +330,6 @@ export class Unit extends Widget {
     SetUnitY(this.handle, value);
   }
 
-  // Add this function to follow the style of GetUnitX and GetUnitY, it has the same result as BlzGetLocalUnitZ
   public get z() {
     return BlzGetUnitZ(this.handle);
   }

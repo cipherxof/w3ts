@@ -2,6 +2,7 @@
 
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
+import { Point } from "./point";
 import { Widget } from "./widget";
 
 export class Item extends Widget {
@@ -20,11 +21,11 @@ export class Item extends Widget {
     SetItemCharges(this.handle, value);
   }
 
-  public set dropOnDeath(flag: boolean) {
+  public setDropOnDeath(flag: boolean) {
     SetItemDropOnDeath(this.handle, flag);
   }
 
-  public set droppable(flag: boolean) {
+  public setDroppable(flag: boolean) {
     SetItemDroppable(this.handle, flag);
   }
 
@@ -46,6 +47,10 @@ export class Item extends Widget {
 
   set name(value: string) {
     BlzSetItemName(this.handle, value);
+  }
+
+  public get pawnable() {
+    return IsItemPawnable(this.handle);
   }
 
   public set pawnable(flag: boolean) {
@@ -126,6 +131,10 @@ export class Item extends Widget {
 
   public setPosition(x: number, y: number) {
     SetItemPosition(this.handle, x, y);
+  }
+
+  public setPoint(whichPoint: Point) {
+    SetItemPosition(this.handle, whichPoint.x, whichPoint.y);
   }
 
   public static fromHandle(handle: item): Item {
