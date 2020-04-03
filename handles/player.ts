@@ -113,15 +113,15 @@ export class MapPlayer extends Handle<player> {
   }
 
   public getTechCount(techId: number, specificonly: boolean) {
-    GetPlayerTechCount(this.handle, techId, specificonly);
+    return GetPlayerTechCount(this.handle, techId, specificonly);
   }
 
   public getTechMaxAllowed(techId: number) {
-    GetPlayerTechMaxAllowed(this.handle, techId);
+    return GetPlayerTechMaxAllowed(this.handle, techId);
   }
 
   public getTechResearched(techId: number, specificonly: boolean) {
-    GetPlayerTechResearched(this.handle, techId, specificonly);
+    return GetPlayerTechResearched(this.handle, techId, specificonly);
   }
 
   public getUnitCount(includeIncomplete: boolean) {

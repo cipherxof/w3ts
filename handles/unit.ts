@@ -915,6 +915,10 @@ export class Unit extends Widget {
     UnitShareVision(this.handle, whichPlayer.handle, share);
   }
 
+  public startAbilityCooldown(abilCode: number, cooldown: number) {
+    BlzStartUnitAbilityCooldown(this.handle, abilCode, cooldown);
+  }
+
   public stripLevels(howManyLevels: number) {
     return UnitStripHeroLevel(this.handle, howManyLevels);
   }
