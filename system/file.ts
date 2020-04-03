@@ -1,66 +1,45 @@
 export class File {
+
     // The string limit per Preload call.
-    private static preloadLimit = 200;
+    private static preloadLimit = 259;
 
-    // The list of abilities used to read and write data. 
-    // You can add more abilities to increase the max content length for files.
-    private static abilityList: number[] = [FourCC("Amls"), FourCC("Aroc"), FourCC("Amic"), FourCC("Amil"), FourCC("Aclf")];
-
-    // The maximum number of characters that can be written to a file.
-    public static readonly maxLength = File.preloadLimit * File.abilityList.length;
+    // The ability used to read and write data.
+    private static dummyAbility: number = FourCC("Amls");
 
     private constructor() { }
 
     /**
-     * Write text to a file that can be read later.
+    * Read text from a file.
+    * @param filename Filename of the file.
+    */
+    public static read(filename: string) {
+        const originalIcon = BlzGetAbilityIcon(this.dummyAbility);
+        Preloader(filename);
+        const preloadText = BlzGetAbilityIcon(this.dummyAbility);
+        BlzSetAbilityIcon(this.dummyAbility, originalIcon);
+        if (preloadText !== originalIcon) {
+            return preloadText;
+        }
+        return "fail";
+    }
+
+    /**
+     * Write text to a file.
      * @param filename Filename of the file.
      * @param contents Contents to write to the file.
      */
-    static write(filename: string, contents: string) {
+    public static write(filename: string, contents: string) {
         PreloadGenClear();
         PreloadGenStart();
 
-        for (let i = 0; i < (contents.length / 200); i++) {
-            const abilityId = File.abilityList[i];
-            const buffer = contents.substr(i * File.preloadLimit, File.preloadLimit);
-
-            Preload(`\" )\ncall BlzSetAbilityTooltip(${abilityId}, "${buffer}", 0)\n//`);
+        Preload("\")\n//! beginusercode\nlocal o=''\nPreload=function(s)o=o..s end\nPreloadEnd=function()end\n//!endusercode\n//");
+        for (let i = 0; i < (contents.length / File.preloadLimit); i++) {
+            Preload(`${contents.substr(i * File.preloadLimit, File.preloadLimit)}`);
         }
-
-        Preload("\" )\nendfunction\nfunction a takes nothing returns nothing\n //");
+        Preload(`\")\n//! beginusercode\nBlzSetAbilityIcon(${this.dummyAbility},o)\n//!endusercode\n//`);
         PreloadGenEnd(filename);
 
         return this;
     }
 
-    /**
-    * Read text from a generated file.
-    * @param filename Filename of the file.
-    */
-    static read(filename: string) {
-        let output: string = '';
-        let originalTooltip: string[] = [];
-        let doneReading = false;
-
-        for (let i = 0; i < this.abilityList.length; i++) {
-            originalTooltip[i] = BlzGetAbilityTooltip(this.abilityList[i], 0);
-        }
-
-        Preloader(filename);
-
-        for (let i = 0; i < this.abilityList.length; i++) {
-            if (!doneReading) {
-                const buffer = BlzGetAbilityTooltip(this.abilityList[i], 0);
-
-                if (buffer == originalTooltip[i]) {
-                    doneReading = true;
-                } else {
-                    output += buffer;
-                }
-            }
-            BlzSetAbilityTooltip(this.abilityList[i], originalTooltip[i], 0);
-        }
-
-        return output;
-    }
 }

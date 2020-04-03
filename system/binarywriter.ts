@@ -1,47 +1,55 @@
 export class BinaryWriter {
-  private data = "";
 
-  public writeUInt8(value: number) {
-    this.data += string.pack(">B", value);
-  }
+  public readonly values: any[] = [];
+  private fmj = ">";
 
-  public writeUInt16(value: number) {
-    this.data += string.pack(">H", value);
-  }
-
-  public writeUInt32(value: number) {
-    this.data += string.pack(">I4", value);
-  }
-
-  public writeInt8(value: number) {
-    this.data += string.pack(">b", value);
-  }
-
-  public writeInt16(value: number) {
-    this.data += string.pack(">h", value);
-  }
-
-  public writeInt32(value: number) {
-    this.data += string.pack(">i4", value);
+  public writeDouble(value: number) {
+    this.fmj += "d";
+    this.values.push(value);
   }
 
   public writeFloat(value: number) {
-    this.data += string.pack(">f", value);
+    this.fmj += "f";
+    this.values.push(value);
   }
 
-  public writeDouble(value: number) {
-    this.data += string.pack(">d", value);
+  public writeInt8(value: number) {
+    this.fmj += "b";
+    this.values.push(value);
+  }
+
+  public writeInt16(value: number) {
+    this.fmj += "h";
+    this.values.push(value);
+  }
+
+  public writeInt32(value: number) {
+    this.fmj += "i4";
+    this.values.push(value);
+  }
+
+  public writeUInt8(value: number) {
+    this.fmj += "B";
+    this.values.push(value);
+  }
+
+  public writeUInt16(value: number) {
+    this.fmj += "H";
+    this.values.push(value);
+  }
+
+  public writeUInt32(value: number) {
+    this.fmj += "I4";
+    this.values.push(value);
   }
 
   public writeString(value: string) {
-    this.data += string.pack(">z", value);
-  }
-
-  public get length() {
-    return this.data.length;
+    this.fmj += "z";
+    this.values.push(value);
   }
 
   public toString() {
-    return this.data;
+    return string.pack(this.fmj, ...this.values);
   }
+
 }

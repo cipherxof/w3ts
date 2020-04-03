@@ -1,4 +1,4 @@
-import { MapPlayer } from "./handles/player";
+import { MapPlayer } from "../handles/player";
 
 export const Players: MapPlayer[] = [];
 
