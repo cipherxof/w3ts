@@ -122,7 +122,7 @@ export class Unit extends Widget {
   }
 
   public set invulnerable(flag: boolean) {
-    SetUnitInvulnerable(this.handle, true);
+    SetUnitInvulnerable(this.handle, flag);
   }
 
   public get invulnerable() {
