@@ -1,3 +1,5 @@
+/** @noSelfInFile **/
+
 import { Handle } from "./handle";
 
 export class QuestItem extends Handle<questitem> {
@@ -33,10 +35,6 @@ export class Quest extends Handle<quest> {
     QuestSetCompleted(this.handle, completed);
   }
 
-  public setDescription(description: string) {
-    QuestSetDescription(this.handle, description);
-  }
-
   public get discovered() {
     return IsQuestDiscovered(this.handle);
   }
@@ -61,20 +59,12 @@ export class Quest extends Handle<quest> {
     QuestSetFailed(this.handle, failed);
   }
 
-  public setIcon(iconPath: string) {
-    QuestSetIconPath(this.handle, iconPath);
-  }
-
   public get required() {
     return IsQuestRequired(this.handle);
   }
 
   public set required(required: boolean) {
     QuestSetRequired(this.handle, required);
-  }
-
-  public setTitle(title: string) {
-    QuestSetTitle(this.handle, title);
   }
 
   public addItem(description: string) {
@@ -87,6 +77,18 @@ export class Quest extends Handle<quest> {
 
   public destroy() {
     DestroyQuest(this.handle);
+  }
+
+  public setDescription(description: string) {
+    QuestSetDescription(this.handle, description);
+  }
+
+  public setIcon(iconPath: string) {
+    QuestSetIconPath(this.handle, iconPath);
+  }
+
+  public setTitle(title: string) {
+    QuestSetTitle(this.handle, title);
   }
 
   public static flashQuestDialogButton() {

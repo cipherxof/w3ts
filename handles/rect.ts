@@ -45,11 +45,6 @@ export class Rectangle extends Handle<rect> {
     EnumItemsInRect(this.handle, filter, actionFunc);
   }
 
-  // Returns full map bounds, including unplayable borders, in world coordinates
-  public static getWorldBounds() {
-    return Rectangle.fromHandle(GetWorldBounds());
-  }
-
   public move(newCenterX: number, newCenterY: number) {
     MoveRectTo(this.handle, newCenterX, newCenterY);
   }
@@ -72,6 +67,11 @@ export class Rectangle extends Handle<rect> {
 
   public static fromPoint(min: Point, max: Point) {
     return this.fromHandle(RectFromLoc(min.handle, max.handle));
+  }
+
+  // Returns full map bounds, including unplayable borders, in world coordinates
+  public static getWorldBounds() {
+    return Rectangle.fromHandle(GetWorldBounds());
   }
 
 }

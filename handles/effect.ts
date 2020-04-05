@@ -19,40 +19,12 @@ export class Effect extends Handle<effect> {
     }
   }
 
-  public setAlpha(alpha: number) {
-    BlzSetSpecialEffectAlpha(this.handle, alpha);
-  }
-
-  public setHeight(height: number) {
-    BlzSetSpecialEffectHeight(this.handle, height);
-  }
-
-  public setPitch(pitch: number) {
-    BlzSetSpecialEffectPitch(this.handle, pitch);
-  }
-
-  public setRoll(roll: number) {
-    BlzSetSpecialEffectRoll(this.handle, roll);
-  }
-
   public get scale() {
     return BlzGetSpecialEffectScale(this.handle);
   }
 
   public set scale(scale: number) {
     BlzSetSpecialEffectScale(this.handle, scale);
-  }
-
-  public setTime(value: number) {
-    BlzSetSpecialEffectTime(this.handle, value);
-  }
-
-  public setTimeScale(timeScale: number) {
-    BlzSetSpecialEffectTimeScale(this.handle, timeScale);
-  }
-
-  public setYaw(y: number) {
-    BlzSetSpecialEffectYaw(this.handle, y);
   }
 
   /**
@@ -116,6 +88,10 @@ export class Effect extends Handle<effect> {
     BlzResetSpecialEffectMatrix(this.handle);
   }
 
+  public setAlpha(alpha: number) {
+    BlzSetSpecialEffectAlpha(this.handle, alpha);
+  }
+
   public setColor(red: number, green: number, blue: number) {
     BlzSetSpecialEffectColor(this.handle, red, green, blue);
   }
@@ -124,20 +100,44 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectColorByPlayer(this.handle, whichPlayer.handle);
   }
 
+  public setHeight(height: number) {
+    BlzSetSpecialEffectHeight(this.handle, height);
+  }
+
   public setOrientation(yaw: number, pitch: number, roll: number) {
     BlzSetSpecialEffectOrientation(this.handle, yaw, pitch, roll);
   }
 
-  public setPosition(x: number, y: number, z: number) {
-    BlzSetSpecialEffectPosition(this.handle, x, y, z);
+  public setPitch(pitch: number) {
+    BlzSetSpecialEffectPitch(this.handle, pitch);
   }
 
   public setPoint(p: Point) {
     BlzSetSpecialEffectPositionLoc(this.handle, p.handle);
   }
 
+  public setPosition(x: number, y: number, z: number) {
+    BlzSetSpecialEffectPosition(this.handle, x, y, z);
+  }
+
+  public setRoll(roll: number) {
+    BlzSetSpecialEffectRoll(this.handle, roll);
+  }
+
   public setScaleMatrix(x: number, y: number, z: number) {
     BlzSetSpecialEffectMatrixScale(this.handle, x, y, z);
+  }
+
+  public setTime(value: number) {
+    BlzSetSpecialEffectTime(this.handle, value);
+  }
+
+  public setTimeScale(timeScale: number) {
+    BlzSetSpecialEffectTimeScale(this.handle, timeScale);
+  }
+
+  public setYaw(y: number) {
+    BlzSetSpecialEffectYaw(this.handle, y);
   }
 
   public static fromHandle(handle: effect): Effect {

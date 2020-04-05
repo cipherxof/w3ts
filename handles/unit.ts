@@ -7,14 +7,16 @@ import { Handle } from "./handle";
 import { Item } from "./item";
 import { MapPlayer } from "./player";
 import { Point } from "./point";
+import { Sound } from "./sound";
 import { Widget } from "./widget";
 
 export class Unit extends Widget {
 
   public readonly handle!: unit;
 
-  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number) {
-    super(Handle.initFromHandle() ? undefined : CreateUnit(typeof owner === "number" ? Player(owner) : owner.handle, unitId, x, y, face));
+  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
+    const p = typeof owner === "number" ? Player(owner) : owner.handle;
+    super(Handle.initFromHandle() ? undefined : (skinId ? BlzCreateUnitWithSkin(p, unitId, x, y, face, skinId) : CreateUnit(p, unitId, x, y, face)));
   }
 
   public set acquireRange(value: number) {
@@ -266,6 +268,14 @@ export class Unit extends Widget {
     return IsUnitHidden(this.handle);
   }
 
+  public get skin() {
+    return BlzGetUnitSkin(this.handle);
+  }
+
+  public set skin(skinId: number) {
+    BlzSetUnitSkin(this.handle, skinId);
+  }
+
   public get skillPoints() {
     return GetHeroSkillPoints(this.handle);
   }
@@ -384,6 +394,10 @@ export class Unit extends Widget {
 
   public applyTimedLife(buffId: number, duration: number) {
     UnitApplyTimedLife(this.handle, buffId, duration);
+  }
+
+  public attachSound(sound: Sound) {
+    AttachSoundToUnit(sound.handle, this.handle);
   }
 
   public cancelTimedLife() {
@@ -811,25 +825,21 @@ export class Unit extends Widget {
     SetUnitExploded(this.handle, exploded);
   }
 
+  public setFacingEx(facingAngle: number) {
+    BlzSetUnitFacingEx(this.handle, facingAngle);
+  }
+
   public setField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield, value: boolean | number | string) {
     const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     if (fieldType === "unitbooleanfield" && typeof value === "boolean") {
-      const fieldBool: unitbooleanfield = field as unitbooleanfield;
-
-      return BlzSetUnitBooleanField(this.handle, fieldBool, value);
+      return BlzSetUnitBooleanField(this.handle, field as unitbooleanfield, value);
     } else if (fieldType === "unitintegerfield" && typeof value === "number") {
-      const fieldInt: unitintegerfield = field as unitintegerfield;
-
-      return BlzSetUnitIntegerField(this.handle, fieldInt, value);
+      return BlzSetUnitIntegerField(this.handle, field as unitintegerfield, value);
     } else if (fieldType === "unitrealfield" && typeof value === "number") {
-      const fieldReal: unitrealfield = field as unitrealfield;
-
-      return BlzSetUnitRealField(this.handle, fieldReal, value);
+      return BlzSetUnitRealField(this.handle, field as unitrealfield, value);
     } else if (fieldType === "unitstringfield" && typeof value === "string") {
-      const fieldStr: unitstringfield = field as unitstringfield;
-
-      return BlzSetUnitStringField(this.handle, fieldStr, value);
+      return BlzSetUnitStringField(this.handle, field as unitstringfield, value);
     }
 
     return false;
@@ -915,6 +925,10 @@ export class Unit extends Widget {
     UnitShareVision(this.handle, whichPlayer.handle, share);
   }
 
+  public showTeamGlow(show: boolean) {
+    BlzShowUnitTeamGlow(this.handle, show);
+  }
+
   public startAbilityCooldown(abilCode: number, cooldown: number) {
     BlzStartUnitAbilityCooldown(this.handle, abilCode, cooldown);
   }
@@ -965,6 +979,10 @@ export class Unit extends Widget {
 
   public static foodUsedByType(unitId: number) {
     return GetFoodUsed(unitId);
+  }
+
+  public static fromEvent() {
+    return this.fromHandle(GetTriggerUnit());
   }
 
   public static fromHandle(handle: unit): Unit {

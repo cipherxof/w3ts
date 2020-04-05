@@ -28,7 +28,7 @@ export interface ISyncOptions {
   timeout: number;
 }
 
-export type SyncCallback = (res?: ISyncResponse, req?: SyncRequest) => void;
+export type SyncCallback = (res: ISyncResponse, req: SyncRequest) => void;
 
 class SyncIncomingPacket {
   public readonly chunk: number;

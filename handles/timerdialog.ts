@@ -1,3 +1,5 @@
+/** @noSelfInFile **/
+
 import { Handle } from "./handle";
 import { Timer } from "./timer";
 
@@ -5,18 +7,6 @@ export class TimerDialog extends Handle<timerdialog> {
 
   constructor(t: Timer) {
     super(Handle.initFromHandle() ? undefined : CreateTimerDialog(t.handle));
-  }
-
-  public destroy() {
-    DestroyTimerDialog(this.handle);
-  }
-
-  public setTitle(title: string) {
-    TimerDialogSetTitle(this.handle, title);
-  }
-
-  public setSpeed(speedMultFactor: number) {
-    TimerDialogSetSpeed(this.handle, speedMultFactor);
   }
 
   public get display() {
@@ -27,8 +17,20 @@ export class TimerDialog extends Handle<timerdialog> {
     TimerDialogDisplay(this.handle, display);
   }
 
+  public destroy() {
+    DestroyTimerDialog(this.handle);
+  }
+
+  public setSpeed(speedMultFactor: number) {
+    TimerDialogSetSpeed(this.handle, speedMultFactor);
+  }
+
   public setTimeRemaining(value: number) {
     TimerDialogSetRealTimeRemaining(this.handle, value);
+  }
+
+  public setTitle(title: string) {
+    TimerDialogSetTitle(this.handle, title);
   }
 
   public static fromHandle(handle: timerdialog): TimerDialog {

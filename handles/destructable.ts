@@ -1,7 +1,7 @@
+/** @noSelfInFile **/
+
 import { Handle } from "./handle";
 import { Widget } from "./widget";
-
-/** @noSelfInFile **/
 
 export class Destructable extends Widget {
 

@@ -9,8 +9,8 @@ export class Item extends Widget {
 
   public readonly handle!: item;
 
-  constructor(itemid: number, x: number, y: number) {
-    super(Handle.initFromHandle() ? undefined : CreateItem(itemid, x, y));
+  constructor(itemId: number, x: number, y: number, skinId?: number) {
+    super(Handle.initFromHandle() ? undefined : (skinId ? BlzCreateItemWithSkin(itemId, x, y, skinId) : CreateItem(itemId, x, y)));
   }
 
   public get charges() {
@@ -19,14 +19,6 @@ export class Item extends Widget {
 
   public set charges(value: number) {
     SetItemCharges(this.handle, value);
-  }
-
-  public setDropOnDeath(flag: boolean) {
-    SetItemDropOnDeath(this.handle, flag);
-  }
-
-  public setDroppable(flag: boolean) {
-    SetItemDroppable(this.handle, flag);
   }
 
   public set invulnerable(flag: boolean) {
@@ -85,6 +77,14 @@ export class Item extends Widget {
     SetItemVisible(this.handle, flag);
   }
 
+  public get skin() {
+    return BlzGetItemSkin(this.handle);
+  }
+
+  public set skin(skinId: number) {
+    BlzSetItemSkin(this.handle, skinId);
+  }
+
   public get x() {
     return GetItemX(this.handle);
   }
@@ -103,6 +103,23 @@ export class Item extends Widget {
 
   public destroy() {
     RemoveItem(this.handle);
+  }
+
+  public getField(field: itembooleanfield | itemintegerfield | itemrealfield | itemstringfield) {
+    const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
+
+    switch (fieldType) {
+      case "unitbooleanfield":
+        return BlzGetItemBooleanField(this.handle, field as itembooleanfield);
+      case "unitintegerfield":
+        return BlzGetItemIntegerField(this.handle, field as itemintegerfield);
+      case "unitrealfield":
+        return BlzGetItemRealField(this.handle, field as itemrealfield);
+      case "unitstringfield":
+        return BlzGetItemStringField(this.handle, field as itemstringfield);
+      default:
+        return 0;
+    }
   }
 
   public isOwned() {
@@ -125,16 +142,40 @@ export class Item extends Widget {
     SetItemDropID(this.handle, unitId);
   }
 
+  public setDropOnDeath(flag: boolean) {
+    SetItemDropOnDeath(this.handle, flag);
+  }
+
+  public setDroppable(flag: boolean) {
+    SetItemDroppable(this.handle, flag);
+  }
+
+  public setField(field: itembooleanfield | itemintegerfield | itemrealfield | itemstringfield, value: boolean | number | string) {
+    const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
+
+    if (fieldType === "unitbooleanfield" && typeof value === "boolean") {
+      return BlzSetItemBooleanField(this.handle, field as itembooleanfield, value);
+    } else if (fieldType === "unitintegerfield" && typeof value === "number") {
+      return BlzSetItemIntegerField(this.handle, field as itemintegerfield, value);
+    } else if (fieldType === "unitrealfield" && typeof value === "number") {
+      return BlzSetItemRealField(this.handle, field as itemrealfield, value);
+    } else if (fieldType === "unitstringfield" && typeof value === "string") {
+      return BlzSetItemStringField(this.handle, field as itemstringfield, value);
+    }
+
+    return false;
+  }
+
   public setOwner(whichPlayer: MapPlayer, changeColor: boolean) {
     SetItemPlayer(this.handle, whichPlayer.handle, changeColor);
   }
 
-  public setPosition(x: number, y: number) {
-    SetItemPosition(this.handle, x, y);
-  }
-
   public setPoint(whichPoint: Point) {
     SetItemPosition(this.handle, whichPoint.x, whichPoint.y);
+  }
+
+  public setPosition(x: number, y: number) {
+    SetItemPosition(this.handle, x, y);
   }
 
   public static fromHandle(handle: item): Item {

@@ -66,6 +66,10 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerTeam(this.handle);
   }
 
+  public get townHallCount() {
+    return BlzGetPlayerTownHallCount(this.handle);
+  }
+
   public addTechResearched(techId: number, levels: number) {
     AddPlayerTechResearched(this.handle, techId, levels);
   }

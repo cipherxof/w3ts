@@ -26,10 +26,6 @@ export class Dialog extends Handle<dialog> {
     super(Handle.initFromHandle() ? undefined : DialogCreate());
   }
 
-  public setMessage(whichMessage: string) {
-    DialogSetMessage(this.handle, whichMessage);
-  }
-
   public addButton(text: string, hotkey: number = 0, quit: boolean = false, score: boolean = false) {
     return new DialogButton(this, text, hotkey, quit, score);
   }
@@ -44,6 +40,10 @@ export class Dialog extends Handle<dialog> {
 
   public display(whichPlayer: MapPlayer, flag: boolean) {
     DialogDisplay(whichPlayer.handle, this.handle, flag);
+  }
+
+  public setMessage(whichMessage: string) {
+    DialogSetMessage(this.handle, whichMessage);
   }
 
   public static fromHandle(handle: dialog): Dialog {
