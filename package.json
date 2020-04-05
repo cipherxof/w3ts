@@ -1,6 +1,6 @@
 {
   "name": "@voces/w3ts",
-  "version": "1.0.8",
+  "version": "2.1.0",
   "description": "TypeScript API for Warcraft III custom maps.",
   "author": "voces",
   "license": "MIT",
@@ -10,8 +10,8 @@
   },
   "devDependencies": {
     "lua-types": "^2.6.1",
-    "tslint": "^6.1.0",
-    "typescript": "^3.7.4",
+	"tslint": "^6.1.0",
+    "typescript": "^3.8.3",
     "war3-types": "latest"
   },
   "repository": {

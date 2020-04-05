@@ -24,8 +24,10 @@ export class Point extends Handle<location> {
     MoveLocation(this.handle, this.x, value);
   }
 
-  // This function is asynchronous. The values it returns are not guaranteed synchronous between each player.
-  // If you attempt to use it in a synchronous manner, it may cause a desync.
+  /**
+   * This function is asynchronous. The values it returns are not guaranteed synchronous between each player.
+   * If you attempt to use it in a synchronous manner, it may cause a desync.
+   */
   public get z(): number {
     return GetLocationZ(this.handle);
   }

@@ -1,3 +1,5 @@
+/** @noSelfInFile **/
+
 import { Handle } from "./handle";
 
 export class QuestItem extends Handle<questitem> {
@@ -6,7 +8,7 @@ export class QuestItem extends Handle<questitem> {
     super(Handle.initFromHandle() ? undefined : QuestCreateItem(whichQuest.handle));
   }
 
-  public set description(description: string) {
+  public setDescription(description: string) {
     QuestItemSetDescription(this.handle, description);
   }
 
@@ -33,10 +35,6 @@ export class Quest extends Handle<quest> {
     QuestSetCompleted(this.handle, completed);
   }
 
-  public set description(description: string) {
-    QuestSetDescription(this.handle, description);
-  }
-
   public get discovered() {
     return IsQuestDiscovered(this.handle);
   }
@@ -61,10 +59,6 @@ export class Quest extends Handle<quest> {
     QuestSetFailed(this.handle, failed);
   }
 
-  public set icon(iconPath: string) {
-    QuestSetIconPath(this.handle, iconPath);
-  }
-
   public get required() {
     return IsQuestRequired(this.handle);
   }
@@ -73,20 +67,28 @@ export class Quest extends Handle<quest> {
     QuestSetRequired(this.handle, required);
   }
 
-  public set title(title: string) {
-    QuestSetTitle(this.handle, title);
-  }
-
   public addItem(description: string) {
-    const item = new QuestItem(this);
+    const questItem = new QuestItem(this);
 
-    item.description = description;
+    questItem.setDescription(description);
 
-    return item;
+    return questItem;
   }
 
   public destroy() {
     DestroyQuest(this.handle);
+  }
+
+  public setDescription(description: string) {
+    QuestSetDescription(this.handle, description);
+  }
+
+  public setIcon(iconPath: string) {
+    QuestSetIconPath(this.handle, iconPath);
+  }
+
+  public setTitle(title: string) {
+    QuestSetTitle(this.handle, title);
   }
 
   public static flashQuestDialogButton() {
