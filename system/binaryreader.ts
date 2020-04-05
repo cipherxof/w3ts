@@ -24,10 +24,6 @@ export class BinaryReader {
     return this.read(">f", 4);
   }
 
-  public readInt8(): number {
-    return this.read(">b", 1);
-  }
-
   public readInt16(): number {
     return this.read(">h", 2);
   }
@@ -36,8 +32,14 @@ export class BinaryReader {
     return this.read(">i4", 4);
   }
 
-  public readUInt8(): number {
-    return this.read(">B", 1);
+  public readInt8(): number {
+    return this.read(">b", 1);
+  }
+
+  public readString(): string {
+    const value: string = this.read(">z", 0);
+    this.pos += value.length + 1;
+    return value;
   }
 
   public readUInt16(): number {
@@ -48,10 +50,8 @@ export class BinaryReader {
     return this.read(">I4", 4);
   }
 
-  public readString(): string {
-    const value: string = this.read(">z", 0);
-    this.pos += value.length + 1;
-    return value;
+  public readUInt8(): number {
+    return this.read(">B", 1);
   }
 
 }

@@ -1,10 +1,10 @@
 export class File {
 
+	// The ability used to read and write data.
+    private static dummyAbility: number = FourCC("Amls");
+
     // The string limit per Preload call.
     private static preloadLimit = 259;
-
-    // The ability used to read and write data.
-    private static dummyAbility: number = FourCC("Amls");
 
     private constructor() { }
 

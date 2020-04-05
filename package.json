@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "lua-types": "^2.6.1",
-	"tslint": "^6.1.0",
+    "tslint": "^6.1.0",
     "typescript": "^3.8.3",
     "war3-types": "latest"
   },

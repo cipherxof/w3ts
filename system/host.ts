@@ -10,7 +10,7 @@ import { SyncRequest } from "./sync";
 
 const lobbyTimes: number[] = [];
 const checkTimer = new Timer();
-const hostCallbacks: Array<() => void> = [];
+const hostCallbacks: (() => void)[] = [];
 let localJoinTime = 0;
 let localStartTime = 0;
 let host: MapPlayer | undefined;
