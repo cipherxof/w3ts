@@ -8,10 +8,10 @@ const oldConfig = config;
 
 type scriptHookSignature = () => void;
 
-export const hooksMainBefore: scriptHookSignature[] = [];
-export const hooksMainAfter: scriptHookSignature[] = [];
-export const hooksConfigBefore: scriptHookSignature[] = [];
-export const hooksConfigAfter: scriptHookSignature[] = [];
+const hooksMainBefore: scriptHookSignature[] = [];
+const hooksMainAfter: scriptHookSignature[] = [];
+const hooksConfigBefore: scriptHookSignature[] = [];
+const hooksConfigAfter: scriptHookSignature[] = [];
 
 export const executeHooksMainBefore = () => hooksMainBefore.forEach((func) => func());
 export const executeHooksMainAfter = () => hooksMainAfter.forEach((func) => func());
