@@ -6,7 +6,11 @@ import { Timer } from "./timer";
 export class TimerDialog extends Handle<timerdialog> {
 
   constructor(t: Timer) {
-    super(Handle.initFromHandle() ? undefined : CreateTimerDialog(t.handle));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateTimerDialog(t.handle));
+    }
   }
 
   public get display() {

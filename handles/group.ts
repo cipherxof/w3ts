@@ -10,7 +10,11 @@ import { Widget } from "./widget";
 export class Group extends Handle<group> {
 
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateGroup());
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateGroup());
+    }
   }
 
   public addGroupFast(addGroup: Group): number {

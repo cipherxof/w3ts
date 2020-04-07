@@ -7,7 +7,11 @@ import { Point } from "./point";
 export class MapPlayer extends Handle<player> {
 
   private constructor(index: number) {
-    super(Handle.initFromHandle() ? undefined : Player(index));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(Player(index));
+    }
   }
 
   public set color(color: playercolor) {

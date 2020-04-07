@@ -8,7 +8,11 @@ export class Destructable extends Widget {
   public readonly handle!: destructable;
 
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
-    super(Handle.initFromHandle() ? undefined : CreateDestructableZ(objectId, x, y, z, face, scale, varation));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateDestructableZ(objectId, x, y, z, face, scale, varation));
+    }
   }
 
   public set invulnerable(flag: boolean) {

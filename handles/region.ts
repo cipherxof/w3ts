@@ -8,7 +8,11 @@ import { Unit } from "./unit";
 export class Region extends Handle<region> {
 
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateRegion());
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateRegion());
+    }
   }
 
   public addCell(x: number, y: number) {

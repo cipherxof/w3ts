@@ -6,7 +6,11 @@ import { MapPlayer } from "./player";
 export class Force extends Handle<force> {
 
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateForce());
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateForce());
+    }
   }
 
   public addPlayer(whichPlayer: MapPlayer) {
