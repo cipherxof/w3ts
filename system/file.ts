@@ -1,6 +1,6 @@
 export class File {
 
-	// The ability used to read and write data.
+    // The ability used to read and write data.
     private static dummyAbility: number = FourCC("Amls");
 
     // The string limit per Preload call.
@@ -21,6 +21,23 @@ export class File {
             return preloadText;
         }
         return "fail";
+    }
+
+    /**
+     * Write text to a file you do not plan to read back.
+     * @param filename Filename of the file.
+     * @param contents Contents to write to the file.
+     */
+    public static writeRaw(filename: string, contents: string) {
+        PreloadGenClear();
+        PreloadGenStart();
+
+        for (let i = 0; i < (contents.length / File.preloadLimit); i++) {
+            Preload(`${contents.substr(i * File.preloadLimit, File.preloadLimit)}`);
+        }
+        PreloadGenEnd(filename);
+
+        return this;
     }
 
     /**
