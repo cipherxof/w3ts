@@ -6,7 +6,7 @@ export class Timer extends Handle<timer> {
 
   constructor() {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateTimer());
     }

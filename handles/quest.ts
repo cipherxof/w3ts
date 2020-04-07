@@ -6,7 +6,7 @@ export class QuestItem extends Handle<questitem> {
 
   constructor(whichQuest: Quest) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(QuestCreateItem(whichQuest.handle));
     }

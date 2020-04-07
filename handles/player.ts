@@ -8,7 +8,7 @@ export class MapPlayer extends Handle<player> {
 
   private constructor(index: number) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(Player(index));
     }

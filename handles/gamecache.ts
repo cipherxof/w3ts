@@ -9,7 +9,7 @@ export class GameCache extends Handle<gamecache> {
 
   constructor(campaignFile: string) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(InitGameCache(campaignFile));
     }

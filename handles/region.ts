@@ -9,7 +9,7 @@ export class Region extends Handle<region> {
 
   constructor() {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateRegion());
     }

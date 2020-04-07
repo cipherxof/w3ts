@@ -6,7 +6,7 @@ export class Sound extends Handle<sound> {
 
   constructor(fileName: string, looping: boolean, is3D: boolean, stopWhenOutOfRange: boolean, fadeInRate: number, fadeOutRate: number, eaxSetting: string) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateSound(fileName, looping, is3D, stopWhenOutOfRange, fadeInRate, fadeOutRate, eaxSetting));
     }

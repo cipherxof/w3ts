@@ -13,7 +13,7 @@ export class Image extends Handle<image> {
 
   constructor(file: string, sizeX: number, sizeY: number, sizeZ: number, posX: number, posY: number, posZ: number, originX: number, originY: number, originZ: number, imageType: ImageType) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateImage(file, sizeX, sizeY, sizeZ, posX, posY, posZ, originX, originY, originZ, imageType));
     }

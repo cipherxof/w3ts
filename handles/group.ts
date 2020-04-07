@@ -11,7 +11,7 @@ export class Group extends Handle<group> {
 
   constructor() {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateGroup());
     }

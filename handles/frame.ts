@@ -6,7 +6,7 @@ export class Frame extends Handle<framehandle> {
 
   constructor(name: string, owner: Frame, priority: number, createContext: number) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(BlzCreateFrame(name, owner.handle, priority, createContext));
     }

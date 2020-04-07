@@ -9,7 +9,7 @@ export class Destructable extends Widget {
 
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateDestructableZ(objectId, x, y, z, face, scale, varation));
     }

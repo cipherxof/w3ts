@@ -6,7 +6,7 @@ export class Point extends Handle<location> {
 
   constructor(x: number, y: number) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(Location(x, y));
     }

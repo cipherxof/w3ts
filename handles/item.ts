@@ -11,7 +11,7 @@ export class Item extends Widget {
 
   constructor(itemId: number, x: number, y: number, skinId?: number) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(skinId ? BlzCreateItemWithSkin(itemId, x, y, skinId) : CreateItem(itemId, x, y));
     }

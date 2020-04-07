@@ -7,7 +7,7 @@ export class Rectangle extends Handle<rect> {
 
   constructor(minX: number, minY: number, maxX: number, maxY: number) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(Rect(minX, minY, maxX, maxY));
     }

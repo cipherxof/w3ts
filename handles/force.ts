@@ -7,7 +7,7 @@ export class Force extends Handle<force> {
 
   constructor() {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateForce());
     }

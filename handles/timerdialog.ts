@@ -7,7 +7,7 @@ export class TimerDialog extends Handle<timerdialog> {
 
   constructor(t: Timer) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateTimerDialog(t.handle));
     }

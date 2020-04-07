@@ -11,7 +11,7 @@ export class Trigger extends Handle<trigger> {
 
   constructor() {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateTrigger());
     }

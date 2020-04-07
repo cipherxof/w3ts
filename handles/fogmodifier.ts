@@ -8,7 +8,7 @@ export class FogModifier extends Handle<fogmodifier> {
 
   constructor(forWhichPlayer: MapPlayer, whichState: fogstate, centerX: number, centerY: number, radius: number, useSharedVision: boolean, afterUnits: boolean) {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateFogModifierRadius(forWhichPlayer.handle, whichState, centerX, centerY, radius, useSharedVision, afterUnits));
     }

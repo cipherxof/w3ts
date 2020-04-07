@@ -7,7 +7,7 @@ export class Leaderboard extends Handle<leaderboard> {
 
   constructor() {
     if (Handle.initFromHandle()) {
-      super()
+      super();
     } else {
       super(CreateLeaderboard());
     }
