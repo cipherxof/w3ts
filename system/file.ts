@@ -24,23 +24,6 @@ export class File {
     }
 
     /**
-     * Write text to a file you do not plan to read back.
-     * @param filename Filename of the file.
-     * @param contents Contents to write to the file.
-     */
-    public static writeRaw(filename: string, contents: string) {
-        PreloadGenClear();
-        PreloadGenStart();
-
-        for (let i = 0; i < (contents.length / File.preloadLimit); i++) {
-            Preload(`${contents.substr(i * File.preloadLimit, File.preloadLimit)}`);
-        }
-        PreloadGenEnd(filename);
-
-        return this;
-    }
-
-    /**
      * Write text to a file.
      * @param filename Filename of the file.
      * @param contents Contents to write to the file.
@@ -54,6 +37,23 @@ export class File {
             Preload(`${contents.substr(i * File.preloadLimit, File.preloadLimit)}`);
         }
         Preload(`\")\n//! beginusercode\nBlzSetAbilityIcon(${this.dummyAbility},o)\n//!endusercode\n//`);
+        PreloadGenEnd(filename);
+
+        return this;
+    }
+
+    /**
+     * Write text to a file you do not plan to read back.
+     * @param filename Filename of the file.
+     * @param contents Contents to write to the file.
+     */
+    public static writeRaw(filename: string, contents: string) {
+        PreloadGenClear();
+        PreloadGenStart();
+
+        for (let i = 0; i < (contents.length / File.preloadLimit); i++) {
+            Preload(`${contents.substr(i * File.preloadLimit, File.preloadLimit)}`);
+        }
         PreloadGenEnd(filename);
 
         return this;
