@@ -10,7 +10,11 @@ import { Widget } from "./widget";
 export class Trigger extends Handle<trigger> {
 
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateTrigger());
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateTrigger());
+    }
   }
 
   public set enabled(flag: boolean) {

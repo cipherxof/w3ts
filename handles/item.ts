@@ -10,7 +10,11 @@ export class Item extends Widget {
   public readonly handle!: item;
 
   constructor(itemId: number, x: number, y: number, skinId?: number) {
-    super(Handle.initFromHandle() ? undefined : (skinId ? BlzCreateItemWithSkin(itemId, x, y, skinId) : CreateItem(itemId, x, y)));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(skinId ? BlzCreateItemWithSkin(itemId, x, y, skinId) : CreateItem(itemId, x, y));
+    }
   }
 
   public get charges() {

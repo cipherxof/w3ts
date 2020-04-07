@@ -5,7 +5,11 @@ import { Handle } from "./handle";
 export class Point extends Handle<location> {
 
   constructor(x: number, y: number) {
-    super(Handle.initFromHandle() ? undefined : Location(x, y));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(Location(x, y));
+    }
   }
 
   public get x(): number {

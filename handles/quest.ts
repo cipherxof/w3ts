@@ -5,7 +5,11 @@ import { Handle } from "./handle";
 export class QuestItem extends Handle<questitem> {
 
   constructor(whichQuest: Quest) {
-    super(Handle.initFromHandle() ? undefined : QuestCreateItem(whichQuest.handle));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(QuestCreateItem(whichQuest.handle));
+    }
   }
 
   public setDescription(description: string) {

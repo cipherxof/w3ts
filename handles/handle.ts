@@ -1,13 +1,15 @@
 /** @noSelfInFile **/
 
+const map: WeakMap<handle, any> = new WeakMap<handle, any>();
+
 export class Handle<T extends handle> {
 
   public readonly handle: T;
   private static initHandle: handle | undefined;
-  protected static map: WeakMap<handle, any> = new WeakMap<handle, any>();
 
   protected constructor(handle?: T) {
     this.handle = handle === undefined ? Handle.initHandle as T : handle;
+    map.set(this.handle, this);
   }
 
   public get id() {
@@ -19,14 +21,13 @@ export class Handle<T extends handle> {
   }
 
   protected static getObject(handle: handle) {
-    const obj = this.map.get(handle);
+    const obj = map.get(handle);
     if (obj !== undefined) {
       return obj;
     }
     Handle.initHandle = handle;
     const newObj = new this();
     Handle.initHandle = undefined;
-    this.map.set(handle, newObj);
     return newObj;
   }
 

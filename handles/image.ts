@@ -12,7 +12,11 @@ export enum ImageType {
 export class Image extends Handle<image> {
 
   constructor(file: string, sizeX: number, sizeY: number, sizeZ: number, posX: number, posY: number, posZ: number, originX: number, originY: number, originZ: number, imageType: ImageType) {
-    super(Handle.initFromHandle() ? undefined : CreateImage(file, sizeX, sizeY, sizeZ, posX, posY, posZ, originX, originY, originZ, imageType));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateImage(file, sizeX, sizeY, sizeZ, posX, posY, posZ, originX, originY, originZ, imageType));
+    }
   }
 
   public destroy() {

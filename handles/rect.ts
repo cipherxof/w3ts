@@ -6,7 +6,11 @@ import { Point } from "./point";
 export class Rectangle extends Handle<rect> {
 
   constructor(minX: number, minY: number, maxX: number, maxY: number) {
-    super(Handle.initFromHandle() ? undefined : Rect(minX, minY, maxX, maxY));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(Rect(minX, minY, maxX, maxY));
+    }
   }
 
   public get centerX() {

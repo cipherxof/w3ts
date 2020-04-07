@@ -6,7 +6,11 @@ import { MapPlayer } from "./player";
 export class Leaderboard extends Handle<leaderboard> {
 
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateLeaderboard());
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateLeaderboard());
+    }
   }
 
   public addItem(label: string, value: number, p: MapPlayer) {

@@ -5,7 +5,11 @@ import { Handle } from "./handle";
 export class Frame extends Handle<framehandle> {
 
   constructor(name: string, owner: Frame, priority: number, createContext: number) {
-    super(Handle.initFromHandle() ? undefined : BlzCreateFrame(name, owner.handle, priority, createContext));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(BlzCreateFrame(name, owner.handle, priority, createContext));
+    }
   }
 
   public set alpha(alpha: number) {

@@ -8,7 +8,11 @@ export class GameCache extends Handle<gamecache> {
   public readonly filename: string;
 
   constructor(campaignFile: string) {
-    super(Handle.initFromHandle() ? undefined : InitGameCache(campaignFile));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(InitGameCache(campaignFile));
+    }
 
     this.filename = campaignFile;
   }

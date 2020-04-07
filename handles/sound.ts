@@ -5,7 +5,11 @@ import { Handle } from "./handle";
 export class Sound extends Handle<sound> {
 
   constructor(fileName: string, looping: boolean, is3D: boolean, stopWhenOutOfRange: boolean, fadeInRate: number, fadeOutRate: number, eaxSetting: string) {
-    super(Handle.initFromHandle() ? undefined : CreateSound(fileName, looping, is3D, stopWhenOutOfRange, fadeInRate, fadeOutRate, eaxSetting));
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateSound(fileName, looping, is3D, stopWhenOutOfRange, fadeInRate, fadeOutRate, eaxSetting));
+    }
   }
 
   public get dialogueSpeakerNameKey() {

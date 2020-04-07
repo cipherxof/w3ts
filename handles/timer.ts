@@ -5,7 +5,11 @@ import { Handle } from "./handle";
 export class Timer extends Handle<timer> {
 
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateTimer());
+    if (Handle.initFromHandle()) {
+      super()
+    } else {
+      super(CreateTimer());
+    }
   }
 
   public get elapsed(): number {
