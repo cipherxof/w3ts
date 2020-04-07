@@ -15,8 +15,12 @@ export class Unit extends Widget {
   public readonly handle!: unit;
 
   constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
-    const p = typeof owner === "number" ? Player(owner) : owner.handle;
-    super(Handle.initFromHandle() ? undefined : (skinId ? BlzCreateUnitWithSkin(p, unitId, x, y, face, skinId) : CreateUnit(p, unitId, x, y, face)));
+    if (Handle.initFromHandle()) {
+      super();
+    } else {
+      const p = typeof owner === "number" ? Player(owner) : owner.handle;
+      super(skinId ? BlzCreateUnitWithSkin(p, unitId, x, y, face, skinId) : CreateUnit(p, unitId, x, y, face));
+    }
   }
 
   public set acquireRange(value: number) {
