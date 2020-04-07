@@ -16,10 +16,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/voces/w3api.git"
+    "url": "git+https://github.com/voces/w3ts.git"
   },
   "bugs": {
-    "url": "https://github.com/voces/w3api/issues"
+    "url": "https://github.com/voces/w3ts/issues"
   },
-  "homepage": "https://github.com/voces/w3api#readme"
+  "homepage": "https://github.com/voces/w3ts#readme"
 }
