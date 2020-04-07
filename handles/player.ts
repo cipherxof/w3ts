@@ -66,6 +66,18 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerStartLocation(this.handle);
   }
 
+  public get startLocationX() {
+    return GetStartLocationX(this.startLocation);
+  }
+
+  public get startLocationY() {
+    return GetStartLocationY(this.startLocation);
+  }
+
+  public get startLocationPoint() {
+    return GetStartLocationLoc(this.startLocation);
+  }
+
   public get team() {
     return GetPlayerTeam(this.handle);
   }
