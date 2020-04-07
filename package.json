@@ -10,8 +10,16 @@
   },
   "devDependencies": {
     "lua-types": "^2.6.1",
-    "tslint": "^5.20.1",
+    "tslint": "^6.1.0",
     "typescript": "^3.8.3",
     "war3-types": "latest"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cipherxof/w3ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cipherxof/w3ts/issues"
+  },
+  "homepage": "https://github.com/cipherxof/w3ts#readme"
 }

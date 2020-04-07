@@ -3,6 +3,10 @@ export class BinaryWriter {
   public readonly values: any[] = [];
   private fmj = ">";
 
+  public toString() {
+    return string.pack(this.fmj, ...this.values);
+  }
+
   public writeDouble(value: number) {
     this.fmj += "d";
     this.values.push(value);
@@ -10,11 +14,6 @@ export class BinaryWriter {
 
   public writeFloat(value: number) {
     this.fmj += "f";
-    this.values.push(value);
-  }
-
-  public writeInt8(value: number) {
-    this.fmj += "b";
     this.values.push(value);
   }
 
@@ -28,8 +27,13 @@ export class BinaryWriter {
     this.values.push(value);
   }
 
-  public writeUInt8(value: number) {
-    this.fmj += "B";
+  public writeInt8(value: number) {
+    this.fmj += "b";
+    this.values.push(value);
+  }
+
+  public writeString(value: string) {
+    this.fmj += "z";
     this.values.push(value);
   }
 
@@ -43,13 +47,9 @@ export class BinaryWriter {
     this.values.push(value);
   }
 
-  public writeString(value: string) {
-    this.fmj += "z";
+  public writeUInt8(value: number) {
+    this.fmj += "B";
     this.values.push(value);
-  }
-
-  public toString() {
-    return string.pack(this.fmj, ...this.values);
   }
 
 }

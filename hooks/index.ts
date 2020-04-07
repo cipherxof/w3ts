@@ -13,16 +13,22 @@ const hooksMainAfter: scriptHookSignature[] = [];
 const hooksConfigBefore: scriptHookSignature[] = [];
 const hooksConfigAfter: scriptHookSignature[] = [];
 
-function hookedMain() {
-  hooksMainBefore.forEach((func) => func());
+export const executeHooksMainBefore = () => hooksMainBefore.forEach((func) => func());
+export const executeHooksMainAfter = () => hooksMainAfter.forEach((func) => func());
+
+export function hookedMain() {
+  executeHooksMainBefore();
   oldMain();
-  hooksMainAfter.forEach((func) => func());
+  executeHooksMainAfter();
 }
 
-function hookedConfig() {
-  hooksConfigBefore.forEach((func) => func());
+export const executeHooksConfigBefore = () => hooksConfigBefore.forEach((func) => func());
+export const executeHooksConfigAfter = () => hooksConfigAfter.forEach((func) => func());
+
+export function hookedConfig() {
+  executeHooksConfigBefore();
   oldConfig();
-  hooksConfigAfter.forEach((func) => func());
+  executeHooksConfigAfter();
 }
 
 main = hookedMain;

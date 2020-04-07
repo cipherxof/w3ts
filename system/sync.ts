@@ -1,12 +1,12 @@
 /** @noSelfInFile */
 
-import { MapPlayer } from "w3ts/handles/player";
-import { Timer } from "w3ts/handles/timer";
-import { Trigger } from "w3ts/handles/trigger";
-import { base64Decode, base64Encode } from "w3ts/system/base64";
-import { BinaryReader } from "w3ts/system/binaryreader";
-import { BinaryWriter } from "w3ts/system/binarywriter";
-import { getElapsedTime } from "w3ts/system/gametime";
+import { MapPlayer } from "../handles/player";
+import { Timer } from "../handles/timer";
+import { Trigger } from "../handles/trigger";
+import { base64Decode, base64Encode } from "./base64";
+import { BinaryReader } from "./binaryreader";
+import { BinaryWriter } from "./binarywriter";
+import { getElapsedTime } from "./gametime";
 
 const SYNC_PREFIX = "T";
 const SYNC_PREFIX_CHUNK = "S";
