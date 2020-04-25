@@ -78,7 +78,7 @@ export class Group extends Handle<group> {
   }
 
   public get first() {
-    return FirstOfGroup(this.handle);
+    return Unit.fromHandle(FirstOfGroup(this.handle));
   }
 
   public get size(): number {

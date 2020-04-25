@@ -573,7 +573,7 @@ export class Unit extends Widget {
     return IsUnitInGroup(this.handle, whichGroup.handle);
   }
 
-  public inRange(otherUnit: unit, x: number, y: number, distance: number) {
+  public inRange(x: number, y: number, distance: number) {
     return IsUnitInRangeXY(this.handle, x, y, distance);
   }
 
@@ -581,16 +581,16 @@ export class Unit extends Widget {
     return IsUnitInRangeLoc(this.handle, whichPoint.handle, distance);
   }
 
-  public inRangeOfUnit(otherUnit: unit, distance: number) {
-    return IsUnitInRange(this.handle, otherUnit, distance);
+  public inRangeOfUnit(otherUnit: Unit, distance: number) {
+    return IsUnitInRange(this.handle, otherUnit.handle, distance);
   }
 
   public interruptAttack() {
     BlzUnitInterruptAttack(this.handle);
   }
 
-  public inTransport(whichTransport: unit) {
-    return IsUnitInTransport(this.handle, whichTransport);
+  public inTransport(whichTransport: Unit) {
+    return IsUnitInTransport(this.handle, whichTransport.handle);
   }
 
   public isAlive(): boolean {
@@ -661,8 +661,8 @@ export class Unit extends Widget {
     return typeof order === "string" ? IssueTargetOrder(this.handle, order, targetWidget.handle) : IssueTargetOrderById(this.handle, order, targetWidget.handle);
   }
 
-  public isUnit(whichSpecifiedUnit: unit) {
-    return IsUnit(this.handle, whichSpecifiedUnit);
+  public isUnit(whichSpecifiedUnit: Unit) {
+    return IsUnit(this.handle, whichSpecifiedUnit.handle);
   }
 
   public isUnitType(whichUnitType: unittype) {
@@ -677,8 +677,8 @@ export class Unit extends Widget {
     KillUnit(this.handle);
   }
 
-  public lookAt(whichBone: string, lookAtTarget: unit, offsetX: number, offsetY: number, offsetZ: number) {
-    SetUnitLookAt(this.handle, whichBone, lookAtTarget, offsetX, offsetY, offsetZ);
+  public lookAt(whichBone: string, lookAtTarget: Unit, offsetX: number, offsetY: number, offsetZ: number) {
+    SetUnitLookAt(this.handle, whichBone, lookAtTarget.handle, offsetX, offsetY, offsetZ);
   }
 
   public makeAbilityPermanent(permanent: boolean, abilityId: number) {
