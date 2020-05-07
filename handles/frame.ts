@@ -4,11 +4,23 @@ import { Handle } from "./handle";
 
 export class Frame extends Handle<framehandle> {
 
-  constructor(name: string, owner: Frame, priority: number, createContext: number) {
+  constructor(name: string, owner: Frame, priority: number, createContext: number);
+  /**
+   * Creates a SimpleFrame.
+   * @param name 
+   * @param owner 
+   * @param createContext 
+   */
+  constructor(name: string, owner: Frame, createContext: number);
+  constructor(name: string, owner: Frame, priority: number, createContext?: number) {
     if (Handle.initFromHandle()) {
       super();
     } else {
-      super(BlzCreateFrame(name, owner.handle, priority, createContext));
+      if (!createContext) {
+        super(BlzCreateSimpleFrame(name, owner.handle, priority));
+      } else {
+        super(BlzCreateFrame(name, owner.handle, priority, createContext));
+      }
     }
   }
 
