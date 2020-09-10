@@ -25,19 +25,19 @@ export class Force extends Handle<force> {
     DestroyForce(this.handle);
   }
 
-  public enumAllies(whichPlayer: MapPlayer, filter: boolexpr) {
+  public enumAllies(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
     ForceEnumAllies(this.handle, whichPlayer.handle, filter);
   }
 
-  public enumEnemies(whichPlayer: MapPlayer, filter: boolexpr) {
+  public enumEnemies(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
     ForceEnumEnemies(this.handle, whichPlayer.handle, filter);
   }
 
-  public enumPlayers(filter: boolexpr) {
+  public enumPlayers(filter: boolexpr | (() => boolean)) {
     ForceEnumPlayers(this.handle, filter);
   }
 
-  public enumPlayersCounted(filter: boolexpr, countLimit: number) {
+  public enumPlayersCounted(filter: boolexpr | (() => boolean), countLimit: number) {
     ForceEnumPlayersCounted(this.handle, filter, countLimit);
   }
 

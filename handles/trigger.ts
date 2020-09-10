@@ -53,7 +53,7 @@ export class Trigger extends Handle<trigger> {
     return TriggerAddAction(this.handle, actionFunc);
   }
 
-  public addCondition(condition: boolexpr) {
+  public addCondition(condition: boolexpr | (() => boolean)) {
     return TriggerAddCondition(this.handle, condition);
   }
 
@@ -89,11 +89,11 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterDialogEvent(this.handle, whichDialog.handle);
   }
 
-  public registerEnterRegion(whichRegion: region, filter: boolexpr | null) {
+  public registerEnterRegion(whichRegion: region, filter: boolexpr | (() => boolean) | null) {
     return TriggerRegisterEnterRegion(this.handle, whichRegion, filter);
   }
 
-  public registerFilterUnitEvent(whichUnit: unit, whichEvent: unitevent, filter: boolexpr | null) {
+  public registerFilterUnitEvent(whichUnit: unit, whichEvent: unitevent, filter: boolexpr | (() => boolean) | null) {
     return TriggerRegisterFilterUnitEvent(this.handle, whichUnit, whichEvent, filter);
   }
 
@@ -105,7 +105,7 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterGameStateEvent(this.handle, whichState, opcode, limitval);
   }
 
-  public registerLeaveRegion(whichRegion: region, filter: boolexpr | null) {
+  public registerLeaveRegion(whichRegion: region, filter: boolexpr | (() => boolean) | null) {
     return TriggerRegisterLeaveRegion(this.handle, whichRegion, filter);
   }
 
@@ -137,7 +137,7 @@ export class Trigger extends Handle<trigger> {
     return BlzTriggerRegisterPlayerSyncEvent(this.handle, whichPlayer.handle, prefix, fromServer);
   }
 
-  public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | null) {
+  public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | (() => boolean) | null) {
     return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
   }
 
@@ -163,7 +163,7 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterUnitEvent(this.handle, whichUnit.handle, whichEvent);
   }
 
-  public registerUnitInRage(whichUnit: unit, range: number, filter: boolexpr | null) {
+  public registerUnitInRage(whichUnit: unit, range: number, filter: boolexpr | (() => boolean) | null) {
     return TriggerRegisterUnitInRange(this.handle, whichUnit, range, filter);
   }
 

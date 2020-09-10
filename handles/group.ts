@@ -33,43 +33,43 @@ export class Group extends Handle<group> {
     DestroyGroup(this.handle);
   }
 
-  public enumUnitsInRange(x: number, y: number, radius: number, filter: boolexpr) {
+  public enumUnitsInRange(x: number, y: number, radius: number, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsInRange(this.handle, x, y, radius, filter);
   }
 
-  public enumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr, countLimit: number) {
+  public enumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsInRangeCounted(this.handle, x, y, radius, filter, countLimit);
   }
 
-  public enumUnitsInRangeOfPoint(whichPoint: Point, radius: number, filter: boolexpr) {
+  public enumUnitsInRangeOfPoint(whichPoint: Point, radius: number, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsInRangeOfLoc(this.handle, whichPoint.handle, radius, filter);
   }
 
-  public enumUnitsInRangeOfPointCounted(whichPoint: Point, radius: number, filter: boolexpr, countLimit: number) {
+  public enumUnitsInRangeOfPointCounted(whichPoint: Point, radius: number, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsInRangeOfLocCounted(this.handle, whichPoint.handle, radius, filter, countLimit);
   }
 
-  public enumUnitsInRect(r: Rectangle, filter: boolexpr) {
+  public enumUnitsInRect(r: Rectangle, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsInRect(this.handle, r.handle, filter);
   }
 
-  public enumUnitsInRectCounted(r: Rectangle, filter: boolexpr, countLimit: number) {
+  public enumUnitsInRectCounted(r: Rectangle, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsInRectCounted(this.handle, r.handle, filter, countLimit);
   }
 
-  public enumUnitsOfPlayer(whichPlayer: MapPlayer, filter: boolexpr) {
+  public enumUnitsOfPlayer(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsOfPlayer(this.handle, whichPlayer.handle, filter);
   }
 
-  public enumUnitsOfType(unitName: string, filter: boolexpr) {
+  public enumUnitsOfType(unitName: string, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsOfType(this.handle, unitName, filter);
   }
 
-  public enumUnitsOfTypeCounted(unitName: string, filter: boolexpr, countLimit: number) {
+  public enumUnitsOfTypeCounted(unitName: string, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsOfTypeCounted(this.handle, unitName, filter, countLimit);
   }
 
-  public enumUnitsSelected(whichPlayer: MapPlayer, radius: number, filter: boolexpr) {
+  public enumUnitsSelected(whichPlayer: MapPlayer, radius: number, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsSelected(this.handle, whichPlayer.handle, filter);
   }
 
