@@ -96,89 +96,156 @@ export class Frame extends Handle<framehandle> {
     return BlzFrameGetWidth(this.handle);
   }
 
+  public setAlpha(alpha: number) {
+    BlzFrameSetAlpha(this.handle, alpha);
+    return this;
+  }
+
+  public setEnabled(flag: boolean) {
+    BlzFrameSetEnable(this.handle, flag);
+    return this;
+  }
+
+  public setHeight(height: number) {
+    BlzFrameSetSize(this.handle, this.width, height);
+    return this;
+  }
+
+  public setParent(parent: Frame) {
+    BlzFrameSetParent(this.handle, parent.handle);
+    return this;
+  }
+
+  public setText(text: string) {
+    BlzFrameSetText(this.handle, text);
+    return this;
+  }
+
+  public setTextSizeLimit(size: number) {
+    BlzFrameSetTextSizeLimit(this.handle, size);
+    return this;
+  }
+
+  public setValue(value: number) {
+    BlzFrameSetValue(this.handle, value);
+    return this;
+  }
+
+  public setVisible(flag: boolean) {
+    BlzFrameSetVisible(this.handle, flag);
+    return this;
+  }
+
+  public setWidth(width: number) {
+    BlzFrameSetSize(this.handle, width, this.height);
+    return this;
+  }
+
   public addText(text: string) {
     BlzFrameAddText(this.handle, text);
+    return this;
   }
 
   public cageMouse(enable: boolean) {
     BlzFrameCageMouse(this.handle, enable);
+    return this;
   }
 
   public clearPoints() {
     BlzFrameClearAllPoints(this.handle);
+    return this;
   }
 
   public click() {
     BlzFrameClick(this.handle);
+    return this;
   }
 
   public destroy() {
     BlzDestroyFrame(this.handle);
+    return this;
   }
 
   public setAbsPoint(point: framepointtype, x: number, y: number) {
     BlzFrameSetAbsPoint(this.handle, point, x, y);
+    return this;
   }
 
   public setAllPoints(relative: Frame) {
     BlzFrameSetAllPoints(this.handle, relative.handle);
+    return this;
   }
 
   public setFocus(flag: boolean) {
     BlzFrameSetFocus(this.handle, flag);
+    return this;
   }
 
   public setFont(filename: string, height: number, flags: number) {
     BlzFrameSetFont(this.handle, filename, height, flags);
+    return this;
   }
 
   public setLevel(level: number) {
     BlzFrameSetLevel(this.handle, level);
+    return this;
   }
 
   public setMinMaxValue(minValue: number, maxValue: number) {
     BlzFrameSetMinMaxValue(this.handle, minValue, maxValue);
+    return this;
   }
 
   public setModel(modelFile: string, cameraIndex: number) {
     BlzFrameSetModel(this.handle, modelFile, cameraIndex);
+    return this;
   }
 
   public setPoint(point: framepointtype, relative: Frame, relativePoint: framepointtype, x: number, y: number) {
     BlzFrameSetPoint(this.handle, point, relative.handle, relativePoint, x, y);
+    return this;
   }
 
   public setScale(scale: number) {
     BlzFrameSetScale(this.handle, scale);
+    return this;
   }
 
   public setSize(width: number, height: number) {
     BlzFrameSetSize(this.handle, width, height);
+    return this;
   }
 
   public setSpriteAnimate(primaryProp: number, flags: number) {
     BlzFrameSetSpriteAnimate(this.handle, primaryProp, flags);
+    return this;
   }
 
   public setStepSize(stepSize: number) {
     BlzFrameSetStepSize(this.handle, stepSize);
+    return this;
   }
 
   public setTextColor(color: number) {
     BlzFrameSetTextColor(this.handle, color);
+    return this;
   }
 
   public setTexture(texFile: string, flag: number, blend: boolean) {
     BlzFrameSetTexture(this.handle, texFile, flag, blend);
+    return this;
   }
 
   public setTooltip(tooltip: Frame) {
     BlzFrameSetTooltip(this.handle, tooltip.handle);
+    return this;
   }
 
   public setVertexColor(color: number) {
     BlzFrameSetVertexColor(this.handle, color);
+    return this;
   }
+
   public static autoPosition(enable: boolean) {
     BlzEnableUIAutoPosition(enable);
   }
