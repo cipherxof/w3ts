@@ -6,7 +6,7 @@ export function base64Encode(input: string) {
   let output = "";
   // tslint:disable-next-line:no-conditional-assignment
   for (let block = 0, charCode = 0, idx = 0, map = chars; (input.charAt(Math.floor(idx) | 0)).length > 0 || (map = "=", idx % 1); output += map.charAt(Math.floor(63 & block >>> 8 - idx % 1 * 8))) {
-    charCode = input.charCodeAt(Math.floor(idx += 3 / 4)) || 0;
+    charCode = string.byte(input, Math.floor(idx += 3 / 4) + 1) || 0;
 
     if (Math.floor(idx) > input.length && charCode === 0) {
       if (output.length % 4 === 1) {
