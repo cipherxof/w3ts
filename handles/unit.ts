@@ -10,6 +10,8 @@ import { Point } from "./point";
 import { Sound } from "./sound";
 import { Widget } from "./widget";
 
+type Order = "attack" | "attackground" | "patrol" | "move" | "smart" | "setrally" | "unloadall"
+
 export class Unit extends Widget {
 
   public readonly handle!: unit;
@@ -653,7 +655,7 @@ export class Unit extends Widget {
     return typeof order === "string" ? IssuePointOrder(this.handle, order, x, y) : IssuePointOrderById(this.handle, order, x, y);
   }
 
-  public issuePointOrder(order: string | number, whichPoint: Point) {
+  public issuePointOrder(order: Order | number, whichPoint: Point) {
     return typeof order === "string" ? IssuePointOrderLoc(this.handle, order, whichPoint.handle) : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
   }
 
