@@ -14,6 +14,16 @@ export class Unit extends Widget {
 
   public readonly handle!: unit;
 
+  /**
+   * Creates a new unit for the given player and places it in the map at the given position.
+   * 
+   * @param owner owner (player)
+   * @param unitId id of the unit to create (for example: `FourCC('hrif')` to create a Rifleman)
+   * @param x position on the X-Axis for the unit
+   * @param y position on the Y-Axis for the unit
+   * @param face unit facing angle (min. `0.00` max `360.00`)
+   * @param skinId optional id of the skin for the unit
+   */
   constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -23,50 +33,98 @@ export class Unit extends Widget {
     }
   }
 
+  /**
+   * Set the range at which a unit/building/hero will automatically look for targets, and move or attack the target as necessary. 
+   * 
+   * Note that the attacking range of a unit/building/hero can never be greater 
+   * than its acquisition range (see Unit Editor field `Combat - Attack x - Range`).
+   */
   public set acquireRange(value: number) {
     SetUnitAcquireRange(this.handle, value);
   }
 
+  /**
+   * Get the range at which a unit/building/hero will automatically look for targets, and move or attack the target as necessary.
+   */
   public get acquireRange() {
     return GetUnitPropWindow(this.handle);
   }
 
+  /**
+   * Retrieves the value of the hero's baseline agility (excluding bonuses).
+   */
   public get agility() {
     return GetHeroAgi(this.handle, false);
   }
 
+  /**
+   * Defines the value of the hero's agility.
+   * @todo unsure how this behaves in relation to agility gains per level (will they be erased?)
+   */
   public set agility(value: number) {
     SetHeroAgi(this.handle, value, true);
   }
 
+  /**
+   * Retrieves the armor amount for this unit.
+   * @todo unsure if this includes bonuses by research, auras, etc
+   */
   public get armor() {
     return BlzGetUnitArmor(this.handle);
   }
 
+  /**
+   * Defines a new armor amount for this unit.
+   * @todo will research, auras, etc still apply after setting this?
+   */
   public set armor(armorAmount: number) {
     BlzSetUnitArmor(this.handle, armorAmount);
   }
 
+  /**
+   * Defines whether the unit/hero sleeps at night-time. Only affects units or heroes owned by the Neutral Hostile player.
+   */
   public set canSleep(flag: boolean) {
     UnitAddSleep(this.handle, flag);
   }
 
+  /**
+   * Defines whether the unit/hero sleeps at night-time.
+   */
   public get canSleep() {
     return UnitCanSleep(this.handle);
   }
 
+  /**
+   * Defines how large an area the unit/building/hero physically occupies on a map, 
+   * and consequently how well it is able to manoeuvre around other objects on a map (and vice versa).
+   * @todo make sure that, as there is no setter for this (and seemingly no other way to modify the collisionSize), this is indeed not modifiable
+   */
   public get collisionSize() {
     return BlzGetUnitCollisionSize(this.handle);
   }
 
+  /**
+   * Defines what team color the unit/building/hero is to have. 
+   * This field will only work if the Unit Editor field "Art - Allow Custom Team Color" has been set to "True".
+   * @todo make sure the assumption about the editor field is still true
+   */
   public set color(whichColor: playercolor) {
     SetUnitColor(this.handle, whichColor);
   }
 
+  /**
+   * Returns the id of the order the unit currently has.
+   * @todo what does it return if there is no order?
+   */
   public get currentOrder() {
     return GetUnitCurrentOrder(this.handle);
   }
 
+  /**
+   * Returns the **original** range at which the unit will automatically look for targets, and move or attack the target as necessary. 
+   * Note that the attacking range of a unit can never be greater than its acquisition range (see Unit Editor field `Combat - Attack x - Range`)
+   */
   public get defaultAcquireRange() {
     return GetUnitDefaultAcquireRange(this.handle);
   }
@@ -87,26 +145,51 @@ export class Unit extends Widget {
     return GetUnitDefaultTurnSpeed(this.handle);
   }
 
+  /**
+   * The EXP of a hero unit.
+   */
   public get experience() {
     return GetHeroXP(this.handle);
   }
 
+  /**
+   * Sets the exp of a hero to a number. 
+   * Won't go over the EXP cap that heros have. 
+   * Automatically gains skill points if a level up is achieved and shows the Level-Up FX. 
+   */
   public set experience(newXpVal: number) {
     SetHeroXP(this.handle, newXpVal, true);
   }
 
+  /**
+   * Make the unit face the given angle (min: `0.00`, max: `360.00`)
+   */
   public set facing(value: number) {
     SetUnitFacing(this.handle, value);
   }
 
+  /**
+   * Retrieves the angle the unit is currently facing (min: `0.00`, max: `360.00`)
+   */
   public get facing() {
     return GetUnitFacing(this.handle);
   }
 
+  /**
+   * Defines the amount of food resources the unit produces. 
+   * 
+   * The food cap can be modified by editing the field "Food Limit" in Gameplay Constants, 
+   * or by using the trigger actions `Player - Set Property` and `Player - Add Property`.
+   */
   public get foodMade() {
     return GetUnitFoodMade(this.handle);
   }
 
+  /**
+   * Defines the amount of food resources the unit consumes. 
+   * The food cap can be modified by editing the field "Food Limit" in Gameplay Constants, 
+   * or by using the trigger actions `Player - Set Property` and `Player - Add Property`.
+   */
   public get foodUsed() {
     return GetUnitFoodUsed(this.handle);
   }
@@ -115,26 +198,47 @@ export class Unit extends Widget {
     return UnitIgnoreAlarmToggled(this.handle);
   }
 
+  /**
+   * Retrieves the value of the hero's baseline intelligence (excluding bonuses).
+   */
   public get intelligence() {
     return GetHeroInt(this.handle, false);
   }
 
+  /**
+   * Defines the value of the hero's intelligence.
+   * @todo unsure how this behaves in relation to agility gains per level (will they be erased?)
+   */
   public set intelligence(value: number) {
     SetHeroInt(this.handle, value, true);
   }
 
+  /**
+   * Retrieves the size of a unit's inventory.
+   * @todo This should be a range of 0-6, right?
+   */
   public get inventorySize() {
     return UnitInventorySize(this.handle);
   }
 
+  /**
+   * Controls the invulnerability of the unit.
+   */
   public set invulnerable(flag: boolean) {
     SetUnitInvulnerable(this.handle, flag);
   }
 
+  /**
+   * Retrieves the invulnerability of the unit.
+   */
   public get invulnerable() {
     return BlzIsUnitInvulnerable(this.handle);
   }
 
+  /**
+   * Defines the level of the unit/building/hero. 
+   * The values entered can range from `1 to `100`, and determine the amount of experience points given to a hero who kills another unit/building/hero.
+   */
   public get level() {
     return GetUnitLevel(this.handle);
   }
@@ -143,26 +247,45 @@ export class Unit extends Widget {
     return BlzGetLocalUnitZ(this.handle);
   }
 
+  /**
+   * Get the current mana value.
+   */
   public get mana() {
     return this.getState(UNIT_STATE_MANA);
   }
 
+  /**
+   * Set the current mana value.
+   * This should not be greater than maxMana.
+   */
   public set mana(value: number) {
     this.setState(UNIT_STATE_MANA, value);
   }
 
+  /**
+   * Get the maximum hit points of this unit.
+   */
   public get maxLife() {
     return BlzGetUnitMaxHP(this.handle);
   }
 
+  /**
+   * Set the maximum hit points for this unit.
+   */
   public set maxLife(value: number) {
     BlzSetUnitMaxHP(this.handle, value);
   }
 
+  /**
+   * Get the maximum mana points for this unit.
+   */
   public get maxMana() {
     return BlzGetUnitMaxMana(this.handle);
   }
 
+  /**
+   * Set the maximum mana points for this unit.
+   */
   public set maxMana(value: number) {
     BlzSetUnitMaxMana(this.handle, value);
   }
@@ -175,46 +298,89 @@ export class Unit extends Widget {
     return GetUnitMoveSpeed(this.handle);
   }
 
+  /**
+   * Get the name of this unit.
+   * A field used purely within the editor, defining the name of the unit/building/hero.
+   */
   get name() {
     return GetUnitName(this.handle);
   }
 
+  /**
+   * Set the name of this unit.
+   * A field used purely within the editor, defining the name of the unit/building/hero.
+   */
   set name(value: string) {
     BlzSetUnitName(this.handle, value);
   }
 
+  /**
+   * Set the "proper" name of this hero unit.
+   * This is not the regular unit name but the one only heroes have.
+   */
   public set nameProper(value: string) {
     BlzSetHeroProperName(this.handle, value);
   }
 
+  /**
+   * Get the "proper" name of this hero unit.
+   * This is not the regular unit name but the one only heroes have.
+   */
   public get nameProper() {
     return GetHeroProperName(this.handle);
   }
 
+  /**
+   * Change the owning player of this unit.
+   */
   public set owner(whichPlayer: MapPlayer) {
     SetUnitOwner(this.handle, whichPlayer.handle, true);
   }
 
+  /**
+   * Get the owning player of this unit.
+   */
   public get owner() {
     return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
   }
 
+  /**
+   * Control the pause state of this unit.
+   * 
+   * Pause stops a unit dead in it's tracks, it is kinda like hibernate mode. 
+   * It remembers it's orders and when it is unpaused it goes back to them.
+   */
   public set paused(flag: boolean) {
     PauseUnit(this.handle, flag);
   }
 
+  /**
+   * Get the pause state of this unit.
+   */
   public get paused() {
     return IsUnitPaused(this.handle);
   }
 
+  /**
+   * Get the point where this unit is located.
+   */
   public get point() {
     return Point.fromHandle(GetUnitLoc(this.handle));
   }
 
+  /**
+   * Relocate this unit to the given point.
+   */
   public set point(whichPoint: Point) {
     SetUnitPositionLoc(this.handle, whichPoint.handle);
   }
 
+  /**
+   * Get the current point value of this unit.
+   * 
+   * Has no significance in the game other than to be used as part of a trigger 
+   * through the Integer functions `Unit - Point value of Unit` and `Unit - Point value of Unit-type`.
+   */
   public get pointValue() {
     return GetUnitPointValue(this.handle);
   }
@@ -227,6 +393,9 @@ export class Unit extends Widget {
     return GetUnitAcquireRange(this.handle);
   }
 
+  /**
+   * Get the race to which the unit belongs.
+   */
   public get race() {
     return GetUnitRace(this.handle);
   }
@@ -255,10 +424,17 @@ export class Unit extends Widget {
     return BlzIsUnitSelectable(this.handle);
   }
 
+  /**
+   * Controls the size of the unit's selection circle.
+   * Min: `0.000` Max: `20.000`
+   */
   public set selectionScale(scale: number) {
     this.setField(UNIT_RF_SELECTION_SCALE, scale);
   }
 
+  /**
+   * Defines the size of the unit's selection circle.
+   */
   public get selectionScale() {
     const result = this.getField(UNIT_RF_SELECTION_SCALE);
     return typeof result === "number" ? result : 0;
@@ -319,13 +495,17 @@ export class Unit extends Widget {
 
   /**
    * Defines the speed at which the unit/building/hero is allowed to turn. 
-   * Turn speed can only be affected by certain spells, and by the trigger action "Animation - Change Unit Turn Speed". 
+   * 
+   * Turn speed can only be affected by certain spells, and by the trigger action `Animation - Change Unit Turn Speed`. 
    * Turn speed values range between 0 and 1, with 1 being the fastest turn speed possible.
    */
   public set turnSpeed(value: number) {
     SetUnitTurnSpeed(this.handle, value);
   }
 
+  /**
+   * Defines the speed at which the unit/building/hero is allowed to turn.
+   */
   public get turnSpeed() {
     return GetUnitTurnSpeed(this.handle);
   }
@@ -370,6 +550,10 @@ export class Unit extends Widget {
     return BlzGetUnitZ(this.handle);
   }
 
+  /**
+   * Adds an ability to this unit.
+   * @param abilityId id of the ability to add
+   */
   public addAbility(abilityId: number) {
     return UnitAddAbility(this.handle, abilityId);
   }
@@ -378,6 +562,11 @@ export class Unit extends Widget {
     AddUnitAnimationProperties(this.handle, animProperties, add);
   }
 
+  /**
+   * Adds XP to this hero while deciding whether or not to display the Level-Up fx.
+   * @param xpToAdd amount of XP to add
+   * @param showEyeCandy whether or not to display the Level-Up fx
+   */
   public addExperience(xpToAdd: number, showEyeCandy: boolean) {
     AddHeroXP(this.handle, xpToAdd, showEyeCandy);
   }
