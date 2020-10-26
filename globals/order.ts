@@ -370,6 +370,9 @@ enum OrderId{
   wispharvest = 852214,
 }
 
+/**
+ * Orders without a target (instant-orders)
+ */
 export enum NoTargetOrderId{
   ambush = OrderId.ambush,
   ancestralspirit = OrderId.ancestralspirit,
