@@ -264,10 +264,27 @@ export class Unit extends Widget {
     return typeof result === "number" ? result : 0;
   }
 
+  /**
+   * Renders the unit invisible² and unable to participate in most situations. 
+   * Good if you want a pre-made unit to appear out of seemingly nowhere.
+   * 
+   * ² Unlike giving the unit the permanent invisibility ability, a unit hidden this way
+   *   can't be detected by the usual means of detecting invisibility.
+   * 
+   * @todo Further clarify how the invisibility differs from the regular one:
+   *  - can it take damage inflicted by other units?
+   *  - can it be picked up by unit groups?
+   *  - can it move?
+   */
   public set show(flag: boolean) {
     ShowUnit(this.handle, flag);
   }
 
+  /**
+   * Returns whether the unit is currently hidden or not.
+   * 
+   * Cannot detect regular invisibility.
+   */
   public get show() {
     return IsUnitHidden(this.handle);
   }
@@ -300,6 +317,11 @@ export class Unit extends Widget {
     SetHeroStr(this.handle, value, true);
   }
 
+  /**
+   * Defines the speed at which the unit/building/hero is allowed to turn. 
+   * Turn speed can only be affected by certain spells, and by the trigger action "Animation - Change Unit Turn Speed". 
+   * Turn speed values range between 0 and 1, with 1 being the fastest turn speed possible.
+   */
   public set turnSpeed(value: number) {
     SetUnitTurnSpeed(this.handle, value);
   }
