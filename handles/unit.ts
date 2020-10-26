@@ -575,18 +575,37 @@ export class Unit extends Widget {
     UnitAddIndicator(this.handle, red, blue, green, alpha);
   }
 
+  /**
+   * Adds the given item to the unit's inventory (if possible).
+   * @param whichItem item to add
+   */
   public addItem(whichItem: Item) {
     return UnitAddItem(this.handle, whichItem.handle);
   }
 
+  /**
+   * Adds the given item, identified by id, to the unit's inventory (if possible).
+   * @param itemId id of item to add
+   */
   public addItemById(itemId: number) {
     return UnitAddItemById(this.handle, itemId);
   }
 
+  /**
+   * Adds the given item, identified by id, to the given inventory slot (if possible).
+   * @param itemId id of item to add
+   * @param itemSlot number of the slot
+   */
   public addItemToSlotById(itemId: number, itemSlot: number) {
     return UnitAddItemToSlotById(this.handle, itemId, itemSlot);
   }
 
+  /**
+   * Adds the given item, identified by id, to the stock of this unit.
+   * @param itemId id of item to add
+   * @param currentStock amount of items available right away
+   * @param stockMax maximum amount of items that can be available
+   */
   public addItemToStock(itemId: number, currentStock: number, stockMax: number) {
     AddItemToStock(this.handle, itemId, currentStock, stockMax);
   }
@@ -599,14 +618,28 @@ export class Unit extends Widget {
     UnitAddSleepPerm(this.handle, add);
   }
 
+  /**
+   * @todo what is this, Target Types?
+   */
   public addType(whichUnitType: unittype) {
     return UnitAddType(this.handle, whichUnitType);
   }
 
+  /**
+   * Adds the given unit, identified by id, to the stock of this unit.
+   * @param unitId id of the unit to add to stock
+   * @param currentStock amount of units available right away
+   * @param stockMax maximum amount of units that can be available
+   */
   public addUnitToStock(unitId: number, currentStock: number, stockMax: number) {
     AddUnitToStock(this.handle, unitId, currentStock, stockMax);
   }
 
+  /**
+   * Applies an expiration timer (read: death sentence) to this unit.
+   * @param buffId id of the expiration type ( @todo possible values?)
+   * @param duration time to live
+   */
   public applyTimedLife(buffId: number, duration: number) {
     UnitApplyTimedLife(this.handle, buffId, duration);
   }
@@ -615,6 +648,9 @@ export class Unit extends Widget {
     AttachSoundToUnit(sound.handle, this.handle);
   }
 
+  /**
+   * Removes a previously created expiration timer from this unit.
+   */
   public cancelTimedLife() {
     BlzUnitCancelTimedLife(this.handle);
   }
@@ -627,10 +663,34 @@ export class Unit extends Widget {
     return UnitCountBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
   }
 
+  /**
+   * Inflict damage caused by this unit at the given point.
+   * @param delay @todo what resolution does this field have, probably milliseconds?
+   * @param radius area of effect of the damage application
+   * @param x position on the X-Axis
+   * @param y position on the Y-Axis
+   * @param amount amount of damage
+   * @param attack @todo what does this mean?
+   * @param ranged whether this is a ranged or melee attack
+   * @param attackType type of the attack
+   * @param damageType type of the damage that will be applied
+   * @param weaponType type of the weapon that will be used
+   */
   public damageAt(delay: number, radius: number, x: number, y: number, amount: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
     return UnitDamagePoint(this.handle, delay, radius, x, y, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
+  /**
+   * Inflict damage caused by this unit to the given target.
+   * @param target target that will take damage
+   * @param amount amount of damage
+   * @param radius area of effect of the damage application
+   * @param attack @todo what does this mean?
+   * @param ranged whether this is a ranged or melee attack
+   * @param attackType type of the attack
+   * @param damageType type of the damage that will be applied
+   * @param weaponType type of the weapon that will be used
+   */
   public damageTarget(target: widget, amount: number, radius: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
     return UnitDamageTarget(this.handle, target, amount, attack, ranged, attackType, damageType, weaponType);
   }
