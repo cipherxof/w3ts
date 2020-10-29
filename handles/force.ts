@@ -25,6 +25,17 @@ export class Force extends Handle<force> {
     DestroyForce(this.handle);
   }
 
+  /**
+   * Returns all player handles belonging to this force
+   */
+  public getPlayers(){
+    let players: player[] = []
+
+    ForForce(this.handle, () => players.push(GetEnumPlayer()));
+
+    return players
+  }
+
   public enumAllies(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
     ForceEnumAllies(this.handle, whichPlayer.handle, filter);
   }
