@@ -53,6 +53,24 @@ export class Trigger extends Handle<trigger> {
     return TriggerAddAction(this.handle, actionFunc);
   }
 
+  /**
+   * Adds a new condition to the trigger.
+   * 
+   * Adding more conditions later wil join them by AND (that means all conditions need to evaluate to `true`)
+   * 
+   * @example
+   * ```ts
+   * const trg = new Trigger()
+   * // trigger fires if a unit is attacked
+   * trg.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
+   * // but only if the unit name matches
+   * trg.addCondition(Condition(() => Unit.fromHandle(GetAttacker()).name === 'Attacker Unit')) 
+   * trg.addAction(() => { 
+   *  //do something... 
+   * })
+   * ```
+   * @param condition the condition to add
+   */
   public addCondition(condition: boolexpr | (() => boolean)) {
     return TriggerAddCondition(this.handle, condition);
   }
