@@ -431,7 +431,7 @@ export class Unit extends Widget {
   /**
    * Removes the unit from the game.
    * 
-   * It will literally disappear immediately without leaving bones or playing any animation.
+   * It will literally disappear immediately neither leaving bones nor playing any animation.
    * 
    * Also, triggers subscribed to _death_ events won't fire (use `Unit.kill()` if you need this).
    */
