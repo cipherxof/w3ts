@@ -428,6 +428,13 @@ export class Unit extends Widget {
     return DecUnitAbilityLevel(this.handle, abilCode);
   }
 
+  /**
+   * Removes the unit from the game.
+   * 
+   * It will literally disappear immediately without leaving bones or playing any animation.
+   * 
+   * Also, triggers subscribed to _death_ events won't fire (use `Unit.kill()` if you need this).
+   */
   public destroy() {
     RemoveUnit(this.handle);
   }
@@ -673,6 +680,13 @@ export class Unit extends Widget {
     return IsUnitVisible(this.handle, whichPlayer.handle);
   }
 
+  /**
+   * Kills the unit.
+   * 
+   * This is a "regular" kill thus invoking any existing triggers that listen to _death_ events.
+   * 
+   * Use `Unit.destroy()` to completely and thoroughly remove a unit from the game (while not invoking _death_ triggers). 
+   */
   public kill() {
     KillUnit(this.handle);
   }
