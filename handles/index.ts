@@ -17,6 +17,7 @@ export * from "./quest";
 export * from "./rect";
 export * from "./region";
 export * from "./sound";
+export * from "./texttag";
 export * from "./timer";
 export * from "./timerdialog";
 export * from "./trigger";
