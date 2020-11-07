@@ -1,6 +1,6 @@
 /** @noSelfInFile **/
 
-import { NoTargetOrderId, OrderId, PointOrderId, TargetOrderId } from "../globals/order";
+import { OrderId } from "../globals/order";
 import { Destructable } from "./destructable";
 import { Force } from "./force";
 import { Group } from "./group";
@@ -638,27 +638,27 @@ export class Unit extends Widget {
     return typeof unit === "string" ? IssueBuildOrder(this.handle, unit, x, y) : IssueBuildOrderById(this.handle, unit, x, y);
   }
 
-  public issueImmediateOrder(order: string | NoTargetOrderId | OrderId) {
+  public issueImmediateOrder(order: string | OrderId) {
     return typeof order === "string" ? IssueImmediateOrder(this.handle, order) : IssueImmediateOrderById(this.handle, order);
   }
 
-  public issueInstantOrderAt(order: string | PointOrderId | OrderId, x: number, y: number, instantTargetWidget: Widget) {
+  public issueInstantOrderAt(order: string | OrderId, x: number, y: number, instantTargetWidget: Widget) {
     return typeof order === "string" ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle) : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
   }
 
-  public issueInstantTargetOrder(order: string | TargetOrderId | OrderId, targetWidget: Widget, instantTargetWidget: Widget) {
+  public issueInstantTargetOrder(order: string | OrderId, targetWidget: Widget, instantTargetWidget: Widget) {
     return typeof order === "string" ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle) : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
   }
 
-  public issueOrderAt(order: string | PointOrderId | OrderId, x: number, y: number) {
+  public issueOrderAt(order: string | OrderId, x: number, y: number) {
     return typeof order === "string" ? IssuePointOrder(this.handle, order, x, y) : IssuePointOrderById(this.handle, order, x, y);
   }
 
-  public issuePointOrder(order: string | PointOrderId | OrderId, whichPoint: Point) {
+  public issuePointOrder(order: string | OrderId, whichPoint: Point) {
     return typeof order === "string" ? IssuePointOrderLoc(this.handle, order, whichPoint.handle) : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
   }
 
-  public issueTargetOrder(order: string | TargetOrderId | OrderId, targetWidget: Widget) {
+  public issueTargetOrder(order: string | OrderId, targetWidget: Widget) {
     return typeof order === "string" ? IssueTargetOrder(this.handle, order, targetWidget.handle) : IssueTargetOrderById(this.handle, order, targetWidget.handle);
   }
 
