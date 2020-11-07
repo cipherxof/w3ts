@@ -15,10 +15,10 @@ export class Unit extends Widget {
   public readonly handle!: unit;
 
   /**
-   * Creates a new unit for the given player and places it in the map at the given position.
+   * Creates a new unit for the given player at the given position.
    * 
    * @param owner owner (player)
-   * @param unitId id of the unit to create (for example: `FourCC('hrif')` to create a Rifleman)
+   * @param unitId unit id (i.e. `FourCC('hrif')` for a Rifleman)
    * @param x position on the X-Axis for the unit
    * @param y position on the Y-Axis for the unit
    * @param face unit facing angle (min. `0.00` max `360.00`)
@@ -36,8 +36,8 @@ export class Unit extends Widget {
   /**
    * Set the range at which a unit/building/hero will automatically look for targets, and move or attack the target as necessary. 
    * 
-   * Note that the attacking range of a unit/building/hero can never be greater 
-   * than its acquisition range (see Unit Editor field `Combat - Attack x - Range`).
+   * _(Note that the attacking range of a unit/building/hero can never be greater 
+   * than its acquisition range (see Unit Editor field `Combat - Attack x - Range`).)_
    */
   public set acquireRange(value: number) {
     SetUnitAcquireRange(this.handle, value);
@@ -123,7 +123,8 @@ export class Unit extends Widget {
 
   /**
    * Returns the **original** range at which the unit will automatically look for targets, and move or attack the target as necessary. 
-   * Note that the attacking range of a unit can never be greater than its acquisition range (see Unit Editor field `Combat - Attack x - Range`)
+   * 
+   * _(Note that the attacking range of a unit can never be greater than its acquisition range (see Unit Editor field `Combat - Attack x - Range`))_
    */
   public get defaultAcquireRange() {
     return GetUnitDefaultAcquireRange(this.handle);
@@ -154,8 +155,8 @@ export class Unit extends Widget {
 
   /**
    * Sets the exp of a hero to a number. 
-   * Won't go over the EXP cap that heros have. 
-   * Automatically gains skill points if a level up is achieved and shows the Level-Up FX. 
+   * - Won't go over the EXP cap that heros have. 
+   * - Automatically gains skill points if a level up is achieved and shows the Level-Up FX. 
    */
   public set experience(newXpVal: number) {
     SetHeroXP(this.handle, newXpVal, true);
@@ -177,9 +178,6 @@ export class Unit extends Widget {
 
   /**
    * Defines the amount of food resources the unit produces. 
-   * 
-   * The food cap can be modified by editing the field "Food Limit" in Gameplay Constants, 
-   * or by using the trigger actions `Player - Set Property` and `Player - Add Property`.
    */
   public get foodMade() {
     return GetUnitFoodMade(this.handle);
@@ -187,8 +185,6 @@ export class Unit extends Widget {
 
   /**
    * Defines the amount of food resources the unit consumes. 
-   * The food cap can be modified by editing the field "Food Limit" in Gameplay Constants, 
-   * or by using the trigger actions `Player - Set Property` and `Player - Add Property`.
    */
   public get foodUsed() {
     return GetUnitFoodUsed(this.handle);
@@ -215,7 +211,6 @@ export class Unit extends Widget {
 
   /**
    * Retrieves the size of a unit's inventory.
-   * @todo This should be a range of 0-6, right?
    */
   public get inventorySize() {
     return UnitInventorySize(this.handle);
@@ -236,8 +231,7 @@ export class Unit extends Widget {
   }
 
   /**
-   * Defines the level of the unit/building/hero. 
-   * The values entered can range from `1 to `100`, and determine the amount of experience points given to a hero who kills another unit/building/hero.
+   * Retrieves the level of the unit. 
    */
   public get level() {
     return GetUnitLevel(this.handle);
@@ -248,15 +242,16 @@ export class Unit extends Widget {
   }
 
   /**
-   * Get the current mana value.
+   * Get the current amount of mana.
    */
   public get mana() {
     return this.getState(UNIT_STATE_MANA);
   }
 
   /**
-   * Set the current mana value.
-   * This should not be greater than maxMana.
+   * Set the current amount of mana.
+   * 
+   * _(This should not be greater than maxMana.)_
    */
   public set mana(value: number) {
     this.setState(UNIT_STATE_MANA, value);
@@ -290,17 +285,24 @@ export class Unit extends Widget {
     BlzSetUnitMaxMana(this.handle, value);
   }
 
+  /**
+   * Set the movement speed for this unit.
+   * 
+   * _(The gameplay constants `Movement - Unit Speed - Maximum/Minimum` represent the limits.)_
+   */
   public set moveSpeed(value: number) {
     SetUnitMoveSpeed(this.handle, value);
   }
 
+  /**
+   * Get the movement speed for this unit.
+   */
   public get moveSpeed() {
     return GetUnitMoveSpeed(this.handle);
   }
 
   /**
    * Get the name of this unit.
-   * A field used purely within the editor, defining the name of the unit/building/hero.
    */
   get name() {
     return GetUnitName(this.handle);
@@ -308,7 +310,6 @@ export class Unit extends Widget {
 
   /**
    * Set the name of this unit.
-   * A field used purely within the editor, defining the name of the unit/building/hero.
    */
   set name(value: string) {
     BlzSetUnitName(this.handle, value);
@@ -316,7 +317,8 @@ export class Unit extends Widget {
 
   /**
    * Set the "proper" name of this hero unit.
-   * This is not the regular unit name but the one only heroes have.
+   * 
+   * _(This is not the regular unit name but the one only heroes have._)
    */
   public set nameProper(value: string) {
     BlzSetHeroProperName(this.handle, value);
@@ -324,14 +326,15 @@ export class Unit extends Widget {
 
   /**
    * Get the "proper" name of this hero unit.
-   * This is not the regular unit name but the one only heroes have.
+   * 
+   * _(This is not the regular unit name but the one only heroes have.)_
    */
   public get nameProper() {
     return GetHeroProperName(this.handle);
   }
 
   /**
-   * Change the owning player of this unit.
+   * Changes the owner of this unit.
    */
   public set owner(whichPlayer: MapPlayer) {
     SetUnitOwner(this.handle, whichPlayer.handle, true);
@@ -345,10 +348,10 @@ export class Unit extends Widget {
   }
 
   /**
-   * Control the pause state of this unit.
+   * Controls the pause state of this unit.
    * 
-   * Pause stops a unit dead in it's tracks, it is kinda like hibernate mode. 
-   * It remembers it's orders and when it is unpaused it goes back to them.
+   * _Pause stops a unit dead in it's tracks, it is kind of like hibernate mode. 
+   * It remembers it's orders and, when it is unpaused, goes back to them._
    */
   public set paused(flag: boolean) {
     PauseUnit(this.handle, flag);
@@ -378,8 +381,7 @@ export class Unit extends Widget {
   /**
    * Get the current point value of this unit.
    * 
-   * Has no significance in the game other than to be used as part of a trigger 
-   * through the Integer functions `Unit - Point value of Unit` and `Unit - Point value of Unit-type`.
+   * _Has no significance in the game other than to be used as part of a trigger_
    */
   public get pointValue() {
     return GetUnitPointValue(this.handle);
@@ -404,10 +406,20 @@ export class Unit extends Widget {
     return Destructable.fromHandle(GetUnitRallyDestructable(this.handle));
   }
 
+  /**
+   * Get the rally point of this unit.
+   * 
+   * _Most buildings able to train units have rally points that define where to send freshly trained units._
+   */
   public get rallyPoint() {
     return Point.fromHandle(GetUnitRallyPoint(this.handle));
   }
 
+  /**
+   * Get the rally unit of this unit.
+   * 
+   * _A rally flag set to another unit instead of a point is required for this to work._
+   */
   public get rallyUnit() {
     return Unit.fromHandle(GetUnitRallyUnit(this.handle));
   }
@@ -433,7 +445,7 @@ export class Unit extends Widget {
   }
 
   /**
-   * Defines the size of the unit's selection circle.
+   * Get the size of the unit's selection circle.
    */
   public get selectionScale() {
     const result = this.getField(UNIT_RF_SELECTION_SCALE);
@@ -441,16 +453,10 @@ export class Unit extends Widget {
   }
 
   /**
-   * Renders the unit invisible² and unable to participate in most situations. 
-   * Good if you want a pre-made unit to appear out of seemingly nowhere.
+   * Hides the unit² and prevents participation in most situations. 
    * 
-   * ² Unlike giving the unit the permanent invisibility ability, a unit hidden this way
-   *   can't be detected by the usual means of detecting invisibility.
-   * 
-   * @todo Further clarify how the invisibility differs from the regular one:
-   *  - can it take damage inflicted by other units?
-   *  - can it be picked up by unit groups?
-   *  - can it move?
+   * ² _Unlike giving the unit the permanent invisibility ability, a unit hidden this way
+   *   can't be detected by the usual means of detecting invisibility._
    */
   public set show(flag: boolean) {
     ShowUnit(this.handle, flag);
@@ -473,30 +479,51 @@ export class Unit extends Widget {
     BlzSetUnitSkin(this.handle, skinId);
   }
 
+  /**
+   * Returns the units available skill points.
+   */
   public get skillPoints() {
     return GetHeroSkillPoints(this.handle);
   }
 
+  /**
+   * Adds the amount to the units available skill points. Calling with a negative
+   * number reduces the skill points by that amount.
+   * Returns false if the amount of available skill points is already zero and
+   * if it's called with any non-positive number.
+   * Returns true in any other case.
+   * @note If `skillPointDelta` is greater than the amount of skillpoints the hero
+   * actually can spend (like 9 for three 3-level abilities) only that amount will
+   * be added. Negative `skillPointDelta` works as expected.
+   */
   public set skillPoints(skillPointDelta: number) {
     UnitModifySkillPoints(this.handle, skillPointDelta);
   }
 
+  /**
+   * Returns whether or not the unit is currently asleep.
+   */
   public get sleeping() {
     return UnitIsSleeping(this.handle);
   }
 
+  /**
+   * Retrieves the current strength of the hero excluding bonuses.
+   */
   public get strength() {
     return GetHeroStr(this.handle, false);
   }
 
+  /**
+   * Sets the strength of the hero permanently to the given value.
+   */
   public set strength(value: number) {
     SetHeroStr(this.handle, value, true);
   }
 
   /**
    * Defines the speed at which the unit/building/hero is allowed to turn. 
-   * 
-   * Turn speed can only be affected by certain spells, and by the trigger action `Animation - Change Unit Turn Speed`. 
+   * @note Turn speed can only be affected by certain spells, and by the trigger action `Animation - Change Unit Turn Speed`. 
    * Turn speed values range between 0 and 1, with 1 being the fastest turn speed possible.
    */
   public set turnSpeed(value: number) {
@@ -510,14 +537,27 @@ export class Unit extends Widget {
     return GetUnitTurnSpeed(this.handle);
   }
 
+  /**
+   * Retrieves the unit's type id.
+   */
   public get typeId() {
     return GetUnitTypeId(this.handle);
   }
 
+  /**
+   * Retrieves a single, custom integer for a unit.
+   */
   public get userData() {
     return GetUnitUserData(this.handle);
   }
 
+  /**
+   * Sets a single, custom integer for a unit.
+   * @note This value is not used by any standard mechanisms in Warcraft III nor
+   * in the blizzard.j, so it is free to be harnessed.
+   * Besides `GetHandleId`, this is an excellent possibility to assign a unique
+   * integer id to a unit, which can serve as an index in other data structures.
+   */
   public set userData(value: number) {
     SetUnitUserData(this.handle, value);
   }
@@ -530,22 +570,37 @@ export class Unit extends Widget {
     return WaygateIsActive(this.handle);
   }
 
+  /**
+   * Retrieves the position of the unit on the x-axis.
+   */
   public get x() {
     return GetUnitX(this.handle);
   }
 
+  /**
+   * Sets the position of the unit on the x-axis.
+   */
   public set x(value: number) {
     SetUnitX(this.handle, value);
   }
 
+  /**
+   * Retrieves the position of the unit on the y-axis.
+   */
   public get y() {
     return GetUnitY(this.handle);
   }
 
+  /**
+   * Sets the position of the unit on the y-axis.
+   */
   public set y(value: number) {
     SetUnitY(this.handle, value);
   }
 
+  /**
+   * Gets the position of the unit on the z-axis.
+   */
   public get z() {
     return BlzGetUnitZ(this.handle);
   }
@@ -610,6 +665,14 @@ export class Unit extends Widget {
     AddItemToStock(this.handle, itemId, currentStock, stockMax);
   }
 
+  /**
+   * Adds the provided amount of gold to this unit (only works if this unit is a gold mine).
+   * @bug If the value after adding negative amount will be less than zero, then it
+   * will display negative resource amount, but if some peasant or peon will try to
+   * gather resources from such a mine, he will bring back 0 gold and the mine will
+   * be auto-destroyed.
+   * @param amount The amount of resources to add to the unit.
+   */
   public addResourceAmount(amount: number) {
     AddResourceAmount(this.handle, amount);
   }
@@ -618,9 +681,6 @@ export class Unit extends Widget {
     UnitAddSleepPerm(this.handle, add);
   }
 
-  /**
-   * @todo what is this, Target Types?
-   */
   public addType(whichUnitType: unittype) {
     return UnitAddType(this.handle, whichUnitType);
   }
@@ -665,13 +725,14 @@ export class Unit extends Widget {
 
   /**
    * Inflict damage caused by this unit at the given point.
-   * @param delay @todo what resolution does this field have, probably milliseconds?
+   * @bug Has been known to cause crashes in battle.net
+   * @param delay (what resolution does this field have, milliseconds?)
    * @param radius area of effect of the damage application
    * @param x position on the X-Axis
    * @param y position on the Y-Axis
    * @param amount amount of damage
-   * @param attack @todo what does this mean?
-   * @param ranged whether this is a ranged or melee attack
+   * @param attack consider the damage dealt as being an attack
+   * @param ranged consider the damage dealt as being from a ranged source
    * @param attackType type of the attack
    * @param damageType type of the damage that will be applied
    * @param weaponType type of the weapon that will be used
@@ -685,8 +746,8 @@ export class Unit extends Widget {
    * @param target target that will take damage
    * @param amount amount of damage
    * @param radius area of effect of the damage application
-   * @param attack @todo what does this mean?
-   * @param ranged whether this is a ranged or melee attack
+   * @param attack consider the damage dealt as being an attack
+   * @param ranged consider the damage dealt as being from a ranged source
    * @param attackType type of the attack
    * @param damageType type of the damage that will be applied
    * @param weaponType type of the weapon that will be used
@@ -695,6 +756,10 @@ export class Unit extends Widget {
     return UnitDamageTarget(this.handle, target, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
+  /**
+   * Decreases the level of the given ability for this unit by one.
+   * @param abilCode 
+   */
   public decAbilityLevel(abilCode: number) {
     return DecUnitAbilityLevel(this.handle, abilCode);
   }
@@ -703,14 +768,31 @@ export class Unit extends Widget {
     RemoveUnit(this.handle);
   }
 
-  public disableAbility(abilId: number, flag: boolean, hideUI: boolean) {
-    BlzUnitHideAbility(this.handle, abilId, flag);
+  /**
+   * Disables the given ability for this unit optionally hiding the ui as well.
+   * 
+   * @param abilId ability to hide
+   * @param hideUI also hide the icon in the ui
+   */
+  public disableAbility(abilId: number, hideUI: boolean) {
+    BlzUnitHideAbility(this.handle, abilId, hideUI);
   }
 
+  /**
+   * Drops the specified item at the given position.
+   * @param whichItem item to drop
+   * @param x 
+   * @param y 
+   */
   public dropItem(whichItem: Item, x: number, y: number) {
     return UnitDropItemPoint(this.handle, whichItem.handle, x, y);
   }
 
+  /**
+   * Drops the item currently in the provided inventory slot.
+   * @param whichItem 
+   * @param slot 
+   */
   public dropItemFromSlot(whichItem: Item, slot: number) {
     return UnitDropItemSlot(this.handle, whichItem.handle, slot);
   }
@@ -719,10 +801,18 @@ export class Unit extends Widget {
     return UnitDropItemTarget(this.handle, whichItem.handle, target.handle);
   }
 
+  /**
+   * Finishes the cooldown on the given ability for this unit.
+   * @param abilCode 
+   */
   public endAbilityCooldown(abilCode: number) {
     BlzEndUnitAbilityCooldown(this.handle, abilCode);
   }
 
+  /**
+   * Retrieves the ability with the given id.
+   * @param abilId 
+   */
   public getAbility(abilId: number) {
     return BlzGetUnitAbility(this.handle, abilId);
   }
@@ -731,42 +821,96 @@ export class Unit extends Widget {
     return BlzGetUnitAbilityByIndex(this.handle, index);
   }
 
+  /**
+   * Retrieves the cooldown for the given ability and level.
+   * @param abilId 
+   * @param level 
+   */
   public getAbilityCooldown(abilId: number, level: number) {
     return BlzGetUnitAbilityCooldown(this.handle, abilId, level);
   }
 
-  public getAbilityCooldownRemaining(abilId: number, level: number) {
+  /**
+   * Retrieves the cooldown currently remaining on the given ability.
+   * @param abilId 
+   */
+  public getAbilityCooldownRemaining(abilId: number) {
     return BlzGetUnitAbilityCooldownRemaining(this.handle, abilId);
   }
 
+  /**
+   * Retrieves the current level of the given ability.
+   * @param abilCode 
+   */
   public getAbilityLevel(abilCode: number) {
     return GetUnitAbilityLevel(this.handle, abilCode);
   }
 
+  /**
+   * Retrieves the mana cost for the given ability and level.
+   * @param abilId 
+   * @param level 
+   */
   public getAbilityManaCost(abilId: number, level: number) {
     return BlzGetUnitAbilityManaCost(this.handle, abilId, level);
   }
 
+  /**
+   * Retrieves the agility of this hero, optionally including bonuses.
+   * @param includeBonuses 
+   */
   public getAgility(includeBonuses: boolean) {
     return GetHeroAgi(this.handle, includeBonuses);
   }
 
+  /**
+   * Retrieves the time between attacks of the given weapon.
+   * @param weaponIndex 
+   */
   public getAttackCooldown(weaponIndex: number) {
     return BlzGetUnitAttackCooldown(this.handle, weaponIndex);
   }
 
+  /**
+   * Retrieves the amount of base damage for the given weapon.
+   * @param weaponIndex 
+   */
   public getBaseDamage(weaponIndex: number) {
     return BlzGetUnitBaseDamage(this.handle, weaponIndex);
   }
 
+  /**
+   * Retrieves the number of dice in the damage calculation for the given weapon.
+   * @param weaponIndex 
+   */
   public getDiceNumber(weaponIndex: number) {
     return BlzGetUnitDiceNumber(this.handle, weaponIndex);
   }
 
+  /**
+   * Retrieves the number of sides on each dice in the damage calculation for the given weapon.
+   * @param weaponIndex 
+   */
   public getDiceSides(weaponIndex: number) {
     return BlzGetUnitDiceSides(this.handle, weaponIndex);
   }
 
+  /**
+   * Retrieves the value of select fields of this unit. 
+   * @param field name of the field
+   * @note Available fields are prefixed with `UNIT_` followed by the field types:
+   * - IF = integer
+   * - BF = boolean
+   * - RF = real
+   * - SF = string
+   * @example
+   * ```ts
+   * // agility
+   * const agi = unit.getField(UNIT_IF_AGILITY)
+   * // isBuilding
+   * const isBuilding = unit.getField(UNIT_BF_IS_A_BUILDING)
+   * ```
+   */
   public getField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield) {
     const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
@@ -792,10 +936,16 @@ export class Unit extends Widget {
     }
   }
 
+  /**
+   * Retrieves the unit's flying height.
+   */
   public getflyHeight() {
     return GetUnitFlyHeight(this.handle);
   }
 
+  /**
+   * Retrieves the level of the hero.
+   */
   public getHeroLevel() {
     return GetHeroLevel(this.handle);
   }
@@ -804,18 +954,39 @@ export class Unit extends Widget {
     return UnitIgnoreAlarm(this.handle, flag);
   }
 
+  /**
+   * Retrieves the hero's current intelligence, optionally including bonuses.
+   * @param includeBonuses
+   */
   public getIntelligence(includeBonuses: boolean) {
     return GetHeroInt(this.handle, includeBonuses);
   }
 
+  /**
+   * Retrieves the item in the specified inventory slot.
+   * @param slot 
+   */
   public getItemInSlot(slot: number) {
     return UnitItemInSlot(this.handle, slot);
   }
 
+  /**
+   * Retrieves the specified unit state value.
+   * @param whichUnitState wich state to return (i.e. `UNIT_STATE_LIFE`)
+   * @example
+   * ```ts
+   * const health = unit.getState(UNIT_STATE_LIFE)
+   * const maxHealth = unit.getState(UNIT_STATE_MAX_LIFE)
+   * ```
+   */
   public getState(whichUnitState: unitstate) {
     return GetUnitState(this.handle, whichUnitState);
   }
 
+  /**
+   * Retrieves the hero's current strength, optionally including bonuses.
+   * @param includeBonuses 
+   */
   public getStrength(includeBonuses: boolean) {
     return GetHeroStr(this.handle, includeBonuses);
   }
@@ -828,30 +999,59 @@ export class Unit extends Widget {
     return UnitHasItem(this.handle, whichItem.handle);
   }
 
+  // duplicate?
   public hideAbility(abilId: number, flag: boolean) {
     BlzUnitHideAbility(this.handle, abilId, flag);
   }
 
+  /**
+   * Increase the level of the given ability by one.
+   * @param abilCode 
+   */
   public incAbilityLevel(abilCode: number) {
     return IncUnitAbilityLevel(this.handle, abilCode);
   }
 
+  /**
+   * Returns true if this unit is part of the given force.
+   * @param whichForce 
+   */
   public inForce(whichForce: Force) {
     return IsUnitInForce(this.handle, whichForce.handle);
   }
 
+  /**
+   * Returns true if this unit is part of the given group.
+   * @param whichGroup 
+   */
   public inGroup(whichGroup: Group) {
     return IsUnitInGroup(this.handle, whichGroup.handle);
   }
 
+  /**
+   * Returns true if this unit is in range of the given coordinates.
+   * @param x 
+   * @param y 
+   * @param distance 
+   */
   public inRange(x: number, y: number, distance: number) {
     return IsUnitInRangeXY(this.handle, x, y, distance);
   }
 
+  /**
+   * Returns true if this unit is in range of the given point.
+   * @param whichPoint 
+   * @param distance 
+   */
   public inRangeOfPoint(whichPoint: Point, distance: number) {
     return IsUnitInRangeLoc(this.handle, whichPoint.handle, distance);
   }
 
+  /**
+   * Returns true if this unit is in range of the given unit.
+   * @param otherUnit 
+   * @param distance 
+   */
   public inRangeOfUnit(otherUnit: Unit, distance: number) {
     return IsUnitInRange(this.handle, otherUnit.handle, distance);
   }
@@ -864,14 +1064,25 @@ export class Unit extends Widget {
     return IsUnitInTransport(this.handle, whichTransport.handle);
   }
 
+  /**
+   * Returns true if this unit is alive.
+   */
   public isAlive(): boolean {
     return UnitAlive(this.handle);
   }
 
+  /**
+   * Returns true if the given player is an ally for this unit.
+   * @param whichPlayer 
+   */
   public isAlly(whichPlayer: MapPlayer) {
     return IsUnitAlly(this.handle, whichPlayer.handle);
   }
 
+  /**
+   * Returns true if the given player is an enemy for this unit.
+   * @param whichPlayer 
+   */
   public isEnemy(whichPlayer: MapPlayer) {
     return IsUnitEnemy(this.handle, whichPlayer.handle);
   }
@@ -904,26 +1115,60 @@ export class Unit extends Widget {
     return IsUnitSelected(this.handle, whichPlayer.handle);
   }
 
+  /**
+   * Orders this unit to build a new unit at the given coordinates.
+   * @param unit unit to be built
+   * @param x 
+   * @param y 
+   */
   public issueBuildOrder(unit: string | number, x: number, y: number) {
     return typeof unit === "string" ? IssueBuildOrder(this.handle, unit, x, y) : IssueBuildOrderById(this.handle, unit, x, y);
   }
 
+  /**
+   * Gives the specified order (with no target) to this unit.
+   * @param order 
+   */
   public issueImmediateOrder(order: string | number) {
     return typeof order === "string" ? IssueImmediateOrder(this.handle, order) : IssueImmediateOrderById(this.handle, order);
   }
 
+  /**
+   * Gives the specified order (targeting a point) to this unit.
+   * @param order 
+   * @param x 
+   * @param y 
+   * @param instantTargetWidget 
+   */
   public issueInstantOrderAt(order: string | number, x: number, y: number, instantTargetWidget: Widget) {
     return typeof order === "string" ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle) : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
   }
 
+  /**
+   * Gives the specified order (targeting a unit) to this unit.
+   * @param order 
+   * @param targetWidget 
+   * @param instantTargetWidget 
+   */
   public issueInstantTargetOrder(order: string | number, targetWidget: Widget, instantTargetWidget: Widget) {
     return typeof order === "string" ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle) : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
   }
 
+  /**
+   * Gives the specified order (targeting a point) to this unit.
+   * @param order 
+   * @param x 
+   * @param y 
+   */
   public issueOrderAt(order: string | number, x: number, y: number) {
     return typeof order === "string" ? IssuePointOrder(this.handle, order, x, y) : IssuePointOrderById(this.handle, order, x, y);
   }
 
+  /**
+   * 
+   * @param order 
+   * @param whichPoint 
+   */
   public issuePointOrder(order: string | number, whichPoint: Point) {
     return typeof order === "string" ? IssuePointOrderLoc(this.handle, order, whichPoint.handle) : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
   }
