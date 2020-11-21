@@ -428,6 +428,9 @@ export class Unit extends Widget {
     return DecUnitAbilityLevel(this.handle, abilCode);
   }
 
+  /**
+   * Instantly removes the unit from the game.
+   */
   public destroy() {
     RemoveUnit(this.handle);
   }
@@ -673,6 +676,9 @@ export class Unit extends Widget {
     return IsUnitVisible(this.handle, whichPlayer.handle);
   }
 
+  /**
+   * Kills the unit.
+   */
   public kill() {
     KillUnit(this.handle);
   }
