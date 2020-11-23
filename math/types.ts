@@ -149,11 +149,10 @@ export class Vec2 {
     return this.distanceToSq(other) < radius * radius;
   }
 
+  private static terrainPoint: Point = new Point(0, 0);
   public get terrainZ() {
-    const temp = new Point(this.x, this.y);
-    const z = temp.z;
-    temp.destroy();
-    return z;
+    Vec2.terrainPoint.setPosition(this.x, this.y);
+    return Vec2.terrainPoint.z;
   }
 
   public toString() {
