@@ -1,8 +1,8 @@
 import { Point } from "../handles/point";
 
-/** Converts Degrees to Radians */
+// Converts Degrees to Radians
 const DEGTORAD = 0.017453293;
-/** Converts Radians to Degrees */
+// Converts Radians to Degrees
 const RADTODEG = 57.295779513;
 
 /**
@@ -11,41 +11,41 @@ const RADTODEG = 57.295779513;
 export class Angle {
   protected constructor(private readonly rads: number) {}
 
-  static fromDegrees(degrees: number) {
+  public static fromDegrees(degrees: number) {
     return new Angle(degrees * DEGTORAD);
   }
 
-  static fromRadians(radians: number) {
+  public static fromRadians(radians: number) {
     return new Angle(radians);
   }
 
-  static random() {
+  public static random() {
     return new Angle(GetRandomReal(0, math.pi * 2));
   }
 
-  get degrees() {
+  public get degrees() {
     return this.rads * RADTODEG;
   }
 
-  get radians() {
+  public get radians() {
     return this.rads;
   }
 
-  get cos() {
+  public get cos() {
     return Cos(this.rads);
   }
 
-  get sin() {
+  public get sin() {
     return Sin(this.rads);
   }
 
-  add(other: Angle) {
+  public add(other: Angle) {
     return new Angle(this.radians + other.radians);
   }
 
   // returns a unit length Vec2 in the direction of this angle,
   // parallel to the ground plane.
-  asDirection() {
+  public asDirection() {
     return new Vec2(this.cos, this.sin);
   }
 }
@@ -55,7 +55,7 @@ export const radians = Angle.fromRadians;
 export const randomAngle = Angle.random;
 
 export class Vec2 {
-  constructor(readonly x: number, readonly y: number) {}
+  public constructor(readonly x: number, readonly y: number) {}
 
   public withZ(z: number) {
     return new Vec3(this.x, this.y, z);
@@ -162,33 +162,37 @@ export class Vec2 {
 }
 
 export class Vec3 {
-  constructor(readonly x: number, readonly y: number, readonly z: number) {}
+  public constructor(
+    readonly x: number,
+    readonly y: number,
+    readonly z: number
+  ) {}
 
-  toVec2() {
+  public toVec2() {
     return new Vec2(this.x, this.y);
   }
 
-  add(other: Vec3): Vec3 {
+  public add(other: Vec3): Vec3 {
     return new Vec3(this.x + other.x, this.y + other.y, this.z + other.z);
   }
 
-  sub(other: Vec3): Vec3 {
+  public sub(other: Vec3): Vec3 {
     return new Vec3(this.x - other.x, this.y - other.y, this.z - other.z);
   }
 
-  scale(factor: number): Vec3 {
+  public scale(factor: number): Vec3 {
     return new Vec3(this.x * factor, this.y * factor, this.z * factor);
   }
 
-  mul(other: Vec3): Vec3 {
+  public mul(other: Vec3): Vec3 {
     return new Vec3(this.x * other.x, this.y * other.y, this.z * other.z);
   }
 
-  dot(other: Vec3): number {
+  public dot(other: Vec3): number {
     return this.x * other.x + this.y * other.y + this.z * other.z;
   }
 
-  cross(other: Vec3) {
+  public cross(other: Vec3) {
     return new Vec3(
       this.y * other.z - this.z * other.y,
       this.z * other.x - this.x * other.z,
@@ -196,15 +200,15 @@ export class Vec3 {
     );
   }
 
-  get length(): number {
+  public get length(): number {
     return SquareRoot(this.lengthSq);
   }
 
-  get lengthSq(): number {
+  public get lengthSq(): number {
     return this.x * this.x + this.y * this.y + this.z * this.z;
   }
 
-  get norm(): Vec3 {
+  public get norm(): Vec3 {
     const len = this.length;
     if (len > 0) {
       return new Vec3(this.x / len, this.y / len, this.z / len);
@@ -215,7 +219,7 @@ export class Vec3 {
   // returns a normalized vector in the direction of the
   // target. When the target and origin vector are equal, returns the x-axis
   // unit vector.
-  normalizedPointerTo(other: Vec3) {
+  public normalizedPointerTo(other: Vec3) {
     const v = other.sub(this).norm;
     if (v.length == 0) {
       return new Vec3(1, 0, 0);
@@ -223,11 +227,11 @@ export class Vec3 {
     return v;
   }
 
-  distanceTo(other: Vec3) {
+  public distanceTo(other: Vec3) {
     return other.sub(this).length;
   }
 
-  distanceToSq(other: Vec3) {
+  public distanceToSq(other: Vec3) {
     return other.sub(this).lengthSq;
   }
 
