@@ -6,8 +6,8 @@ const DEGTORAD = 0.017453293;
 const RADTODEG = 57.295779513;
 
 /**
- * Angle encapsulates an angle, abstracting the usage of degrees and radians.
- * */
+ *  Encapsulates an angle, abstracting the usage of degrees and radians.
+ */
 export class Angle {
   protected constructor(private readonly rads: number) {}
 
@@ -43,7 +43,7 @@ export class Angle {
     return new Angle(this.radians + other.radians);
   }
 
-  // asDirection returns a unit length Vec2 in the direction of this angle,
+  // returns a unit length Vec2 in the direction of this angle,
   // parallel to the ground plane.
   asDirection() {
     return new Vec2(this.cos, this.sin);
@@ -57,11 +57,12 @@ export const randomAngle = Angle.random;
 export class Vec2 {
   constructor(readonly x: number, readonly y: number) {}
 
-  public get terrainZ() {
-    const temp = new Point(this.x, this.y);
-    const z = temp.z;
-    temp.destroy();
-    return z;
+  public withZ(z: number) {
+    return new Vec3(this.x, this.y, z);
+  }
+
+  public withTerrainZ() {
+    return new Vec3(this.x, this.y, this.terrainZ);
   }
 
   public add(other: Vec2) {
@@ -97,7 +98,7 @@ export class Vec2 {
     if (len > 0) {
       return new Vec2(this.x / len, this.y / len);
     }
-    return new Vec2(this.x, this.y);
+    return this;
   }
 
   // rotate rotates this vector around the Z axis (up from the ground).
@@ -117,11 +118,11 @@ export class Vec2 {
     return Angle.fromRadians(Atan2(dir.y, dir.x));
   }
 
-  // normalizedPointerTo returns a normalized vector in the direction of the
+  // returns a normalized vector in the direction of the
   // target. When the target and this vector are equal, return a vector
   // pointing right.
   public normalizedPointerTo(other: Vec2): Vec2 {
-    let v = other.sub(this).norm;
+    const v = other.sub(this).norm;
     if (v.length == 0) {
       return new Vec2(1, 0);
     }
@@ -148,9 +149,112 @@ export class Vec2 {
     return this.distanceToSq(other) < radius * radius;
   }
 
+  public get terrainZ() {
+    const temp = new Point(this.x, this.y);
+    const z = temp.z;
+    temp.destroy();
+    return z;
+  }
+
   public toString() {
     return "(" + this.x.toString() + ", " + this.y.toString() + ")";
   }
 }
 
+export class Vec3 {
+  constructor(readonly x: number, readonly y: number, readonly z: number) {}
+
+  toVec2() {
+    return new Vec2(this.x, this.y);
+  }
+
+  add(other: Vec3): Vec3 {
+    return new Vec3(this.x + other.x, this.y + other.y, this.z + other.z);
+  }
+
+  sub(other: Vec3): Vec3 {
+    return new Vec3(this.x - other.x, this.y - other.y, this.z - other.z);
+  }
+
+  scale(factor: number): Vec3 {
+    return new Vec3(this.x * factor, this.y * factor, this.z * factor);
+  }
+
+  mul(other: Vec3): Vec3 {
+    return new Vec3(this.x * other.x, this.y * other.y, this.z * other.z);
+  }
+
+  dot(other: Vec3): number {
+    return this.x * other.x + this.y * other.y + this.z * other.z;
+  }
+
+  cross(other: Vec3) {
+    return new Vec3(
+      this.y * other.z - this.z * other.y,
+      this.z * other.x - this.x * other.z,
+      this.x * other.y - this.y * other.x
+    );
+  }
+
+  get length(): number {
+    return SquareRoot(this.lengthSq);
+  }
+
+  get lengthSq(): number {
+    return this.x * this.x + this.y * this.y + this.z * this.z;
+  }
+
+  get norm(): Vec3 {
+    const len = this.length;
+    if (len > 0) {
+      return new Vec3(this.x / len, this.y / len, this.z / len);
+    }
+    return this;
+  }
+
+  // returns a normalized vector in the direction of the
+  // target. When the target and origin vector are equal, returns the x-axis
+  // unit vector.
+  normalizedPointerTo(other: Vec3) {
+    const v = other.sub(this).norm;
+    if (v.length == 0) {
+      return new Vec3(1, 0, 0);
+    }
+    return v;
+  }
+
+  distanceTo(other: Vec3) {
+    return other.sub(this).length;
+  }
+
+  distanceToSq(other: Vec3) {
+    return other.sub(this).lengthSq;
+  }
+
+  public polarProject(dist: number, angleGround: Angle, angleAir: Angle) {
+    return new Vec3(
+      this.x + dist * angleGround.cos * angleAir.sin,
+      this.y + dist * angleGround.sin * angleAir.sin,
+      this.z + dist * angleAir.cos
+    );
+  }
+
+  public moveTowards(other: Vec3, dist: number) {
+    return this.add(this.normalizedPointerTo(other).scale(dist));
+  }
+
+  public toString() {
+    return (
+      "(" +
+      this.x.toString() +
+      ", " +
+      this.y.toString() +
+      ", " +
+      this.z.toString() +
+      ")"
+    );
+  }
+}
+
 export const vec2 = (x: number, y: number) => new Vec2(x, y);
+export const vec3 = (x: number, y: number, z: number) => new Vec3(x, y, z);
