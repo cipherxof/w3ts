@@ -62,7 +62,7 @@ export class Color {
   }
 
   // returns the color between this color and another via linear interpolation.
-  // The provided smoothness should be between 0 and 1. Any color components
+  // The provided factor should be between 0 and 1. Any color components
   // that are outside of the 0-255 range will be clamped.
   public lerp(other: Color, factor: number) {
     const r = MathRound(this.red * (1 - factor) + other.red * factor);
