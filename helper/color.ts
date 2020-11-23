@@ -60,6 +60,22 @@ export class Color {
     }
     return PLAYER_COLOR_RED;
   }
+
+  // returns the color between this color and another via linear interpolation.
+  // The provided smoothness should be between 0 and 1. Any color components
+  // that are outside of the 0-255 range will be clamped.
+  public lerp(other: Color, factor: number) {
+    const r = MathRound(this.red * (1 - factor) + other.red * factor);
+    const g = MathRound(this.green * (1 - factor) + other.green * factor);
+    const b = MathRound(this.blue * (1 - factor) + other.blue * factor);
+    const a = MathRound(this.alpha * (1 - factor) + other.alpha * factor);
+    return new Color(
+      math.max(0, math.min(255, r)) as ColorValue,
+      math.max(0, math.min(255, g)) as ColorValue,
+      math.max(0, math.min(255, b)) as ColorValue,
+      math.max(0, math.min(255, a)) as ColorValue
+    );
+  }
 }
 
 export const color = (
