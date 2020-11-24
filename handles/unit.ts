@@ -270,7 +270,7 @@ export class Unit extends Widget {
   }
 
   public get show() {
-    return IsUnitHidden(this.handle);
+    return !IsUnitHidden(this.handle);
   }
 
   public get skin() {
