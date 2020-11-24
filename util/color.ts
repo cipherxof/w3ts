@@ -14,7 +14,7 @@ export class Color {
     }
   }
 
-  // Create a string code for coloring text.
+  /** Create a string code for coloring text. */
   public get code() {
     return (
       `|c${toHex(this.alpha)}${toHex(this.red)}` +
@@ -41,8 +41,10 @@ export class Color {
     return i;
   }
 
-  // Returns the name of this color, if it is one of other player colors.
-  // Otherwise returns 'unknown'.
+  /**
+   * Returns the name of this color, if it is one of other player colors.
+   * Otherwise returns 'unknown'.
+   */
   public get name() {
     const index = this.playerColorIndex();
     if (index < playerColors.length) {
@@ -51,9 +53,11 @@ export class Color {
     return "unknown";
   }
 
-  // Returns the `playercolor` of this color, if it is one of the player
-  // colors. Otherwise, returns `PLAYER_COLOR_RED`.
-  public get playercolor() {
+  /**
+   * Returns the `playercolor` of this color, if it is one of the player
+   * colors. Otherwise, returns `PLAYER_COLOR_RED`.
+   */
+  public get playerColor() {
     const index = this.playerColorIndex();
     if (index < playerColors.length) {
       return orderedPlayerColors[index];
@@ -61,9 +65,11 @@ export class Color {
     return PLAYER_COLOR_RED;
   }
 
-  // returns the color between this color and another via linear interpolation.
-  // The provided factor should be between 0 and 1. Any color components
-  // that are outside of the 0-255 range will be clamped.
+  /**
+   * Returns the color between this color and another via linear interpolation.
+   * The provided factor should be between 0 and 1. Any color components
+   * that are outside of the 0-255 range will be clamped.
+   */
   public lerp(other: Color, factor: number) {
     const r = MathRound(this.red * (1 - factor) + other.red * factor);
     const g = MathRound(this.green * (1 - factor) + other.green * factor);
@@ -85,21 +91,23 @@ export const color = (
   alpha?: ColorValue
 ) => new Color(red, green, blue, alpha);
 
-// The player colors sorted by index. Does not include
-// neutrals colors.
+/**
+ * The player colors sorted by index. Does not include
+ * neutrals colors.
+ */
 export const playerColors = [
-  color(255, 2, 2),
-  color(0, 65, 255),
-  color(27, 229, 184),
-  color(83, 0, 128),
+  color(255, 3, 3),
+  color(0, 66, 255),
+  color(28, 230, 185),
+  color(84, 0, 129),
   color(255, 252, 0),
-  color(254, 137, 13),
-  color(31, 191, 0),
-  color(228, 90, 175),
-  color(148, 149, 150),
-  color(125, 190, 241),
-  color(15, 97, 69),
-  color(77, 41, 3),
+  color(254, 138, 14),
+  color(32, 192, 0),
+  color(229, 91, 176),
+  color(149, 150, 151),
+  color(126, 191, 241),
+  color(16, 98, 70),
+  color(78, 42, 3),
   color(155, 0, 0),
   color(0, 0, 195),
   color(0, 234, 255),
@@ -108,13 +116,13 @@ export const playerColors = [
   color(248, 164, 139),
   color(191, 255, 128),
   color(220, 185, 235),
-  color(40, 40, 40),
+  color(80, 79, 85),
   color(235, 240, 255),
   color(0, 120, 30),
   color(164, 111, 51),
 ];
 
-// The names of players colors sorted by player index.
+/** The names of players colors sorted by player index. */
 export const playerColorNames = [
   "red",
   "blue",
@@ -142,7 +150,7 @@ export const playerColorNames = [
   "peanut",
 ];
 
-// An ordered list of `playercolor`s, for lookup
+/** An ordered list of `playercolor`s, for lookup */
 const orderedPlayerColors = [
   PLAYER_COLOR_RED,
   PLAYER_COLOR_BLUE,
@@ -170,8 +178,10 @@ const orderedPlayerColors = [
   PLAYER_COLOR_PEANUT,
 ];
 
-// Converts a color value to the hex string, making sure that it is 2
-// characters in length.
+/**
+ * Converts a color value to the hex string, making sure that it is 2
+ * characters in length.
+ */
 function toHex(value: ColorValue) {
   let hex = value.toString(16);
   if (hex.length < 2) {
@@ -179,8 +189,11 @@ function toHex(value: ColorValue) {
   }
   return hex;
 }
-// The valid values for a color component. This is the only way to type an
-// integer range in typescript.
+
+/**
+ * The valid values for a color component. This is the only way to type an
+ * integer range in typescript.
+ */
 type ColorValue =
   | 0
   | 1
