@@ -361,7 +361,7 @@ export class Unit extends Widget {
     AddHeroXP(this.handle, xpToAdd, showEyeCandy);
   }
 
-  public addIndicator(red: number, blue: number, green: number, alpha: number, ) {
+  public addIndicator(red: number, blue: number, green: number, alpha: number) {
     UnitAddIndicator(this.handle, red, blue, green, alpha);
   }
 
@@ -437,7 +437,7 @@ export class Unit extends Widget {
   }
 
   public disableAbility(abilId: number, flag: boolean, hideUI: boolean) {
-    BlzUnitHideAbility(this.handle, abilId, flag);
+    BlzUnitDisableAbility(this.handle, abilId, flag, hideUI);
   }
 
   public dropItem(whichItem: Item, x: number, y: number) {
