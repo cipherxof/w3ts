@@ -13,9 +13,10 @@ const SYNC_PREFIX_CHUNK = "S";
 const SYNC_MAX_CHUNK_SIZE = 244;
 
 export const enum SyncStatus {
+  None,
   Syncing,
   Success,
-  Timeout
+  Timeout,
 }
 
 export interface ISyncResponse {
@@ -83,12 +84,12 @@ export class SyncRequest {
   public readonly from: MapPlayer;
   public readonly id: number;
   public readonly options: ISyncOptions;
-  public readonly startTime: number;
+  private _startTime: number = 0;
   private chunks: string[] = [];
   private currentChunk = 0;
   private onError?: SyncCallback;
   private onResponse?: SyncCallback;
-  private status: SyncStatus;
+  private status: SyncStatus = SyncStatus.None;
   private static readonly cache: SyncRequest[] = [];
   private static counter = 0;
   private static defaultOptions: ISyncOptions = { timeout: 0 };
@@ -103,15 +104,40 @@ export class SyncRequest {
    * @param data The data to send.
    * @param options
    */
-  constructor(from: MapPlayer, data: string, options = SyncRequest.defaultOptions) {
+  constructor(from: MapPlayer);
+  constructor(from: MapPlayer, data: string);
+  constructor(from: MapPlayer, data?: string, options?: ISyncOptions) {
     // initialize
-    this.options = options;
+    this.options = !options ? SyncRequest.defaultOptions : options;
     this.from = from;
     this.id = this.allocate();
 
     SyncRequest.indicies[this.id] = -1;
     SyncRequest.cache[this.id] = this;
     SyncRequest.init();
+
+    if (typeof data === "string") {
+      this.start(data);
+    }
+  }
+
+  public get startTime() {
+    return this._startTime;
+  }
+
+  /**
+   * Sets the callback for when a request failed.
+   * @param callback
+   */
+  public catch(callback: SyncCallback) {
+    this.onError = callback;
+    return this;
+  }
+
+  public start(data: string) {
+    if (this.status !== SyncStatus.None) {
+      return false;
+    }
 
     // start syncing
     this.currentChunk = 0;
@@ -126,7 +152,7 @@ export class SyncRequest {
       }
     }
 
-    this.startTime = getElapsedTime();
+    this._startTime = getElapsedTime();
     this.status = SyncStatus.Syncing;
 
     // handle timeout
@@ -138,15 +164,8 @@ export class SyncRequest {
         }
       });
     }
-  }
 
-  /**
-   * Sets the callback for when a request failed.
-   * @param callback
-   */
-  public catch(callback: SyncCallback) {
-    this.onError = callback;
-    return this;
+    return true;
   }
 
   /**
