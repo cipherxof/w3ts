@@ -370,7 +370,7 @@ export class Unit extends Widget {
   }
 
   public addItemById(itemId: number) {
-    return UnitAddItemById(this.handle, itemId);
+    return Item.fromHandle(UnitAddItemById(this.handle, itemId));
   }
 
   public addItemToSlotById(itemId: number, itemSlot: number) {
@@ -542,7 +542,7 @@ export class Unit extends Widget {
   }
 
   public getItemInSlot(slot: number) {
-    return UnitItemInSlot(this.handle, slot);
+    return Item.fromHandle(UnitItemInSlot(this.handle, slot));
   }
 
   public getState(whichUnitState: unitstate) {
@@ -733,7 +733,7 @@ export class Unit extends Widget {
   }
 
   public removeItemFromSlot(itemSlot: number) {
-    return UnitRemoveItemFromSlot(this.handle, itemSlot);
+    return Item.fromHandle(UnitRemoveItemFromSlot(this.handle, itemSlot));
   }
 
   public removeItemFromStock(itemId: number) {
