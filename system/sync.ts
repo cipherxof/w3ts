@@ -81,12 +81,14 @@ class SyncOutgoingPacket {
 }
 
 export class SyncRequest {
+
   public readonly from: MapPlayer;
   public readonly id: number;
   public readonly options: ISyncOptions;
   private _startTime: number = 0;
   private chunks: string[] = [];
   private currentChunk = 0;
+  private destroyed = false;
   private onError?: SyncCallback;
   private onResponse?: SyncCallback;
   private status: SyncStatus = SyncStatus.None;
@@ -134,8 +136,17 @@ export class SyncRequest {
     return this;
   }
 
+  /**
+   * Recycles the request index and prevents it from sending any more data.
+   */
+  public destroy() {
+    SyncRequest.indicies[this.id] = SyncRequest.index;
+    SyncRequest.index = this.id;
+    this.destroyed = true;
+  }
+
   public start(data: string) {
-    if (this.status !== SyncStatus.None) {
+    if (this.status !== SyncStatus.None || this.destroyed) {
       return false;
     }
 
@@ -189,14 +200,6 @@ export class SyncRequest {
       SyncRequest.counter++;
       return SyncRequest.counter;
     }
-  }
-
-  /**
-   * Recycles the index.
-   */
-  private recycle() {
-    SyncRequest.indicies[this.id] = SyncRequest.index;
-    SyncRequest.index = this.id;
   }
 
   /**
@@ -254,7 +257,6 @@ export class SyncRequest {
         const data = packet.req.chunks.join("");
         const status = SyncStatus.Success;
         packet.req.status = SyncStatus.Success;
-        packet.req.recycle();
         packet.req.onResponse({ data, status, time: getElapsedTime() }, packet.req);
       }
     }
