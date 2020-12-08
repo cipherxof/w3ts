@@ -421,7 +421,7 @@ export class Unit extends Widget {
     return UnitDamagePoint(this.handle, delay, radius, x, y, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
-  public damageTarget(target: widget, amount: number, radius: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
+  public damageTarget(target: widget, amount: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
     return UnitDamageTarget(this.handle, target, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
