@@ -468,7 +468,7 @@ export class Unit extends Widget {
     return BlzGetUnitAbilityCooldown(this.handle, abilId, level);
   }
 
-  public getAbilityCooldownRemaining(abilId: number, level: number) {
+  public getAbilityCooldownRemaining(abilId: number) {
     return BlzGetUnitAbilityCooldownRemaining(this.handle, abilId);
   }
 
