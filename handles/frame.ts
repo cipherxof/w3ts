@@ -7,9 +7,9 @@ export class Frame extends Handle<framehandle> {
   constructor(name: string, owner: Frame, priority: number, createContext: number);
   /**
    * Creates a SimpleFrame.
-   * @param name 
-   * @param owner 
-   * @param createContext 
+   * @param name
+   * @param owner
+   * @param createContext
    */
   constructor(name: string, owner: Frame, createContext: number);
   constructor(name: string, owner: Frame, priority: number, createContext?: number) {
@@ -30,6 +30,19 @@ export class Frame extends Handle<framehandle> {
 
   public get alpha() {
     return BlzFrameGetAlpha(this.handle);
+  }
+
+  public get children() {
+    const count = this.childrenCount;
+    const output: Frame[] = [];
+    for (let i = 0; i < count; i++) {
+      output.push(this.getChild(i));
+    }
+    return output;
+  }
+
+  public get childrenCount() {
+    return BlzFrameGetChildrenCount(this.handle);
   }
 
   public set enabled(flag: boolean) {
@@ -96,51 +109,6 @@ export class Frame extends Handle<framehandle> {
     return BlzFrameGetWidth(this.handle);
   }
 
-  public setAlpha(alpha: number) {
-    BlzFrameSetAlpha(this.handle, alpha);
-    return this;
-  }
-
-  public setEnabled(flag: boolean) {
-    BlzFrameSetEnable(this.handle, flag);
-    return this;
-  }
-
-  public setHeight(height: number) {
-    BlzFrameSetSize(this.handle, this.width, height);
-    return this;
-  }
-
-  public setParent(parent: Frame) {
-    BlzFrameSetParent(this.handle, parent.handle);
-    return this;
-  }
-
-  public setText(text: string) {
-    BlzFrameSetText(this.handle, text);
-    return this;
-  }
-
-  public setTextSizeLimit(size: number) {
-    BlzFrameSetTextSizeLimit(this.handle, size);
-    return this;
-  }
-
-  public setValue(value: number) {
-    BlzFrameSetValue(this.handle, value);
-    return this;
-  }
-
-  public setVisible(flag: boolean) {
-    BlzFrameSetVisible(this.handle, flag);
-    return this;
-  }
-
-  public setWidth(width: number) {
-    BlzFrameSetSize(this.handle, width, this.height);
-    return this;
-  }
-
   public addText(text: string) {
     BlzFrameAddText(this.handle, text);
     return this;
@@ -166,6 +134,10 @@ export class Frame extends Handle<framehandle> {
     return this;
   }
 
+  public getChild(index: number) {
+    return Frame.fromHandle(BlzFrameGetChild(this.handle, index));
+  }
+
   public setAbsPoint(point: framepointtype, x: number, y: number) {
     BlzFrameSetAbsPoint(this.handle, point, x, y);
     return this;
@@ -176,6 +148,16 @@ export class Frame extends Handle<framehandle> {
     return this;
   }
 
+  public setAlpha(alpha: number) {
+    BlzFrameSetAlpha(this.handle, alpha);
+    return this;
+  }
+
+  public setEnabled(flag: boolean) {
+    BlzFrameSetEnable(this.handle, flag);
+    return this;
+  }
+
   public setFocus(flag: boolean) {
     BlzFrameSetFocus(this.handle, flag);
     return this;
@@ -183,6 +165,11 @@ export class Frame extends Handle<framehandle> {
 
   public setFont(filename: string, height: number, flags: number) {
     BlzFrameSetFont(this.handle, filename, height, flags);
+    return this;
+  }
+
+  public setHeight(height: number) {
+    BlzFrameSetSize(this.handle, this.width, height);
     return this;
   }
 
@@ -198,6 +185,11 @@ export class Frame extends Handle<framehandle> {
 
   public setModel(modelFile: string, cameraIndex: number) {
     BlzFrameSetModel(this.handle, modelFile, cameraIndex);
+    return this;
+  }
+
+  public setParent(parent: Frame) {
+    BlzFrameSetParent(this.handle, parent.handle);
     return this;
   }
 
@@ -226,8 +218,18 @@ export class Frame extends Handle<framehandle> {
     return this;
   }
 
+  public setText(text: string) {
+    BlzFrameSetText(this.handle, text);
+    return this;
+  }
+
   public setTextColor(color: number) {
     BlzFrameSetTextColor(this.handle, color);
+    return this;
+  }
+
+  public setTextSizeLimit(size: number) {
+    BlzFrameSetTextSizeLimit(this.handle, size);
     return this;
   }
 
@@ -241,8 +243,23 @@ export class Frame extends Handle<framehandle> {
     return this;
   }
 
+  public setValue(value: number) {
+    BlzFrameSetValue(this.handle, value);
+    return this;
+  }
+
   public setVertexColor(color: number) {
     BlzFrameSetVertexColor(this.handle, color);
+    return this;
+  }
+
+  public setVisible(flag: boolean) {
+    BlzFrameSetVisible(this.handle, flag);
+    return this;
+  }
+
+  public setWidth(width: number) {
+    BlzFrameSetSize(this.handle, width, this.height);
     return this;
   }
 
