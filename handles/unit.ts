@@ -29,7 +29,7 @@ export class Unit extends Widget {
   }
 
   public get acquireRange() {
-    return GetUnitPropWindow(this.handle);
+    return GetUnitAcquireRange(this.handle);
   }
 
   public get agility() {
@@ -225,7 +225,7 @@ export class Unit extends Widget {
   }
 
   public get propWindow() {
-    return GetUnitAcquireRange(this.handle);
+    return GetUnitPropWindow(this.handle);
   }
 
   public get race() {
