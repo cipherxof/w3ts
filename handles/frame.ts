@@ -12,12 +12,16 @@ export class Frame extends Handle<framehandle> {
    * @param createContext
    */
   constructor(name: string, owner: Frame, createContext: number);
-  constructor(name: string, owner: Frame, priority: number, createContext?: number) {
+  /** Creates Frame by Type*/
+  constructor(name: string, owner: Frame, priority: number, createContext?: number, Type?: string, inherits?: string);
+  constructor(name: string, owner: Frame, priority: number, createContext?: number, Type?: string, inherits?: string) {
     if (Handle.initFromHandle()) {
       super();
     } else {
       if (!createContext) {
         super(BlzCreateSimpleFrame(name, owner.handle, priority));
+      } else if (Type && inherits) {
+        super(BlzCreateFrameByType(Type, name, owner.handle, inherits, createContext))
       } else {
         super(BlzCreateFrame(name, owner.handle, priority, createContext));
       }
