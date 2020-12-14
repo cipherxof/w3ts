@@ -160,6 +160,10 @@ export class MapPlayer extends Handle<player> {
     return IsPlayerInForce(this.handle, whichForce.handle);
   }
 
+  public isLocal() {
+    return GetLocalPlayer() === this.handle;
+  }
+
   public isObserver() {
     return IsPlayerObserver(this.handle);
   }
