@@ -182,6 +182,10 @@ export class Item extends Widget {
     SetItemPosition(this.handle, x, y);
   }
 
+  public static fromEvent(): Item {
+    return this.fromHandle(GetManipulatedItem());
+  }
+
   public static fromHandle(handle: item): Item {
     return this.getObject(handle);
   }
