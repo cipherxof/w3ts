@@ -72,7 +72,7 @@ export class Trigger extends Handle<trigger> {
    * @param condition the condition to add
    */
   public addCondition(condition: boolexpr | (() => boolean)) {
-    return TriggerAddCondition(this.handle, condition);
+    return TriggerAddCondition(this.handle, typeof condition === "function" ? Condition(condition) : condition);
   }
 
   public destroy() {
@@ -108,11 +108,11 @@ export class Trigger extends Handle<trigger> {
   }
 
   public registerEnterRegion(whichRegion: region, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterEnterRegion(this.handle, whichRegion, filter);
+    return TriggerRegisterEnterRegion(this.handle, whichRegion, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public registerFilterUnitEvent(whichUnit: unit, whichEvent: unitevent, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterFilterUnitEvent(this.handle, whichUnit, whichEvent, filter);
+    return TriggerRegisterFilterUnitEvent(this.handle, whichUnit, whichEvent, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public registerGameEvent(whichGameEvent: gameevent) {
@@ -124,7 +124,7 @@ export class Trigger extends Handle<trigger> {
   }
 
   public registerLeaveRegion(whichRegion: region, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterLeaveRegion(this.handle, whichRegion, filter);
+    return TriggerRegisterLeaveRegion(this.handle, whichRegion, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public registerPlayerAllianceChange(whichPlayer: MapPlayer, whichAlliance: alliancetype) {
@@ -156,7 +156,7 @@ export class Trigger extends Handle<trigger> {
   }
 
   public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, filter);
+    return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   // Creates it's own timer and triggers when it expires
@@ -182,7 +182,7 @@ export class Trigger extends Handle<trigger> {
   }
 
   public registerUnitInRage(whichUnit: unit, range: number, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterUnitInRange(this.handle, whichUnit, range, filter);
+    return TriggerRegisterUnitInRange(this.handle, whichUnit, range, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public registerUnitStateEvent(whichUnit: Unit, whichState: unitstate, opcode: limitop, limitval: number) {

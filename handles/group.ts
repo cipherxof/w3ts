@@ -34,43 +34,43 @@ export class Group extends Handle<group> {
   }
 
   public enumUnitsInRange(x: number, y: number, radius: number, filter: boolexpr | (() => boolean)) {
-    GroupEnumUnitsInRange(this.handle, x, y, radius, filter);
+    GroupEnumUnitsInRange(this.handle, x, y, radius, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public enumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr | (() => boolean), countLimit: number) {
-    GroupEnumUnitsInRangeCounted(this.handle, x, y, radius, filter, countLimit);
+    GroupEnumUnitsInRangeCounted(this.handle, x, y, radius, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
 
   public enumUnitsInRangeOfPoint(whichPoint: Point, radius: number, filter: boolexpr | (() => boolean)) {
-    GroupEnumUnitsInRangeOfLoc(this.handle, whichPoint.handle, radius, filter);
+    GroupEnumUnitsInRangeOfLoc(this.handle, whichPoint.handle, radius, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public enumUnitsInRangeOfPointCounted(whichPoint: Point, radius: number, filter: boolexpr | (() => boolean), countLimit: number) {
-    GroupEnumUnitsInRangeOfLocCounted(this.handle, whichPoint.handle, radius, filter, countLimit);
+    GroupEnumUnitsInRangeOfLocCounted(this.handle, whichPoint.handle, radius, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
 
   public enumUnitsInRect(r: Rectangle, filter: boolexpr | (() => boolean)) {
-    GroupEnumUnitsInRect(this.handle, r.handle, filter);
+    GroupEnumUnitsInRect(this.handle, r.handle, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public enumUnitsInRectCounted(r: Rectangle, filter: boolexpr | (() => boolean), countLimit: number) {
-    GroupEnumUnitsInRectCounted(this.handle, r.handle, filter, countLimit);
+    GroupEnumUnitsInRectCounted(this.handle, r.handle, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
 
   public enumUnitsOfPlayer(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
-    GroupEnumUnitsOfPlayer(this.handle, whichPlayer.handle, filter);
+    GroupEnumUnitsOfPlayer(this.handle, whichPlayer.handle, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public enumUnitsOfType(unitName: string, filter: boolexpr | (() => boolean)) {
-    GroupEnumUnitsOfType(this.handle, unitName, filter);
+    GroupEnumUnitsOfType(this.handle, unitName, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public enumUnitsOfTypeCounted(unitName: string, filter: boolexpr | (() => boolean), countLimit: number) {
-    GroupEnumUnitsOfTypeCounted(this.handle, unitName, filter, countLimit);
+    GroupEnumUnitsOfTypeCounted(this.handle, unitName, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
 
-  public enumUnitsSelected(whichPlayer: MapPlayer, radius: number, filter: boolexpr | (() => boolean)) {
-    GroupEnumUnitsSelected(this.handle, whichPlayer.handle, filter);
+  public enumUnitsSelected(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
+    GroupEnumUnitsSelected(this.handle, whichPlayer.handle, typeof filter === "function" ? Filter(filter) : filter);
   }
 
   public for(callback: () => void) {

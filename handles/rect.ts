@@ -42,11 +42,11 @@ export class Rectangle extends Handle<rect> {
   }
 
   public enumDestructables(filter: boolexpr | (() => boolean), actionFunc: () => void) {
-    EnumDestructablesInRect(this.handle, filter, actionFunc);
+    EnumDestructablesInRect(this.handle, typeof filter === "function" ? Filter(filter) : filter, actionFunc);
   }
 
   public enumItems(filter: boolexpr | (() => boolean), actionFunc: () => void) {
-    EnumItemsInRect(this.handle, filter, actionFunc);
+    EnumItemsInRect(this.handle, typeof filter === "function" ? Filter(filter) : filter, actionFunc);
   }
 
   public move(newCenterX: number, newCenterY: number) {

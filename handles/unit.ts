@@ -992,8 +992,16 @@ export class Unit extends Widget {
     return GetFoodUsed(unitId);
   }
 
+  public static fromEnum() {
+    return this.fromHandle(GetEnumUnit());
+  }
+
   public static fromEvent() {
     return this.fromHandle(GetTriggerUnit());
+  }
+
+  public static fromFilter() {
+    return this.fromHandle(GetFilterUnit());
   }
 
   public static fromHandle(handle: unit): Unit {
