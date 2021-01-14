@@ -6,7 +6,6 @@ import { Point } from "./point";
 import { Widget } from "./widget";
 
 export class Item extends Widget {
-
   public readonly handle!: item;
 
   constructor(itemId: number, x: number, y: number, skinId?: number) {
@@ -105,6 +104,10 @@ export class Item extends Widget {
     SetItemPosition(this.handle, this.x, value);
   }
 
+  public addAbility(abilCode: number) {
+    BlzItemAddAbility(this.handle, abilCode);
+  }
+
   public destroy() {
     RemoveItem(this.handle);
   }
@@ -201,5 +204,4 @@ export class Item extends Widget {
   public static isIdSellable(itemId: number) {
     return IsItemIdSellable(itemId);
   }
-
 }
