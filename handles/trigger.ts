@@ -8,7 +8,6 @@ import { Unit } from "./unit";
 import { Widget } from "./widget";
 
 export class Trigger extends Handle<trigger> {
-
   constructor() {
     if (Handle.initFromHandle()) {
       super();
@@ -55,21 +54,24 @@ export class Trigger extends Handle<trigger> {
 
   /**
    * Adds a new condition to the trigger.
-   * 
+   *
    * Adding more conditions later wil join them by AND (that means all conditions need to evaluate to `true`)
-   * 
+   *
    * @example
    * ```ts
-   * const trg = new Trigger()
+   * const t = new Trigger()
+   *
    * // trigger fires if a unit is attacked
-   * trg.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
+   * t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
+   *
    * // but only if the unit name matches
-   * trg.addCondition(Condition(() => Unit.fromHandle(GetAttacker()).name === 'Attacker Unit')) 
-   * trg.addAction(() => { 
-   *  //do something... 
+   * t.addCondition(Condition(() => Unit.fromHandle(GetAttacker()).name === 'Attacker Unit'))
+   *
+   * t.addAction(() => {
+   *  //do something...
    * })
    * ```
-   * @param condition the condition to add
+   * @param condition The condition which must evaluate to true in order to run the trigger's actions.
    */
   public addCondition(condition: boolexpr | (() => boolean)) {
     return TriggerAddCondition(this.handle, typeof condition === "function" ? Condition(condition) : condition);
@@ -228,5 +230,4 @@ export class Trigger extends Handle<trigger> {
   public static fromHandle(handle: trigger): Trigger {
     return this.getObject(handle);
   }
-
 }

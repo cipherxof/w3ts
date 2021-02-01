@@ -8,7 +8,6 @@ import { Unit } from "./unit";
 import { Widget } from "./widget";
 
 export class Group extends Handle<group> {
-
   constructor() {
     if (Handle.initFromHandle()) {
       super();
@@ -83,6 +82,12 @@ export class Group extends Handle<group> {
 
   public get size(): number {
     return BlzGroupGetSize(this.handle);
+  }
+
+  public getUnits(): Unit[] {
+    const units: Unit[] = [];
+    this.for(() => units.push(Unit.fromFilter()));
+    return units;
   }
 
   public getUnitAt(index: number): Unit {

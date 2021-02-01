@@ -6,8 +6,19 @@ import { Point } from "./point";
 import { Widget } from "./widget";
 
 export class Effect extends Handle<effect> {
-
+  /**
+   * Creates a special effect.
+   * @param modelName The path of the model that the effect will use.
+   * @param x
+   * @param y
+   */
   constructor(modelName: string, x: number, y: number);
+  /**
+   * Creates a special effect attached to a widget.
+   * @param modelName The path of the model that the effect will use.
+   * @param targetWidget The widget to attach the effect to.
+   * @param attachPointName The attachment point on the widget's model.
+   */
   constructor(modelName: string, targetWidget: Widget, attachPointName: string);
   constructor(modelName: string, a: number | Widget, b: number | string) {
     if (Handle.initFromHandle()) {
@@ -68,6 +79,9 @@ export class Effect extends Handle<effect> {
     BlzSpecialEffectClearSubAnimations(this.handle);
   }
 
+  /**
+   * Destroy the effect handle. This will play the effect's death animation.
+   */
   public destroy() {
     DestroyEffect(this.handle);
   }

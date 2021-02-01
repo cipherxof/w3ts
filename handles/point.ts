@@ -3,7 +3,11 @@
 import { Handle } from "./handle";
 
 export class Point extends Handle<location> {
-
+  /**
+   * Creates a new location handle. Generally, raw coordinates should be used instead.
+   * @param x
+   * @param y
+   */
   constructor(x: number, y: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -47,5 +51,4 @@ export class Point extends Handle<location> {
   public static fromHandle(handle: location): Point {
     return this.getObject(handle);
   }
-
 }

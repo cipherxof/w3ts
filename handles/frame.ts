@@ -3,15 +3,24 @@
 import { Handle } from "./handle";
 
 export class Frame extends Handle<framehandle> {
-
+  /**
+   * Creates a Frame.
+   * @param name The name of the frame to be accessed with `Frame.fromName`.
+   * @param priority
+   * @param owner The parent frame.
+   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
+   */
   constructor(name: string, owner: Frame, priority: number, createContext: number);
   /**
    * Creates a SimpleFrame.
-   * @param name
-   * @param owner
-   * @param createContext
+   *
+   * https://www.hiveworkshop.com/threads/ui-simpleframes.320385/
+   * @param name The name of the frame to be accessed with `Frame.fromName`.
+   * @param priority
+   * @param owner The parent frame.
+   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
-  constructor(name: string, owner: Frame, createContext: number);
+  constructor(name: string, owner: Frame, priority: number);
   constructor(name: string, owner: Frame, priority: number, createContext?: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -302,5 +311,4 @@ export class Frame extends Handle<framehandle> {
   public static loadTOC(filename: string) {
     return BlzLoadTOCFile(filename);
   }
-
 }

@@ -12,9 +12,17 @@ import { Sound } from "./sound";
 import { Widget } from "./widget";
 
 export class Unit extends Widget {
-
   public readonly handle!: unit;
 
+  /**
+   * Creates a unit.
+   * @param owner The owner of the unit.
+   * @param unitId The type of unit.
+   * @param x
+   * @param y
+   * @param face The direction that the unit will be facing in degrees.
+   * @param skinId The skin of the unit.
+   */
   constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -417,7 +425,18 @@ export class Unit extends Widget {
     return UnitCountBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
   }
 
-  public damageAt(delay: number, radius: number, x: number, y: number, amount: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
+  public damageAt(
+    delay: number,
+    radius: number,
+    x: number,
+    y: number,
+    amount: number,
+    attack: boolean,
+    ranged: boolean,
+    attackType: attacktype,
+    damageType: damagetype,
+    weaponType: weapontype
+  ) {
     return UnitDamagePoint(this.handle, delay, radius, x, y, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
@@ -448,7 +467,7 @@ export class Unit extends Widget {
     return UnitDropItemSlot(this.handle, whichItem.handle, slot);
   }
 
-  public dropItemTarget(whichItem: Item, target: Widget/* | Unit | Item | Destructable*/) {
+  public dropItemTarget(whichItem: Item, target: Widget /* | Unit | Item | Destructable*/) {
     return UnitDropItemTarget(this.handle, whichItem.handle, target.handle);
   }
 
@@ -646,11 +665,15 @@ export class Unit extends Widget {
   }
 
   public issueInstantOrderAt(order: string | OrderId, x: number, y: number, instantTargetWidget: Widget) {
-    return typeof order === "string" ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle) : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
+    return typeof order === "string"
+      ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle)
+      : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
   }
 
   public issueInstantTargetOrder(order: string | OrderId, targetWidget: Widget, instantTargetWidget: Widget) {
-    return typeof order === "string" ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle) : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
+    return typeof order === "string"
+      ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle)
+      : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
   }
 
   public issueOrderAt(order: string | OrderId, x: number, y: number) {

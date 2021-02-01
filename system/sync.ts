@@ -81,7 +81,6 @@ class SyncOutgoingPacket {
 }
 
 export class SyncRequest {
-
   public readonly from: MapPlayer;
   public readonly id: number;
   public readonly options: ISyncOptions;
@@ -101,13 +100,22 @@ export class SyncRequest {
   private static initialized = false;
 
   /**
+   * Creates a new sync request.
+   * @param from The player to send the data from.
+   */
+  constructor(from: MapPlayer);
+  /**
    * Creates a new sync request and immediately attempts to send the data.
    * @param from The player to send the data from.
    * @param data The data to send.
-   * @param options
    */
-  constructor(from: MapPlayer);
   constructor(from: MapPlayer, data: string);
+  /**
+   * Creates a new sync request. The data will be sent immediately if `data` is not empty.
+   * @param from The player to send the data from.
+   * @param data The data to send.
+   * @param options The options of the request such as timeout.
+   */
   constructor(from: MapPlayer, data?: string, options?: ISyncOptions) {
     // initialize
     this.options = !options ? SyncRequest.defaultOptions : options;
@@ -123,6 +131,9 @@ export class SyncRequest {
     }
   }
 
+  /**
+   * Get the time that the sync request started syncing.
+   */
   public get startTime() {
     return this._startTime;
   }
@@ -145,6 +156,10 @@ export class SyncRequest {
     this.destroyed = true;
   }
 
+  /**
+   * Start syncing
+   * @param data The data to sync. If data was passed to the constructor then nothing will happen.
+   */
   public start(data: string) {
     if (this.status !== SyncStatus.None || this.destroyed) {
       return false;
@@ -203,9 +218,9 @@ export class SyncRequest {
   }
 
   /**
- * Encode and send the data from the correct player.
- * @param data
- */
+   * Encode and send the data from the correct player.
+   * @param data
+   */
   private send(packet: SyncOutgoingPacket) {
     const prefix = packet.chunk === -1 ? SYNC_PREFIX : SYNC_PREFIX_CHUNK;
     if (this.from === MapPlayer.fromLocal() && !BlzSendSyncData(prefix, packet.toString())) {
@@ -235,7 +250,9 @@ export class SyncRequest {
         this.eventTrigger.registerPlayerSyncEvent(p, SYNC_PREFIX_CHUNK, false);
       }
     }
-    this.eventTrigger.addAction(() => { this.onSync(); });
+    this.eventTrigger.addAction(() => {
+      this.onSync();
+    });
     this.initialized = true;
   }
 

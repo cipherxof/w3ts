@@ -1,17 +1,16 @@
 export class File {
-
   // The ability used to read and write data.
   private static dummyAbility: number = FourCC("Amls");
 
   // The string limit per Preload call.
   private static preloadLimit = 259;
 
-  private constructor() { }
+  private constructor() {}
 
   /**
    * Character we use for escape sequences. Avoiding `\` since it is
    * automatically escaped by `Preload`.
-  */
+   */
   private static escapeCharacter = String.fromCharCode(27);
   private static escapedSelf = File.escapeCharacter + File.escapeCharacter;
   private static escapedQuote = File.escapeCharacter + "q";
@@ -36,8 +35,10 @@ export class File {
   }
 
   /**
-  * Read text from a file.
-  */
+   * Read text from a file.
+   * @param filename The name of the file to read.
+   * @returns Returns undefined when the file could not be read.
+   */
   public static read(filename: string): string | undefined {
     const originalIcon = BlzGetAbilityIcon(this.dummyAbility);
     Preloader(filename);
@@ -60,7 +61,7 @@ export class File {
       contents = File.escape(contents);
     }
 
-    for (let i = 0; i < (contents.length / File.preloadLimit); i++) {
+    for (let i = 0; i < contents.length / File.preloadLimit; i++) {
       Preload(`${contents.substr(i * File.preloadLimit, File.preloadLimit)}`);
     }
 
@@ -75,6 +76,8 @@ export class File {
 
   /**
    * Write text to a file.
+   * @param filename The name of the file to write to. Supported extensions are `.txt` and `.pld`.
+   *
    */
   public static write(filename: string, contents: string): File {
     return this.writeRaw(filename, contents, true);
