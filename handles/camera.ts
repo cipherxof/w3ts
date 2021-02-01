@@ -4,8 +4,7 @@ import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class Camera {
-
-  private constructor() { }
+  private constructor() {}
 
   public static set visible(flag: boolean) {
     DisplayCineFilter(flag);
@@ -56,7 +55,7 @@ export class Camera {
   }
 
   public static get eyePoint() {
-    return GetCameraEyePositionLoc();
+    return Point.fromHandle(GetCameraEyePositionLoc());
   }
 
   public static get targetPoint() {
@@ -190,17 +189,15 @@ export class Camera {
   public static stop() {
     StopCamera();
   }
-
 }
 
 export class CameraSetup extends Handle<camerasetup> {
-
   constructor() {
     super(Handle.initFromHandle() ? undefined : CreateCameraSetup());
   }
 
   public get destPoint() {
-    return CameraSetupGetDestPositionLoc(this.handle);
+    return Point.fromHandle(CameraSetupGetDestPositionLoc(this.handle));
   }
 
   public get destX() {
@@ -237,7 +234,6 @@ export class CameraSetup extends Handle<camerasetup> {
 
   public applyForceDurationSmooth(doPan: boolean, forcedDuration: number, easeInDuration: number, easeOutDuration: number, smoothFactor: number) {
     BlzCameraSetupApplyForceDurationSmooth(this.handle, doPan, forcedDuration, easeInDuration, easeOutDuration, smoothFactor);
-
   }
 
   public applyForceDurationZ(zDestOffset: number, forceDuration: number) {
@@ -263,5 +259,4 @@ export class CameraSetup extends Handle<camerasetup> {
   public static fromHandle(handle: camerasetup): camerasetup {
     return this.getObject(handle);
   }
-
 }

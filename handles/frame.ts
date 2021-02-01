@@ -2,12 +2,44 @@
 
 import { Handle } from "./handle";
 
+/**
+ * Warcraft III's UI uses a proprietary format known as FDF (Frame Definition Files).
+ * This class provides the ability to manipulate and create them dynamically through code.
+ *
+ * @example Create a simple button.
+ * ```ts
+ * // Create a "GLUEBUTTON" named "Facebutton", the clickable Button, for game UI
+ * const buttonFrame = new Frame("FaceButton", Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0), 0, 0, "GLUEBUTTON", "");
+ *
+ * // Create a BACKDROP named "FaceButtonIcon", the visible image, for buttonFrame.
+ * const buttonIconFrame = new Frame("FaceButton", buttonFrame, 0, 0, "BACKDROP", "");
+ *
+ * // buttonIconFrame will mimic buttonFrame in size and position
+ * buttonIconFrame.setAllPoints(buttonFrame);
+ *
+ * // Set a Texture
+ * buttonIconFrame.setTexture("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn", 0, true);
+ *
+ * // Place the buttonFrame to the center of the screen
+ * buttonFrame.setAbsPoint(FRAMEPOINT_CENTER, 0.4, 0.3);
+ *
+ * // Give that buttonFrame a size
+ * buttonFrame.setSize(0.05, 0.05);
+ * ```
+ *
+ * There are many aspects to modifying the UI and it can become complicated, so here are some
+ * guides:
+ *
+ * https://www.hiveworkshop.com/threads/ui-frames-starting-guide.318603/
+ * https://www.hiveworkshop.com/pastebin/913bd439799b3d917e5b522dd9ef458f20598/
+ * https://www.hiveworkshop.com/tags/ui-fdf/
+ */
 export class Frame extends Handle<framehandle> {
   /**
    * Creates a Frame.
    * @param name The name of the frame to be accessed with `Frame.fromName`.
-   * @param priority
    * @param owner The parent frame.
+   * @param priority
    * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
   constructor(name: string, owner: Frame, priority: number, createContext: number);
@@ -21,14 +53,28 @@ export class Frame extends Handle<framehandle> {
    * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
   constructor(name: string, owner: Frame, priority: number);
-  constructor(name: string, owner: Frame, priority: number, createContext?: number) {
+  /**
+   * Create a Frame by type.
+   * @param name The name of the frame to be accessed with `Frame.fromName`.
+   * @param owner The parent frame.
+   * @param priority
+   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
+   * @param typeName The type of Frame.
+   * @param inherits The name of the Frame it inherits.
+   */
+  constructor(name: string, owner: Frame, priority: number, createContext: number, typeName: string, inherits: string);
+  constructor(name: string, owner: Frame, priority: number, createContext?: number, typeName?: string, inherits?: string) {
     if (Handle.initFromHandle()) {
       super();
     } else {
       if (!createContext) {
         super(BlzCreateSimpleFrame(name, owner.handle, priority));
       } else {
-        super(BlzCreateFrame(name, owner.handle, priority, createContext));
+        if (typeName && inherits) {
+          super(BlzCreateFrameByType(typeName, name, owner.handle, inherits, createContext));
+        } else {
+          super(BlzCreateFrame(name, owner.handle, priority, createContext));
+        }
       }
     }
   }

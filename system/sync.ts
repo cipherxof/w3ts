@@ -80,6 +80,22 @@ class SyncOutgoingPacket {
   }
 }
 
+/**
+ * A system which provides an easy way to synchronize data between game clients.
+ * The data will be split into chunks and sent in order until all of them are recieved by
+ * every player. Splitting the data is required as `BlzSendSyncData` only allows 255 characters
+ * per request.
+ *
+ * @example
+ * ```ts
+ * const data = File.read("savecode.txt");
+ *
+ * // Synchronize the contents of the file from the first player's computer.
+ * new SyncRequest(Players[0], data).then((res, req) => {
+ *  print(res.data);
+ * });
+ * ```
+ */
 export class SyncRequest {
   public readonly from: MapPlayer;
   public readonly id: number;
@@ -239,7 +255,7 @@ export class SyncRequest {
   /**
    * Initialize
    */
-  public static init() {
+  private static init() {
     if (this.initialized) {
       return;
     }
