@@ -250,6 +250,9 @@ export class Unit extends Widget {
     PauseUnit(this.handle, flag);
   }
 
+  /**
+   * @returns true if the unit is paused
+   */
   public get paused() {
     return IsUnitPaused(this.handle);
   }
