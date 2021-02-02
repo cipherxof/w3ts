@@ -5,7 +5,6 @@ import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class MapPlayer extends Handle<player> {
-
   private constructor(index: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -86,6 +85,11 @@ export class MapPlayer extends Handle<player> {
     return BlzGetPlayerTownHallCount(this.handle);
   }
 
+  /**
+   * In upgrades that have multiple levels, it will research the upgrade by the number of levels specified.
+   * @param techId The four digit rawcode ID of the upgrade.
+   * @param levels The number of levels to add to the current research level of the upgrade.
+   */
   public addTechResearched(techId: number, levels: number) {
     AddPlayerTechResearched(this.handle, techId, levels);
   }
@@ -94,8 +98,9 @@ export class MapPlayer extends Handle<player> {
     BlzDecPlayerTechResearched(this.handle, techId, levels);
   }
 
-  // Used to store hero level data for the scorescreen
-  // before units are moved to neutral passive in melee games
+  /**
+   * Used to store hero level data for the scorescreen, before units are moved to neutral passive in melee games.
+   */
   public cacheHeroData() {
     CachePlayerHeroData(this.handle);
   }
@@ -116,6 +121,14 @@ export class MapPlayer extends Handle<player> {
     return IsVisibleToPlayer(x, y, this.handle);
   }
 
+  /**
+   * Reveals a player's remaining buildings to a force.
+   * The black mask over the buildings will be removed as if the territory had been discovered
+   * @param toWhichPlayers The players who will see whichPlayer's buildings.
+   * @param flag If true, the buildings will be revealed. If false, the buildings will not be revealed.
+   * Note that if you set it to false, it will not hide the buildings with a black mask.
+   * @note his function will not check whether the player has a town hall before revealing.
+   */
   public cripple(toWhichPlayers: Force, flag: boolean) {
     CripplePlayer(this.handle, toWhichPlayers.handle, flag);
   }
@@ -256,8 +269,10 @@ export class MapPlayer extends Handle<player> {
     return this.fromHandle(Player(index));
   }
 
+  /**
+   * @async
+   */
   public static fromLocal() {
     return this.fromHandle(GetLocalPlayer());
   }
-
 }

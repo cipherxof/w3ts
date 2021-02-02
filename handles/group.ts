@@ -36,6 +36,9 @@ export class Group extends Handle<group> {
     GroupEnumUnitsInRange(this.handle, x, y, radius, typeof filter === "function" ? Filter(filter) : filter);
   }
 
+  /**
+   * @bug Causes irregular behavior when used with large numbers
+   */
   public enumUnitsInRangeCounted(x: number, y: number, radius: number, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsInRangeCounted(this.handle, x, y, radius, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
@@ -44,6 +47,9 @@ export class Group extends Handle<group> {
     GroupEnumUnitsInRangeOfLoc(this.handle, whichPoint.handle, radius, typeof filter === "function" ? Filter(filter) : filter);
   }
 
+  /**
+   * @bug Causes irregular behavior when used with large numbers
+   */
   public enumUnitsInRangeOfPointCounted(whichPoint: Point, radius: number, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsInRangeOfLocCounted(this.handle, whichPoint.handle, radius, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
@@ -52,10 +58,16 @@ export class Group extends Handle<group> {
     GroupEnumUnitsInRect(this.handle, r.handle, typeof filter === "function" ? Filter(filter) : filter);
   }
 
+  /**
+   * @bug Causes irregular behavior when used with large numbers
+   */
   public enumUnitsInRectCounted(r: Rectangle, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsInRectCounted(this.handle, r.handle, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
 
+  /**
+   * @note In contrast to other Enum-functions this function enumarates units with locust.
+   */
   public enumUnitsOfPlayer(whichPlayer: MapPlayer, filter: boolexpr | (() => boolean)) {
     GroupEnumUnitsOfPlayer(this.handle, whichPlayer.handle, typeof filter === "function" ? Filter(filter) : filter);
   }
@@ -64,6 +76,9 @@ export class Group extends Handle<group> {
     GroupEnumUnitsOfType(this.handle, unitName, typeof filter === "function" ? Filter(filter) : filter);
   }
 
+  /**
+   * @bug Causes irregular behavior when used with large numbers
+   */
   public enumUnitsOfTypeCounted(unitName: string, filter: boolexpr | (() => boolean), countLimit: number) {
     GroupEnumUnitsOfTypeCounted(this.handle, unitName, typeof filter === "function" ? Filter(filter) : filter, countLimit);
   }
@@ -76,6 +91,12 @@ export class Group extends Handle<group> {
     ForGroup(this.handle, callback);
   }
 
+  /**
+   * @bug May return `null` even if there are still units in the group.
+   * This happens when a unit in the group dies and decays since the group still
+   * holds a reference to that unit but that unit is pretty much null.
+   * See http://wc3c.net/showthread.php?t=104464.
+   */
   public get first() {
     return Unit.fromHandle(FirstOfGroup(this.handle));
   }

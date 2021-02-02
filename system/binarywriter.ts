@@ -14,6 +14,8 @@
  * writer.writeUInt16(45000);
  *
  * // Read the values
+ * const binaryString = writer.toString();
+ * const reader = new BinaryReader(binaryString);
  * const values: any[] = [];
  *
  * values[0] = reader.readUInt8(); // 5

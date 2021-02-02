@@ -3,7 +3,6 @@
 import { Handle } from "./handle";
 
 export class QuestItem extends Handle<questitem> {
-
   constructor(whichQuest: Quest) {
     if (Handle.initFromHandle()) {
       super();
@@ -26,7 +25,9 @@ export class QuestItem extends Handle<questitem> {
 }
 
 export class Quest extends Handle<quest> {
-
+  /**
+   * @bug Do not use this in a global initialisation as it crashes the game there.
+   */
   constructor() {
     super(Handle.initFromHandle() ? undefined : CreateQuest());
   }
@@ -106,5 +107,4 @@ export class Quest extends Handle<quest> {
   public static fromHandle(handle: quest): Quest {
     return this.getObject(handle);
   }
-
 }

@@ -3,7 +3,6 @@
 import { Handle } from "./handle";
 
 export class MultiboardItem extends Handle<multiboarditem> {
-
   constructor(board: Multiboard, x: number, y: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -42,7 +41,10 @@ export class MultiboardItem extends Handle<multiboarditem> {
 }
 
 export class Multiboard extends Handle<multiboard> {
-
+  /**
+   * Create a Multiboard object
+   * @bug Do not use this in a global initialisation as it crashes the game there.
+   */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
@@ -67,6 +69,9 @@ export class Multiboard extends Handle<multiboard> {
     return MultiboardGetRowCount(this.handle);
   }
 
+  /**
+   * @bug It is only safe to change the row count by one. Use multiple calls for bigger values.
+   */
   public set rows(count: number) {
     MultiboardSetRowCount(this.handle, count);
   }
@@ -91,6 +96,9 @@ export class Multiboard extends Handle<multiboard> {
     DestroyMultiboard(this.handle);
   }
 
+  /**
+   * @note Multiboards can not be shown at map-init. Use a wait or a zero-timer to display as soon as possible.
+   */
   public display(show: boolean) {
     MultiboardDisplay(this.handle, show);
   }
@@ -99,6 +107,9 @@ export class Multiboard extends Handle<multiboard> {
     MultiboardMinimize(this.handle, flag);
   }
 
+  /**
+   * @async
+   */
   public minimized() {
     return IsMultiboardMinimized(this.handle);
   }
@@ -131,6 +142,9 @@ export class Multiboard extends Handle<multiboard> {
     return this.getObject(handle);
   }
 
+  /**
+   * Meant to unequivocally suspend display of existing and subsequently displayed multiboards.
+   */
   public static suppressDisplay(flag: boolean) {
     MultiboardSuppressDisplay(flag);
   }

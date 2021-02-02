@@ -4,9 +4,11 @@ import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class GameCache extends Handle<gamecache> {
-
   public readonly filename: string;
 
+  /**
+   * @note You cannot create more than 255 gamecaches
+   */
   constructor(campaignFile: string) {
     if (Handle.initFromHandle()) {
       super();
@@ -45,18 +47,30 @@ export class GameCache extends Handle<gamecache> {
     FlushStoredUnit(this.handle, missionKey, key);
   }
 
+  /**
+   * Returns false if the specified value's data is not found in the cache.
+   */
   public getBoolean(missionKey: string, key: string) {
     return GetStoredBoolean(this.handle, missionKey, key);
   }
 
+  /**
+   * Returns 0 if the specified value's data is not found in the cache.
+   */
   public getInteger(missionKey: string, key: string) {
     return GetStoredInteger(this.handle, missionKey, key);
   }
 
+  /**
+   * Returns 0 if the specified value's data is not found in the cache.
+   */
   public getNumber(missionKey: string, key: string) {
     return GetStoredReal(this.handle, missionKey, key);
   }
 
+  /**
+   * Returns "" if the specified value's data is not found in the cache.
+   */
   public getString(missionKey: string, key: string) {
     return GetStoredString(this.handle, missionKey, key);
   }
@@ -77,6 +91,9 @@ export class GameCache extends Handle<gamecache> {
     return HaveStoredString(this.handle, missionKey, key);
   }
 
+  /**
+   * Returns null if the specified value's data is not found in the cache.
+   */
   public restoreUnit(missionKey: string, key: string, forWhichPlayer: MapPlayer, x: number, y: number, face: number) {
     return RestoreUnit(this.handle, missionKey, key, forWhichPlayer.handle, x, y, face);
   }
@@ -124,5 +141,4 @@ export class GameCache extends Handle<gamecache> {
   public static reloadFromDisk() {
     return ReloadGameCachesFromDisk();
   }
-
 }

@@ -3,7 +3,6 @@
 import { Handle } from "./handle";
 
 export class Ubersplat extends Handle<ubersplat> {
-
   constructor(x: number, y: number, name: string, red: number, green: number, blue: number, alpha: number, forcePaused: boolean, noBirthTime: boolean) {
     if (Handle.initFromHandle()) {
       super();
@@ -16,6 +15,9 @@ export class Ubersplat extends Handle<ubersplat> {
     DestroyUbersplat(this.handle);
   }
 
+  /**
+   * @bug Does nothing.
+   */
   public finish() {
     FinishUbersplat(this.handle);
   }
@@ -28,6 +30,9 @@ export class Ubersplat extends Handle<ubersplat> {
     }
   }
 
+  /**
+   * @bug Does nothing.
+   */
   public reset() {
     ResetUbersplat(this.handle);
   }
@@ -39,5 +44,4 @@ export class Ubersplat extends Handle<ubersplat> {
   public static fromHandle(handle: ubersplat): Ubersplat {
     return this.getObject(handle);
   }
-
 }

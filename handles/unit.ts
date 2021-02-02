@@ -17,9 +17,9 @@ export class Unit extends Widget {
   /**
    * Creates a unit.
    * @param owner The owner of the unit.
-   * @param unitId The type of unit.
-   * @param x
-   * @param y
+   * @param unitId The rawcode of the unit.
+   * @param x The x-coordinate of the unit.
+   * @param y The y-coordinate of the unit.
    * @param face The direction that the unit will be facing in degrees.
    * @param skinId The skin of the unit.
    */
@@ -32,6 +32,16 @@ export class Unit extends Widget {
     }
   }
 
+  /**
+   * Sets a unit's acquire range.  This is the value that a unit uses to choose targets to
+   * engage with.  Note that this is not the attack range.  When acquisition range is
+   * greater than attack range, the unit will attempt to move towards acquired targets, and then attack.
+   * Setting acquisition range lower than attack range in the object editor limits the
+   * unit's attack range to the acquisition range, but changing a unit's acquisition range
+   * with this native does not change its attack range, nor the value displayed in the UI.
+   *
+   * @note It is a myth that reducing acquire range with this native can limit a unit's attack range.
+   */
   public set acquireRange(value: number) {
     SetUnitAcquireRange(this.handle, value);
   }
@@ -88,6 +98,11 @@ export class Unit extends Widget {
     return GetUnitDefaultMoveSpeed(this.handle);
   }
 
+  /**
+   * Returns a unit's default propulsion window angle in degrees.
+   * @note This function is the odd case in the asymmetric prop window API, since the
+   * other prop window natives use radians.
+   */
   public get defaultPropWindow() {
     return GetUnitDefaultPropWindow(this.handle);
   }
@@ -108,6 +123,9 @@ export class Unit extends Widget {
     SetUnitFacing(this.handle, value);
   }
 
+  /**
+   * @returns The units facing in degrees.
+   */
   public get facing() {
     return GetUnitFacing(this.handle);
   }
@@ -136,6 +154,12 @@ export class Unit extends Widget {
     return UnitInventorySize(this.handle);
   }
 
+  /**
+   * Renders a unit invulnerable/lifts that specific invulnerability.
+   *
+   * @note The native seems to employ the `'Avul'` ability, which is defined in the default AbilityData.slk.
+   * If there is no `'Avul'` defined, this will crash the game.
+   */
   public set invulnerable(flag: boolean) {
     SetUnitInvulnerable(this.handle, flag);
   }
@@ -184,6 +208,9 @@ export class Unit extends Widget {
     return GetUnitMoveSpeed(this.handle);
   }
 
+  /**
+   * @async
+   */
   get name() {
     return GetUnitName(this.handle);
   }
@@ -196,6 +223,11 @@ export class Unit extends Widget {
     BlzSetHeroProperName(this.handle, value);
   }
 
+  /**
+   * Returns the hero's "Proper Name", which is the name displayed above the level bar.
+   *
+   * @note Will return 'null' on non-hero units.
+   */
   public get nameProper() {
     return GetHeroProperName(this.handle);
   }
@@ -208,6 +240,12 @@ export class Unit extends Widget {
     return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
   }
 
+  /**
+   * Pauses a unit. A paused unit has the following properties:
+   * 1. Buffs/effects are suspended
+   * 2. Orders are stored when paused and fired on unpause
+   * 3. The paused unit does not accept powerups. `addItem` returns true but the item is not picked up
+   */
   public set paused(flag: boolean) {
     PauseUnit(this.handle, flag);
   }
@@ -216,6 +254,11 @@ export class Unit extends Widget {
     return IsUnitPaused(this.handle);
   }
 
+  /**
+   * @bug If the unit is loaded into a zeppelin this will not return the position
+   * of the zeppelin but the last position of the unit before it was loaded into
+   * the zeppelin.
+   */
   public get point() {
     return Point.fromHandle(GetUnitLoc(this.handle));
   }
@@ -228,10 +271,27 @@ export class Unit extends Widget {
     return GetUnitPointValue(this.handle);
   }
 
-  public set propWindow(value: number) {
-    SetUnitPropWindow(this.handle, value);
+  /**
+   * Sets a unit's propulsion window to the specified angle (in radians). 
+   * The propulsion window determines at which facing angle difference to the target 
+   * command's location (move, attack, patrol, smart) a unit will begin to move if 
+   * movement is required to fulfil the command, or if it will turn without movement. 
+   * A propulsion window of 0 makes the unit unable to move at all. 
+   * A propulsion window of 180 will force it to start moving as soon as the command 
+   * is given (if movement is required). In practice, this means that setting a 
+   * unit's prop window to 0 will prevent it from attacking. 
+   * 
+   * http://www.hiveworkshop.com/forums/2391397-post20.html
+
+   * @param newPropWindowAngle The propulsion window angle to assign. Should be in radians.
+   */
+  public set propWindow(newPropWindowAngle: number) {
+    SetUnitPropWindow(this.handle, newPropWindowAngle);
   }
 
+  /**
+   * Returns a unit's propulsion window angle in radians.
+   */
   public get propWindow() {
     return GetUnitPropWindow(this.handle);
   }
@@ -289,10 +349,23 @@ export class Unit extends Widget {
     BlzSetUnitSkin(this.handle, skinId);
   }
 
+  /**
+   * Returns the units available skill points.
+   */
   public get skillPoints() {
     return GetHeroSkillPoints(this.handle);
   }
 
+  /**
+   * Adds the amount to the units available skill points. Calling with a negative
+   * number reduces the skill points by that amount.
+   * Returns false if the amount of available skill points is already zero and
+   * if it's called with any non-positive number.
+   * Returns true in any other case.
+   * @note If `skillPointDelta` is greater than the amount of skillpoints the hero
+   * actually can spend (like 9 for three 3-level abilities) only that amount will
+   * be added. Negative `skillPointDelta` works as expected.
+   */
   public set skillPoints(skillPointDelta: number) {
     UnitModifySkillPoints(this.handle, skillPointDelta);
   }
@@ -325,6 +398,11 @@ export class Unit extends Widget {
     return GetUnitUserData(this.handle);
   }
 
+  /**
+   * Sets a single custom integer for a unit.
+   *
+   * @note This value is not used by any standard mechanisms in Warcraft III.
+   */
   public set userData(value: number) {
     SetUnitUserData(this.handle, value);
   }
@@ -337,10 +415,19 @@ export class Unit extends Widget {
     return WaygateIsActive(this.handle);
   }
 
+  /**
+   * @bug If the unit is loaded into a zeppelin this will not return the position
+   * of the zeppelin but the last position of the unit before it was loaded into
+   * the zeppelin.
+   */
   public get x() {
     return GetUnitX(this.handle);
   }
 
+  /**
+   * @note If the unit has movementspeed of zero the unit will be moved but the model of the unit will not move.
+   * @note This does not cancel orders of the unit. `setPosition` does cancel orders.
+   */
   public set x(value: number) {
     SetUnitX(this.handle, value);
   }
@@ -349,6 +436,10 @@ export class Unit extends Widget {
     return GetUnitY(this.handle);
   }
 
+  /**
+   * @note If the unit has movementspeed of zero the unit will be moved but the model of the unit will not move.
+   * @note This does not cancel orders of the unit. `setPosition` does cancel orders.
+   */
   public set y(value: number) {
     SetUnitY(this.handle, value);
   }
@@ -365,6 +456,22 @@ export class Unit extends Widget {
     AddUnitAnimationProperties(this.handle, animProperties, add);
   }
 
+  /**
+   * Adds the input value of experience to the hero unit specified.
+   *
+   * If the experience added exceeds the amount required for the hero to gain a level,
+   * then it will force the unit to gain a level and the remaining experience will spill over for the next level.
+   *
+   * @bug Adding negative value to experience will decrease it
+   * by the stated value, but won't lower the level even if the experience value
+   * after deduction is lower than the lower bound of the experience required to get
+   * the stated level.
+   * @bug If the value will become lower than zero, the experience won't be negative, instead of it it'll be equal
+   * to `4294967296+(supposed_negative_experience_value)`.
+   * @param xpToAdd The amount of experience to add to the hero unit.
+   * @param showEyeCandy If the boolean input is true, then the hero-level-gain
+   * effect will be shown if the hero gains a level from the added experience.
+   */
   public addExperience(xpToAdd: number, showEyeCandy: boolean) {
     AddHeroXP(this.handle, xpToAdd, showEyeCandy);
   }
@@ -389,6 +496,15 @@ export class Unit extends Widget {
     AddItemToStock(this.handle, itemId, currentStock, stockMax);
   }
 
+  /**
+   * Adds the amount more gold to the whichUnit gold mine.
+   *
+   * @bug If the value after adding negative amount will be less than zero, then it
+   * will display negative resource amount, but if some peasant or peon will try to
+   * gather resources from such a mine, he will bring back 0 gold and the mine will
+   * be auto-destroyed.
+   * @param amount The amount of resources to add to the unit.
+   */
   public addResourceAmount(amount: number) {
     AddResourceAmount(this.handle, amount);
   }
@@ -440,10 +556,27 @@ export class Unit extends Widget {
     return UnitDamagePoint(this.handle, delay, radius, x, y, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
+  /**
+   * Deals damage to target widget from a source unit.
+   *
+   * @note For some insight about the different configurations of the different types see [this post](http://www.wc3c.net/showpost.php?p=1030046&postcount=19).
+   * @param target The target being damaged.
+   * @param amount How much damage is being dealt.
+   * @param attack Consider the damage dealt as being an attack.
+   * @param ranged Consider the damage dealt as being from a ranged source.
+   * @param attackType
+   * @param damageType
+   * @param weaponType
+   */
   public damageTarget(target: widget, amount: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
     return UnitDamageTarget(this.handle, target, amount, attack, ranged, attackType, damageType, weaponType);
   }
 
+  /**
+   * Decreases the level of a unit's ability by 1. The level will not go below 1.
+   * @param abilCode The four digit rawcode representation of the ability.
+   * @returns The new ability level.
+   */
   public decAbilityLevel(abilCode: number) {
     return DecUnitAbilityLevel(this.handle, abilCode);
   }
@@ -491,6 +624,10 @@ export class Unit extends Widget {
     return BlzGetUnitAbilityCooldownRemaining(this.handle, abilId);
   }
 
+  /**
+   * Returns the level of the ability for the unit.
+   * @note This function is **not** zero indexed.
+   */
   public getAbilityLevel(abilCode: number) {
     return GetUnitAbilityLevel(this.handle, abilCode);
   }
@@ -584,6 +721,16 @@ export class Unit extends Widget {
     BlzUnitHideAbility(this.handle, abilId, flag);
   }
 
+  /**
+   * Increases the level of a unit's ability by 1.
+   * @param abilCode The four digit rawcode representation of the ability.
+   * @returns The new ability level.
+   *
+   * @note `incAbilityLevel` can increase an abilities level to maxlevel+1. On maxlevel+1 all ability fields are 0.
+   *
+   * http://www.wc3c.net/showthread.php?p=1029039#post1029039
+   * http://www.hiveworkshop.com/forums/lab-715/silenceex-everything-you-dont-know-about-silence-274351/.
+   */
   public incAbilityLevel(abilCode: number) {
     return IncUnitAbilityLevel(this.handle, abilCode);
   }
@@ -688,10 +835,20 @@ export class Unit extends Widget {
     return typeof order === "string" ? IssueTargetOrder(this.handle, order, targetWidget.handle) : IssueTargetOrderById(this.handle, order, targetWidget.handle);
   }
 
+  /**
+   * @note Useless. Use operator == instead.
+   */
   public isUnit(whichSpecifiedUnit: Unit) {
     return IsUnit(this.handle, whichSpecifiedUnit.handle);
   }
 
+  /**
+   * @note This native returns a boolean, which when typecasted to integer might be greater than 1. It's probably implemented via a bitset.
+   * @note In past patches this native bugged when used in conditionfuncs.
+   * The fix back then was to compare with true (`==true`).
+   * I cannot reproduce the faulty behaviour in patch 1.27 so this is only a note.
+   * @param whichUnitType
+   */
   public isUnitType(whichUnitType: unittype) {
     return IsUnitType(this.handle, whichUnitType);
   }
@@ -707,10 +864,35 @@ export class Unit extends Widget {
     KillUnit(this.handle);
   }
 
+  /**
+   * Locks a unit's bone to face the target until ResetUnitLookAt is called.
+   *
+   * The offset coordinates ( X, Y, Z ) are taken from the target's origin.
+   * The bones will lock to the lookAtTarget, offset by those coordinates. You can't
+   * have both the head and the chest locked to the target at the same time.
+   * @param whichBone The bone to lock onto the target. The engine only supports
+   * locking the head and the chest. To lock the head, you can put in any input
+   * except a null string. To lock the chest, the string must start with `"bone_chest"`.
+   * All leading spaces are ignored, it is case insensitive, and anything after the
+   * first non-leading space will be ignored.
+   * @param lookAtTargetThe bone will be locked to face this unit.
+   * @param offsetX The x-offset from lookAtTarget's origin point.
+   * @param offsetY The y-offset from lookAtTarget's origin point.
+   * @param offsetZ The z-offset from lookAtTarget's origin point (this already factors in the terrain Z).
+   * @note The parameter `whichBone` can only move the head bones and the chest bones.
+   * All other input will default to the head bone. However, the function only looks
+   * for the helper named `"Bone_Head"` (or `"Bone_Chest"`) in the MDL, so you can just
+   * rename a helper so that it will move that set of bones instead.
+   * @note SetUnitLookAt is affected by animation speed and blend time.
+   * @note [How to instantly set a unit's facing](http://www.wc3c.net/showthread.php?t=105830)
+   */
   public lookAt(whichBone: string, lookAtTarget: Unit, offsetX: number, offsetY: number, offsetZ: number) {
     SetUnitLookAt(this.handle, whichBone, lookAtTarget.handle, offsetX, offsetY, offsetZ);
   }
 
+  /**
+   * This native is used to keep abilities when morphing units
+   */
   public makeAbilityPermanent(permanent: boolean, abilityId: number) {
     UnitMakeAbilityPermanent(this.handle, permanent, abilityId);
   }
@@ -751,10 +933,19 @@ export class Unit extends Widget {
     RemoveGuardPosition(this.handle);
   }
 
+  /**
+   * The item is removed from the Hero and placed on the ground at the Hero's feet.
+   * @param whichItem The item to remove.
+   */
   public removeItem(whichItem: Item) {
     UnitRemoveItem(this.handle, whichItem.handle);
   }
 
+  /**
+   * If an item exists in the given slot, it is removed from the Hero and placed on
+   * the ground at the Hero's feed
+   * @param itemSlot
+   */
   public removeItemFromSlot(itemSlot: number) {
     return Item.fromHandle(UnitRemoveItemFromSlot(this.handle, itemSlot));
   }
@@ -775,6 +966,9 @@ export class Unit extends Widget {
     UnitResetCooldown(this.handle);
   }
 
+  /**
+   * Unlocks the bone oriented by `lookAt`, allowing it to move in accordance to the unit's regular animations.
+   */
   public resetLookAt() {
     ResetUnitLookAt(this.handle);
   }
@@ -903,6 +1097,9 @@ export class Unit extends Widget {
     SetUnitPathing(this.handle, flag);
   }
 
+  /**
+   * @note This cancels the orders of the unit. If you want to move a unit without canceling its orders set `x`/`y`.
+   */
   public setPosition(x: number, y: number) {
     SetUnitPosition(this.handle, x, y);
   }
@@ -915,6 +1112,12 @@ export class Unit extends Widget {
     SetUnitRescueRange(this.handle, range);
   }
 
+  /**
+   * @bug Only takes scaleX into account and uses scaleX for all three dimensions.
+   * @param scaleX This is actually the scale for *all* dimensions
+   * @param scaleY This parameter is not taken into account
+   * @param scaleZ This parameter is not taken into account
+   */
   public setScale(scaleX: number, scaleY: number, scaleZ: number) {
     SetUnitScale(this.handle, scaleX, scaleY, scaleZ);
   }
@@ -951,6 +1154,13 @@ export class Unit extends Widget {
     SetUnitUseFood(this.handle, useFood);
   }
 
+  /**
+   * Sets the unit's color to the color defined by (red,green,blue,alpha).
+   * @param red An integer from 0-255 determining the amount of red color.
+   * @param green An integer from 0-255 determining the amount of green color.
+   * @param blue An integer from 0-255 determining the amount of blue color.
+   * @param alpha An integer from 0-255 determining the amount of alpha color.
+   */
   public setVertexColor(red: number, green: number, blue: number, alpha: number) {
     SetUnitVertexColor(this.handle, red, green, blue, alpha);
   }

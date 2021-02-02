@@ -8,6 +8,13 @@ import { Widget } from "./widget";
 export class Item extends Widget {
   public readonly handle!: item;
 
+  /**
+   * Creates an item object at the specified coordinates.
+   * @param itemId The rawcode of the item.
+   * @param x The x-coordinate of the item
+   * @param y The y-coordinate of the item
+   * @param skinId  The skin ID of the item.
+   */
   constructor(itemId: number, x: number, y: number, skinId?: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -36,12 +43,59 @@ export class Item extends Widget {
     return GetItemLevel(this.handle);
   }
 
+  /**
+   * @async
+   */
+  get description() {
+    return BlzGetItemDescription(this.handle);
+  }
+
+  set description(description: string) {
+    BlzSetItemDescription(this.handle, description);
+  }
+
+  /**
+   * @async
+   */
+  get extendedTooltip() {
+    return BlzGetItemExtendedTooltip(this.handle);
+  }
+
+  set extendedTooltip(tooltip: string) {
+    BlzSetItemExtendedTooltip(this.handle, tooltip);
+  }
+
+  /**
+   * @async
+   */
+  get icon() {
+    return BlzGetItemIconPath(this.handle);
+  }
+
+  set icon(path: string) {
+    BlzSetItemIconPath(this.handle, path);
+  }
+
+  /**
+   * @async
+   */
   get name() {
     return GetItemName(this.handle);
   }
 
   set name(value: string) {
     BlzSetItemName(this.handle, value);
+  }
+
+  /**
+   * @async
+   */
+  get tooltip() {
+    return BlzGetItemTooltip(this.handle);
+  }
+
+  set tooltip(tooltip: string) {
+    BlzSetItemTooltip(this.handle, tooltip);
   }
 
   public get pawnable() {
@@ -106,6 +160,18 @@ export class Item extends Widget {
 
   public addAbility(abilCode: number) {
     BlzItemAddAbility(this.handle, abilCode);
+  }
+
+  public getAbility(abilCode: number) {
+    return BlzGetItemAbility(this.handle, abilCode);
+  }
+
+  public getAbilityByIndex(index: number) {
+    return BlzGetItemAbilityByIndex(this.handle, index);
+  }
+
+  public removeAbility(abilCode: number) {
+    BlzItemRemoveAbility(this.handle, abilCode);
   }
 
   public destroy() {

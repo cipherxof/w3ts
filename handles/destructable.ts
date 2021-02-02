@@ -4,9 +4,18 @@ import { Handle } from "./handle";
 import { Widget } from "./widget";
 
 export class Destructable extends Widget {
-
   public readonly handle!: destructable;
 
+  /**
+   * Creates a destructable at the specified coordinates.
+   * @param objectId The rawcode of the destructable to be created.
+   * @param x The x-coordinate of the Destructable.
+   * @param y The y-coordinate of the Destructable.
+   * @param z The z-coordinate of the Destructable.
+   * @param face The facing of the Destructable.
+   * @param scale The X-Y-Z scaling value of the Destructable.
+   * @param varation The integer representing the variation of the Destructable to be created.
+   */
   constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -39,6 +48,9 @@ export class Destructable extends Widget {
     SetDestructableMaxLife(this.handle, value);
   }
 
+  /**
+   * This will return different values depending on the locale.
+   */
   public get name() {
     return GetDestructableName(this.handle);
   }
@@ -67,6 +79,14 @@ export class Destructable extends Widget {
     RemoveDestructable(this.handle);
   }
 
+  /**
+   * Resurrects a Destructable with the specified hit points.
+   * @param life The amount of hit points the Destructable will have when it is
+   * resurrected. A value of 0, or any value above the Destructable's maximum HP,
+   * will give the Destructable its maximum HP (as defined in the object editor).
+   * Any value below 0.5 will give the Destructable 0.5 hit points.
+   * @param birth If true, the Destructable will play its birth animation upon resurrection.
+   */
   public heal(life: number, birth: boolean) {
     DestructableRestoreLife(this.handle, life, birth);
   }
@@ -98,5 +118,4 @@ export class Destructable extends Widget {
   public static fromHandle(handle: destructable): Destructable {
     return this.getObject(handle);
   }
-
 }

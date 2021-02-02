@@ -4,7 +4,6 @@ import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class DialogButton extends Handle<button> {
-
   constructor(whichDialog: Dialog, text: string, hotkey: number = 0, quit: boolean = false, score: boolean = false) {
     if (Handle.initFromHandle()) {
       super();
@@ -21,7 +20,6 @@ export class DialogButton extends Handle<button> {
 }
 
 export class Dialog extends Handle<dialog> {
-
   constructor() {
     super(Handle.initFromHandle() ? undefined : DialogCreate());
   }
@@ -38,6 +36,9 @@ export class Dialog extends Handle<dialog> {
     DialogDestroy(this.handle);
   }
 
+  /**
+   * @note Dialogs can not be shown at map-init. Use a wait or a zero-timer to display as soon as possible.
+   */
   public display(whichPlayer: MapPlayer, flag: boolean) {
     DialogDisplay(whichPlayer.handle, this.handle, flag);
   }

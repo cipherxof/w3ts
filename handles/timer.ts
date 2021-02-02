@@ -3,7 +3,6 @@
 import { Handle } from "./handle";
 
 export class Timer extends Handle<timer> {
-
   constructor() {
     if (Handle.initFromHandle()) {
       super();
@@ -16,6 +15,9 @@ export class Timer extends Handle<timer> {
     return TimerGetElapsed(this.handle);
   }
 
+  /**
+   * @bug This might not return the correct value if the timer was paused and restarted at one point. See http://www.wc3c.net/showthread.php?t=95756.
+   */
   public get remaining(): number {
     return TimerGetRemaining(this.handle);
   }
@@ -44,6 +46,9 @@ export class Timer extends Handle<timer> {
     return this;
   }
 
+  /**
+   * @bug Might crash the game if called when there is no expired timer.
+   */
   public static fromExpired(): Timer {
     return this.fromHandle(GetExpiredTimer());
   }

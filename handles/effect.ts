@@ -17,7 +17,10 @@ export class Effect extends Handle<effect> {
    * Creates a special effect attached to a widget.
    * @param modelName The path of the model that the effect will use.
    * @param targetWidget The widget to attach the effect to.
-   * @param attachPointName The attachment point on the widget's model.
+   * @param attachPointName The attachment point of the widget where the effect will
+   * be placed. Attachment points are points in a model that can be referenced to as
+   * areas for effects to be attached, whether it be from a spell or this function.
+   * If the attachment point does not exist, it will attach the effect to the model's origin.
    */
   constructor(modelName: string, targetWidget: Widget, attachPointName: string);
   constructor(modelName: string, a: number | Widget, b: number | string) {
