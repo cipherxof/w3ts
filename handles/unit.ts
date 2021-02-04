@@ -746,14 +746,23 @@ export class Unit extends Widget {
     return IsUnitInGroup(this.handle, whichGroup.handle);
   }
 
+  /**
+   * Check if a unit is within range of a point. Collision size is taken into account.
+   */
   public inRange(x: number, y: number, distance: number) {
     return IsUnitInRangeXY(this.handle, x, y, distance);
   }
 
+  /**
+   * Check if a unit is within range of a point. Collision size is taken into account.
+   */
   public inRangeOfPoint(whichPoint: Point, distance: number) {
     return IsUnitInRangeLoc(this.handle, whichPoint.handle, distance);
   }
 
+  /**
+   * Check if a unit is within range of a another unit. Collision size is taken into account.
+   */
   public inRangeOfUnit(otherUnit: Unit, distance: number) {
     return IsUnitInRange(this.handle, otherUnit.handle, distance);
   }
