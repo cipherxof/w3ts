@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // Recommended by TSTL
     "target": "ESNext",
     "lib": ["ESNext"],
     "moduleResolution": "Node",

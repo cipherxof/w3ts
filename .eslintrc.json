@@ -1,0 +1,46 @@
+{
+    "env": {
+        "es2021": true
+    },
+    "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb-base",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "overrides": [{
+        "files": ["*.ts", "*.tsx", "*.json"]
+    }],
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "prettier",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "pretier/prettier": "error",
+        "camelcase": ["error", {"allow": ["((bj_)\\w+[A-Z]$)"]}], //exclude bj_CAPITAL_LETTER
+        "eqeqeq": ["error", "always", {"null": "never"}],
+        "@typescript-eslint/no-implicit-any-catch": "error",
+        "@typescript-eslint/strict-boolean-expressions": ["error"],
+        "no-underscore-dangle": ["error", { "allowAfterThis": true, "allowAfterSuper": true }],
+        "no-throw-literal": 0, //Maybe one day if wc3 gets a polyfill for the debug library
+        "no-cond-assign": 0,
+        "no-restricted-globals": 0,
+        "no-extra-parens": 0,
+        "no-undef": 0,
+        "no-unused-vars": 0,
+        "no-var-requires": 0,
+        "no-bitwise": 0,
+        "import/extensions": 0,
+        "import/no-unresolved": 0,
+        "import/prefer-default-export": 0,
+        "no-plusplus": 0,
+        "no-shadow": 0,
+        "no-use-before-define": 0,
+        "no-param-reassign": 0
+    }
+}

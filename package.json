@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tslint -c tslint.json -p tsconfig.json"
+    "build": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix"
   },
   "peerDependencies": {
     "lua-types": "^2.11.0",
@@ -16,7 +16,12 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
-    "eslint": "^8.0.1"
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1"
   },
   "repository": {
     "type": "git",
