@@ -1,10 +1,11 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { Widget } from "./widget";
 
 export class Destructable extends Widget {
-  public readonly handle!: destructable;
+  // TODO: test if this works
+  public declare readonly handle: destructable;
 
   /**
    * Creates a destructable at the specified coordinates.
@@ -16,7 +17,15 @@ export class Destructable extends Widget {
    * @param scale The X-Y-Z scaling value of the Destructable.
    * @param varation The integer representing the variation of the Destructable to be created.
    */
-  constructor(objectId: number, x: number, y: number, z: number, face: number, scale: number, varation: number) {
+  constructor(
+    objectId: number,
+    x: number,
+    y: number,
+    z: number,
+    face: number,
+    scale: number,
+    varation: number
+  ) {
     if (Handle.initFromHandle()) {
       super();
     } else {
@@ -32,11 +41,11 @@ export class Destructable extends Widget {
     return IsDestructableInvulnerable(this.handle);
   }
 
-  public get life() {
+  public override get life() {
     return GetDestructableLife(this.handle);
   }
 
-  public set life(value: number) {
+  public override set life(value: number) {
     SetDestructableLife(this.handle, value);
   }
 
@@ -67,11 +76,11 @@ export class Destructable extends Widget {
     return GetDestructableTypeId(this.handle);
   }
 
-  public get x() {
+  public override get x() {
     return GetDestructableX(this.handle);
   }
 
-  public get y() {
+  public override get y() {
     return GetDestructableY(this.handle);
   }
 
@@ -111,11 +120,13 @@ export class Destructable extends Widget {
     ShowDestructable(this.handle, flag);
   }
 
-  public static fromEvent() {
+  public static override fromEvent() {
     return this.fromHandle(GetTriggerDestructable());
   }
 
-  public static fromHandle(handle: destructable): Destructable {
-    return this.getObject(handle);
+  public static override fromHandle(
+    handle: destructable | undefined
+  ): Destructable | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

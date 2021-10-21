@@ -1,6 +1,6 @@
 import { Timer } from "../handles/timer";
 
-let elapsedTime = 0.00;
+let elapsedTime = 0.0;
 
 const gameTimer = new Timer().start(30, true, () => {
   elapsedTime += 30;

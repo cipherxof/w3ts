@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Dialog, DialogButton } from "./dialog";
 import { Frame } from "./frame";
@@ -79,7 +79,11 @@ export class Trigger extends Handle<trigger> {
    * @param condition The condition which must evaluate to true in order to run the trigger's actions.
    */
   public addCondition(condition: boolexpr | (() => boolean)) {
-    return TriggerAddCondition(this.handle, typeof condition === "function" ? Condition(condition) : condition);
+    if (typeof condition === "function") {
+      const cf = Condition(condition);
+      return cf ? TriggerAddCondition(this.handle, cf) : undefined;
+    }
+    return TriggerAddCondition(this.handle, condition);
   }
 
   /**
@@ -142,56 +146,158 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterDialogEvent(this.handle, whichDialog.handle);
   }
 
-  public registerEnterRegion(whichRegion: region, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterEnterRegion(this.handle, whichRegion, typeof filter === "function" ? Filter(filter) : filter);
+  public registerEnterRegion(
+    whichRegion: region,
+    filter: boolexpr | (() => boolean) | undefined
+  ) {
+    return TriggerRegisterEnterRegion(
+      this.handle,
+      whichRegion,
+      typeof filter === "function" ? Filter(filter) : filter
+    );
   }
 
-  public registerFilterUnitEvent(whichUnit: unit, whichEvent: unitevent, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterFilterUnitEvent(this.handle, whichUnit, whichEvent, typeof filter === "function" ? Filter(filter) : filter);
+  public registerFilterUnitEvent(
+    whichUnit: unit,
+    whichEvent: unitevent,
+    filter: boolexpr | (() => boolean) | undefined
+  ) {
+    return TriggerRegisterFilterUnitEvent(
+      this.handle,
+      whichUnit,
+      whichEvent,
+      typeof filter === "function" ? Filter(filter) : filter
+    );
   }
 
   public registerGameEvent(whichGameEvent: gameevent) {
     return TriggerRegisterGameEvent(this.handle, whichGameEvent);
   }
 
-  public registerGameStateEvent(whichState: gamestate, opcode: limitop, limitval: number) {
-    return TriggerRegisterGameStateEvent(this.handle, whichState, opcode, limitval);
+  public registerGameStateEvent(
+    whichState: gamestate,
+    opcode: limitop,
+    limitval: number
+  ) {
+    return TriggerRegisterGameStateEvent(
+      this.handle,
+      whichState,
+      opcode,
+      limitval
+    );
   }
 
-  public registerLeaveRegion(whichRegion: region, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterLeaveRegion(this.handle, whichRegion, typeof filter === "function" ? Filter(filter) : filter);
+  public registerLeaveRegion(
+    whichRegion: region,
+    filter: boolexpr | (() => boolean) | undefined
+  ) {
+    return TriggerRegisterLeaveRegion(
+      this.handle,
+      whichRegion,
+      typeof filter === "function" ? Filter(filter) : filter
+    );
   }
 
-  public registerPlayerAllianceChange(whichPlayer: MapPlayer, whichAlliance: alliancetype) {
-    return TriggerRegisterPlayerAllianceChange(this.handle, whichPlayer.handle, whichAlliance);
+  public registerPlayerAllianceChange(
+    whichPlayer: MapPlayer,
+    whichAlliance: alliancetype
+  ) {
+    return TriggerRegisterPlayerAllianceChange(
+      this.handle,
+      whichPlayer.handle,
+      whichAlliance
+    );
   }
 
-  public registerPlayerChatEvent(whichPlayer: MapPlayer, chatMessageToDetect: string, exactMatchOnly: boolean) {
-    return TriggerRegisterPlayerChatEvent(this.handle, whichPlayer.handle, chatMessageToDetect, exactMatchOnly);
+  public registerPlayerChatEvent(
+    whichPlayer: MapPlayer,
+    chatMessageToDetect: string,
+    exactMatchOnly: boolean
+  ) {
+    return TriggerRegisterPlayerChatEvent(
+      this.handle,
+      whichPlayer.handle,
+      chatMessageToDetect,
+      exactMatchOnly
+    );
   }
 
-  public registerPlayerEvent(whichPlayer: MapPlayer, whichPlayerEvent: playerevent) {
-    return TriggerRegisterPlayerEvent(this.handle, whichPlayer.handle, whichPlayerEvent);
+  public registerPlayerEvent(
+    whichPlayer: MapPlayer,
+    whichPlayerEvent: playerevent
+  ) {
+    return TriggerRegisterPlayerEvent(
+      this.handle,
+      whichPlayer.handle,
+      whichPlayerEvent
+    );
   }
 
-  public registerPlayerKeyEvent(whichPlayer: MapPlayer, whichKey: oskeytype, metaKey: number, fireOnKeyDown: boolean) {
-    return BlzTriggerRegisterPlayerKeyEvent(this.handle, whichPlayer.handle, whichKey, metaKey, fireOnKeyDown);
+  public registerPlayerKeyEvent(
+    whichPlayer: MapPlayer,
+    whichKey: oskeytype,
+    metaKey: number,
+    fireOnKeyDown: boolean
+  ) {
+    return BlzTriggerRegisterPlayerKeyEvent(
+      this.handle,
+      whichPlayer.handle,
+      whichKey,
+      metaKey,
+      fireOnKeyDown
+    );
   }
 
-  public registerPlayerMouseEvent(whichPlayer: MapPlayer, whichMouseEvent: number) {
-    return TriggerRegisterPlayerMouseEventBJ(this.handle, whichPlayer.handle, whichMouseEvent);
+  public registerPlayerMouseEvent(
+    whichPlayer: MapPlayer,
+    whichMouseEvent: number
+  ) {
+    return TriggerRegisterPlayerMouseEventBJ(
+      this.handle,
+      whichPlayer.handle,
+      whichMouseEvent
+    );
   }
 
-  public registerPlayerStateEvent(whichPlayer: MapPlayer, whichState: playerstate, opcode: limitop, limitval: number) {
-    return TriggerRegisterPlayerStateEvent(this.handle, whichPlayer.handle, whichState, opcode, limitval);
+  public registerPlayerStateEvent(
+    whichPlayer: MapPlayer,
+    whichState: playerstate,
+    opcode: limitop,
+    limitval: number
+  ) {
+    return TriggerRegisterPlayerStateEvent(
+      this.handle,
+      whichPlayer.handle,
+      whichState,
+      opcode,
+      limitval
+    );
   }
 
-  public registerPlayerSyncEvent(whichPlayer: MapPlayer, prefix: string, fromServer: boolean) {
-    return BlzTriggerRegisterPlayerSyncEvent(this.handle, whichPlayer.handle, prefix, fromServer);
+  public registerPlayerSyncEvent(
+    whichPlayer: MapPlayer,
+    prefix: string,
+    fromServer: boolean
+  ) {
+    return BlzTriggerRegisterPlayerSyncEvent(
+      this.handle,
+      whichPlayer.handle,
+      prefix,
+      fromServer
+    );
   }
 
-  public registerPlayerUnitEvent(whichPlayer: MapPlayer, whichPlayerUnitEvent: playerunitevent, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterPlayerUnitEvent(this.handle, whichPlayer.handle, whichPlayerUnitEvent, typeof filter === "function" ? Filter(filter) : filter);
+  public registerPlayerUnitEvent(
+    whichPlayer: MapPlayer,
+    whichPlayerUnitEvent: playerunitevent,
+    filter: boolexpr | (() => boolean) | undefined
+  ) {
+    return TriggerRegisterPlayerUnitEvent(
+      this.handle,
+      whichPlayer.handle,
+      whichPlayerUnitEvent,
+      typeof filter === "function" ? Filter(filter) : filter
+    );
   }
 
   // Creates it's own timer and triggers when it expires
@@ -216,19 +322,43 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterUnitEvent(this.handle, whichUnit.handle, whichEvent);
   }
 
-  public registerUnitInRage(whichUnit: unit, range: number, filter: boolexpr | (() => boolean) | null) {
-    return TriggerRegisterUnitInRange(this.handle, whichUnit, range, typeof filter === "function" ? Filter(filter) : filter);
+  public registerUnitInRage(
+    whichUnit: unit,
+    range: number,
+    filter: boolexpr | (() => boolean) | undefined
+  ) {
+    return TriggerRegisterUnitInRange(
+      this.handle,
+      whichUnit,
+      range,
+      typeof filter === "function" ? Filter(filter) : filter
+    );
   }
 
-  public registerUnitStateEvent(whichUnit: Unit, whichState: unitstate, opcode: limitop, limitval: number) {
-    return TriggerRegisterUnitStateEvent(this.handle, whichUnit.handle, whichState, opcode, limitval);
+  public registerUnitStateEvent(
+    whichUnit: Unit,
+    whichState: unitstate,
+    opcode: limitop,
+    limitval: number
+  ) {
+    return TriggerRegisterUnitStateEvent(
+      this.handle,
+      whichUnit.handle,
+      whichState,
+      opcode,
+      limitval
+    );
   }
 
   public registerUpgradeCommandEvent(whichUpgrade: number) {
     return TriggerRegisterUpgradeCommandEvent(this.handle, whichUpgrade);
   }
 
-  public registerVariableEvent(varName: string, opcode: limitop, limitval: number) {
+  public registerVariableEvent(
+    varName: string,
+    opcode: limitop,
+    limitval: number
+  ) {
     return TriggerRegisterVariableEvent(this.handle, varName, opcode, limitval);
   }
 
@@ -260,7 +390,7 @@ export class Trigger extends Handle<trigger> {
     return this.fromHandle(GetTriggeringTrigger());
   }
 
-  public static fromHandle(handle: trigger): Trigger {
-    return this.getObject(handle);
+  public static fromHandle(handle: trigger | undefined): Trigger | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

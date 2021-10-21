@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -27,7 +27,12 @@ export class MultiboardItem extends Handle<multiboarditem> {
     MultiboardSetItemValue(this.handle, val);
   }
 
-  public setValueColor(red: number, green: number, blue: number, alpha: number) {
+  public setValueColor(
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     MultiboardSetItemValueColor(this.handle, red, green, blue, alpha);
   }
 
@@ -81,7 +86,7 @@ export class Multiboard extends Handle<multiboard> {
   }
 
   public get title() {
-    return MultiboardGetTitleText(this.handle);
+    return MultiboardGetTitleText(this.handle) ?? "";
   }
 
   public clear() {
@@ -126,7 +131,12 @@ export class Multiboard extends Handle<multiboard> {
     MultiboardSetItemsValue(this.handle, value);
   }
 
-  public setItemsValueColor(red: number, green: number, blue: number, alpha: number) {
+  public setItemsValueColor(
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     MultiboardSetItemsValueColor(this.handle, red, green, blue, alpha);
   }
 
@@ -134,12 +144,19 @@ export class Multiboard extends Handle<multiboard> {
     MultiboardSetItemsWidth(this.handle, width);
   }
 
-  public setTitleTextColor(red: number, green: number, blue: number, alpha: number) {
+  public setTitleTextColor(
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     MultiboardSetTitleTextColor(this.handle, red, green, blue, alpha);
   }
 
-  public static fromHandle(handle: multiboard): Multiboard {
-    return this.getObject(handle);
+  public static fromHandle(
+    handle: multiboard | undefined
+  ): Multiboard | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   /**

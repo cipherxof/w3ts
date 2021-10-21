@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { Point } from "./point";
@@ -6,7 +6,6 @@ import { Rectangle } from "./rect";
 import { Unit } from "./unit";
 
 export class Region extends Handle<region> {
-
   constructor() {
     if (Handle.initFromHandle()) {
       super();
@@ -55,8 +54,11 @@ export class Region extends Handle<region> {
     RemoveRegion(this.handle);
   }
 
-  public static fromHandle(handle: region): Region {
-    return this.getObject(handle);
+  public static fromEvent() {
+    return this.fromHandle(GetTriggeringRegion());
   }
 
+  public static fromHandle(handle: region | undefined): Region | undefined {
+    return handle ? this.getObject(handle) : undefined;
+  }
 }

@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -51,7 +51,7 @@ export class Point extends Handle<location> {
     MoveLocation(this.handle, x, y);
   }
 
-  public static fromHandle(handle: location): Point {
-    return this.getObject(handle);
+  public static fromHandle(handle: location | undefined): Point | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

@@ -1,10 +1,9 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class Rectangle extends Handle<rect> {
-
   constructor(minX: number, minY: number, maxX: number, maxY: number) {
     if (Handle.initFromHandle()) {
       super();
@@ -41,12 +40,23 @@ export class Rectangle extends Handle<rect> {
     RemoveRect(this.handle);
   }
 
-  public enumDestructables(filter: boolexpr | (() => boolean), actionFunc: () => void) {
-    EnumDestructablesInRect(this.handle, typeof filter === "function" ? Filter(filter) : filter, actionFunc);
+  public enumDestructables(
+    filter: boolexpr | (() => boolean),
+    actionFunc: () => void
+  ) {
+    EnumDestructablesInRect(
+      this.handle,
+      typeof filter === "function" ? Filter(filter) : filter,
+      actionFunc
+    );
   }
 
   public enumItems(filter: boolexpr | (() => boolean), actionFunc: () => void) {
-    EnumItemsInRect(this.handle, typeof filter === "function" ? Filter(filter) : filter, actionFunc);
+    EnumItemsInRect(
+      this.handle,
+      typeof filter === "function" ? Filter(filter) : filter,
+      actionFunc
+    );
   }
 
   public move(newCenterX: number, newCenterY: number) {
@@ -65,8 +75,8 @@ export class Rectangle extends Handle<rect> {
     SetRectFromLoc(this.handle, min.handle, max.handle);
   }
 
-  public static fromHandle(handle: rect): Rectangle {
-    return this.getObject(handle);
+  public static fromHandle(handle: rect | undefined): Rectangle | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromPoint(min: Point, max: Point) {
@@ -77,5 +87,4 @@ export class Rectangle extends Handle<rect> {
   public static getWorldBounds() {
     return Rectangle.fromHandle(GetWorldBounds());
   }
-
 }

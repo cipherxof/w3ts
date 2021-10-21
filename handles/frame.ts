@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -42,7 +42,13 @@ export class Frame extends Handle<framehandle> {
    * @param priority
    * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
-  constructor(name: string, owner: Frame, priority: number, createContext: number);
+  constructor(
+    name: string,
+    owner: Frame,
+    priority: number,
+    createContext: number
+  );
+
   /**
    * Creates a SimpleFrame.
    *
@@ -53,6 +59,7 @@ export class Frame extends Handle<framehandle> {
    * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
   constructor(name: string, owner: Frame, priority: number);
+
   /**
    * Create a Frame by type.
    * @param name The name of the frame to be accessed with `Frame.fromName`.
@@ -62,20 +69,39 @@ export class Frame extends Handle<framehandle> {
    * @param typeName The type of Frame.
    * @param inherits The name of the Frame it inherits.
    */
-  constructor(name: string, owner: Frame, priority: number, createContext: number, typeName: string, inherits: string);
-  constructor(name: string, owner: Frame, priority: number, createContext?: number, typeName?: string, inherits?: string) {
+  constructor(
+    name: string,
+    owner: Frame,
+    priority: number,
+    createContext: number,
+    typeName: string,
+    inherits: string
+  );
+
+  constructor(
+    name: string,
+    owner: Frame,
+    priority: number,
+    createContext?: number,
+    typeName?: string,
+    inherits?: string
+  ) {
     if (Handle.initFromHandle()) {
       super();
+    } else if (createContext === undefined) {
+      super(BlzCreateSimpleFrame(name, owner.handle, priority));
+    } else if (typeName !== undefined && inherits !== undefined) {
+      super(
+        BlzCreateFrameByType(
+          typeName,
+          name,
+          owner.handle,
+          inherits,
+          createContext
+        )
+      );
     } else {
-      if (!createContext) {
-        super(BlzCreateSimpleFrame(name, owner.handle, priority));
-      } else {
-        if (typeName && inherits) {
-          super(BlzCreateFrameByType(typeName, name, owner.handle, inherits, createContext));
-        } else {
-          super(BlzCreateFrame(name, owner.handle, priority, createContext));
-        }
-      }
+      super(BlzCreateFrame(name, owner.handle, priority, createContext));
     }
   }
 
@@ -91,7 +117,10 @@ export class Frame extends Handle<framehandle> {
     const count = this.childrenCount;
     const output: Frame[] = [];
     for (let i = 0; i < count; i++) {
-      output.push(this.getChild(i));
+      const child = this.getChild(i);
+      if (child) {
+        output.push(child);
+      }
     }
     return output;
   }
@@ -116,12 +145,17 @@ export class Frame extends Handle<framehandle> {
     return BlzFrameGetHeight(this.handle);
   }
 
+  /**
+   * @deprecated use getParent/setParent instead.
+   */
   public set parent(parent: Frame) {
     BlzFrameSetParent(this.handle, parent.handle);
   }
 
   public get parent() {
-    return Frame.fromHandle(BlzFrameGetParent(this.handle));
+    return Frame.fromHandle(
+      BlzFrameGetParent(this.handle) as framehandle
+    ) as Frame;
   }
 
   public set text(text: string) {
@@ -129,7 +163,7 @@ export class Frame extends Handle<framehandle> {
   }
 
   public get text() {
-    return BlzFrameGetText(this.handle);
+    return BlzFrameGetText(this.handle) ?? "";
   }
 
   public set textSizeLimit(size: number) {
@@ -243,12 +277,22 @@ export class Frame extends Handle<framehandle> {
     return this;
   }
 
+  public getParent() {
+    return Frame.fromHandle(BlzFrameGetParent(this.handle));
+  }
+
   public setParent(parent: Frame) {
     BlzFrameSetParent(this.handle, parent.handle);
     return this;
   }
 
-  public setPoint(point: framepointtype, relative: Frame, relativePoint: framepointtype, x: number, y: number) {
+  public setPoint(
+    point: framepointtype,
+    relative: Frame,
+    relativePoint: framepointtype,
+    x: number,
+    y: number
+  ) {
     BlzFrameSetPoint(this.handle, point, relative.handle, relativePoint, x, y);
     return this;
   }
@@ -326,8 +370,8 @@ export class Frame extends Handle<framehandle> {
     return this.fromHandle(BlzGetTriggerFrame());
   }
 
-  public static fromHandle(handle: framehandle): Frame {
-    return this.getObject(handle);
+  public static fromHandle(handle: framehandle | undefined): Frame | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromName(name: string, createContext: number) {

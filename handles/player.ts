@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Force } from "./force";
 import { Handle } from "./handle";
@@ -41,12 +41,12 @@ export class MapPlayer extends Handle<player> {
     SetPlayerHandicapXP(this.handle, handicap);
   }
 
-  public get id() {
+  public override get id() {
     return GetPlayerId(this.handle);
   }
 
   public get name() {
-    return GetPlayerName(this.handle);
+    return GetPlayerName(this.handle) ?? "";
   }
 
   public set name(value: string) {
@@ -105,8 +105,15 @@ export class MapPlayer extends Handle<player> {
     CachePlayerHeroData(this.handle);
   }
 
-  public compareAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype) {
-    return GetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting);
+  public compareAlliance(
+    otherPlayer: MapPlayer,
+    whichAllianceSetting: alliancetype
+  ) {
+    return GetPlayerAlliance(
+      this.handle,
+      otherPlayer.handle,
+      whichAllianceSetting
+    );
   }
 
   public coordsFogged(x: number, y: number) {
@@ -165,8 +172,17 @@ export class MapPlayer extends Handle<player> {
     return GetPlayerUnitCount(this.handle, includeIncomplete);
   }
 
-  public getUnitCountByType(unitName: string, includeIncomplete: boolean, includeUpgrades: boolean) {
-    return GetPlayerTypedUnitCount(this.handle, unitName, includeIncomplete, includeUpgrades);
+  public getUnitCountByType(
+    unitName: string,
+    includeIncomplete: boolean,
+    includeUpgrades: boolean
+  ) {
+    return GetPlayerTypedUnitCount(
+      this.handle,
+      unitName,
+      includeIncomplete,
+      includeUpgrades
+    );
   }
 
   public inForce(whichForce: Force) {
@@ -221,8 +237,17 @@ export class MapPlayer extends Handle<player> {
     SetPlayerAbilityAvailable(this.handle, abilId, avail);
   }
 
-  public setAlliance(otherPlayer: MapPlayer, whichAllianceSetting: alliancetype, value: boolean) {
-    SetPlayerAlliance(this.handle, otherPlayer.handle, whichAllianceSetting, value);
+  public setAlliance(
+    otherPlayer: MapPlayer,
+    whichAllianceSetting: alliancetype,
+    value: boolean
+  ) {
+    SetPlayerAlliance(
+      this.handle,
+      otherPlayer.handle,
+      whichAllianceSetting,
+      value
+    );
   }
 
   public setOnScoreScreen(flag: boolean) {
@@ -233,7 +258,11 @@ export class MapPlayer extends Handle<player> {
     SetPlayerState(this.handle, whichPlayerState, value);
   }
 
-  public setTaxRate(otherPlayer: MapPlayer, whichResource: playerstate, rate: number) {
+  public setTaxRate(
+    otherPlayer: MapPlayer,
+    whichResource: playerstate,
+    rate: number
+  ) {
     SetPlayerTaxRate(this.handle, otherPlayer.handle, whichResource, rate);
   }
 
@@ -261,8 +290,8 @@ export class MapPlayer extends Handle<player> {
     return MapPlayer.fromHandle(GetFilterPlayer());
   }
 
-  public static fromHandle(handle: player): MapPlayer {
-    return this.getObject(handle);
+  public static fromHandle(handle: player | undefined): MapPlayer | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromIndex(index: number) {
@@ -273,6 +302,12 @@ export class MapPlayer extends Handle<player> {
    * @async
    */
   public static fromLocal() {
-    return this.fromHandle(GetLocalPlayer());
+    const pl = GetLocalPlayer();
+    if (pl === undefined) {
+      for (let i = 0; i < 10; i++) {
+        print("$$$$$$$$$ LOCAL PLAYER IS NULL. TELL ME");
+      }
+    }
+    return this.fromHandle(pl) as MapPlayer;
   }
 }

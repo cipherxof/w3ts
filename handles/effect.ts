@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
@@ -13,6 +13,7 @@ export class Effect extends Handle<effect> {
    * @param y
    */
   constructor(modelName: string, x: number, y: number);
+
   /**
    * Creates a special effect attached to a widget.
    * @param modelName The path of the model that the effect will use.
@@ -23,6 +24,8 @@ export class Effect extends Handle<effect> {
    * If the attachment point does not exist, it will attach the effect to the model's origin.
    */
   constructor(modelName: string, targetWidget: Widget, attachPointName: string);
+
+  // eslint-disable-next-line constructor-super
   constructor(modelName: string, a: number | Widget, b: number | string) {
     if (Handle.initFromHandle()) {
       super();
@@ -43,6 +46,7 @@ export class Effect extends Handle<effect> {
 
   /**
    * Warning: asynchronous
+   * @async
    */
   public get x() {
     return BlzGetLocalSpecialEffectX(this.handle);
@@ -54,6 +58,7 @@ export class Effect extends Handle<effect> {
 
   /**
    * Warning: asynchronous
+   * @async
    */
   public get y() {
     return BlzGetLocalSpecialEffectY(this.handle);
@@ -65,6 +70,7 @@ export class Effect extends Handle<effect> {
 
   /**
    * Warning: asynchronous
+   * @async
    */
   public get z() {
     return BlzGetLocalSpecialEffectZ(this.handle);
@@ -157,7 +163,7 @@ export class Effect extends Handle<effect> {
     BlzSetSpecialEffectYaw(this.handle, y);
   }
 
-  public static fromHandle(handle: effect): Effect {
-    return this.getObject(handle);
+  public static fromHandle(handle: effect | undefined): Effect | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

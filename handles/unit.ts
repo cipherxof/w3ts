@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { OrderId } from "../globals/order";
 import { Destructable } from "./destructable";
@@ -12,7 +12,8 @@ import { Sound } from "./sound";
 import { Widget } from "./widget";
 
 export class Unit extends Widget {
-  public readonly handle!: unit;
+  // TODO: test if this works
+  public declare readonly handle: unit;
 
   /**
    * Creates a unit.
@@ -23,12 +24,20 @@ export class Unit extends Widget {
    * @param face The direction that the unit will be facing in degrees.
    * @param skinId The skin of the unit.
    */
-  constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
+  constructor(
+    owner: MapPlayer,
+    unitId: number,
+    x: number,
+    y: number,
+    face: number = bj_UNIT_FACING,
+    skinId?: number
+  ) {
     if (Handle.initFromHandle()) {
       super();
+    } else if (skinId === undefined) {
+      super(CreateUnit(owner.handle, unitId, x, y, face));
     } else {
-      const p = typeof owner === "number" ? Player(owner) : owner.handle;
-      super(skinId ? BlzCreateUnitWithSkin(p, unitId, x, y, face, skinId) : CreateUnit(p, unitId, x, y, face));
+      super(BlzCreateUnitWithSkin(owner.handle, unitId, x, y, face, skinId));
     }
   }
 
@@ -212,7 +221,7 @@ export class Unit extends Widget {
    * @async
    */
   get name() {
-    return GetUnitName(this.handle);
+    return GetUnitName(this.handle) ?? "";
   }
 
   set name(value: string) {
@@ -227,17 +236,23 @@ export class Unit extends Widget {
    * Returns the hero's "Proper Name", which is the name displayed above the level bar.
    *
    * @note Will return 'null' on non-hero units.
+   * @note Will return 'null' on illusions.
    */
   public get nameProper() {
-    return GetHeroProperName(this.handle);
+    return GetHeroProperName(this.handle) ?? "";
   }
 
+  /**
+   * @deprecated use getOwner/setOwner instead.
+   */
   public set owner(whichPlayer: MapPlayer) {
     SetUnitOwner(this.handle, whichPlayer.handle, true);
   }
 
-  public get owner() {
-    return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
+  public get owner(): MapPlayer {
+    return MapPlayer.fromHandle(
+      GetOwningPlayer(this.handle) as player
+    ) as MapPlayer;
   }
 
   /**
@@ -258,12 +273,10 @@ export class Unit extends Widget {
   }
 
   /**
-   * @bug If the unit is loaded into a zeppelin this will not return the position
-   * of the zeppelin but the last position of the unit before it was loaded into
-   * the zeppelin.
+   * @deprecated use getPoint/setPoint instead.
    */
   public get point() {
-    return Point.fromHandle(GetUnitLoc(this.handle));
+    return Point.fromHandle(GetUnitLoc(this.handle) as location) as Point;
   }
 
   public set point(whichPoint: Point) {
@@ -275,15 +288,15 @@ export class Unit extends Widget {
   }
 
   /**
-   * Sets a unit's propulsion window to the specified angle (in radians). 
-   * The propulsion window determines at which facing angle difference to the target 
-   * command's location (move, attack, patrol, smart) a unit will begin to move if 
-   * movement is required to fulfil the command, or if it will turn without movement. 
-   * A propulsion window of 0 makes the unit unable to move at all. 
-   * A propulsion window of 180 will force it to start moving as soon as the command 
-   * is given (if movement is required). In practice, this means that setting a 
-   * unit's prop window to 0 will prevent it from attacking. 
-   * 
+   * Sets a unit's propulsion window to the specified angle (in radians).
+   * The propulsion window determines at which facing angle difference to the target
+   * command's location (move, attack, patrol, smart) a unit will begin to move if
+   * movement is required to fulfil the command, or if it will turn without movement.
+   * A propulsion window of 0 makes the unit unable to move at all.
+   * A propulsion window of 180 will force it to start moving as soon as the command
+   * is given (if movement is required). In practice, this means that setting a
+   * unit's prop window to 0 will prevent it from attacking.
+   *
    * http://www.hiveworkshop.com/forums/2391397-post20.html
 
    * @param newPropWindowAngle The propulsion window angle to assign. Should be in radians.
@@ -423,7 +436,7 @@ export class Unit extends Widget {
    * of the zeppelin but the last position of the unit before it was loaded into
    * the zeppelin.
    */
-  public get x() {
+  public override get x() {
     return GetUnitX(this.handle);
   }
 
@@ -431,11 +444,11 @@ export class Unit extends Widget {
    * @note If the unit has movementspeed of zero the unit will be moved but the model of the unit will not move.
    * @note This does not cancel orders of the unit. `setPosition` does cancel orders.
    */
-  public set x(value: number) {
+  public override set x(value: number) {
     SetUnitX(this.handle, value);
   }
 
-  public get y() {
+  public override get y() {
     return GetUnitY(this.handle);
   }
 
@@ -443,10 +456,13 @@ export class Unit extends Widget {
    * @note If the unit has movementspeed of zero the unit will be moved but the model of the unit will not move.
    * @note This does not cancel orders of the unit. `setPosition` does cancel orders.
    */
-  public set y(value: number) {
+  public override set y(value: number) {
     SetUnitY(this.handle, value);
   }
 
+  /**
+   * @async
+   */
   public get z() {
     return BlzGetUnitZ(this.handle);
   }
@@ -495,7 +511,11 @@ export class Unit extends Widget {
     return UnitAddItemToSlotById(this.handle, itemId, itemSlot);
   }
 
-  public addItemToStock(itemId: number, currentStock: number, stockMax: number) {
+  public addItemToStock(
+    itemId: number,
+    currentStock: number,
+    stockMax: number
+  ) {
     AddItemToStock(this.handle, itemId, currentStock, stockMax);
   }
 
@@ -520,7 +540,11 @@ export class Unit extends Widget {
     return UnitAddType(this.handle, whichUnitType);
   }
 
-  public addUnitToStock(unitId: number, currentStock: number, stockMax: number) {
+  public addUnitToStock(
+    unitId: number,
+    currentStock: number,
+    stockMax: number
+  ) {
     AddUnitToStock(this.handle, unitId, currentStock, stockMax);
   }
 
@@ -540,8 +564,25 @@ export class Unit extends Widget {
     return UnitCanSleepPerm(this.handle);
   }
 
-  public countBuffs(removePositive: boolean, removeNegative: boolean, magic: boolean, physical: boolean, timedLife: boolean, aura: boolean, autoDispel: boolean) {
-    return UnitCountBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
+  public countBuffs(
+    removePositive: boolean,
+    removeNegative: boolean,
+    magic: boolean,
+    physical: boolean,
+    timedLife: boolean,
+    aura: boolean,
+    autoDispel: boolean
+  ) {
+    return UnitCountBuffsEx(
+      this.handle,
+      removePositive,
+      removeNegative,
+      magic,
+      physical,
+      timedLife,
+      aura,
+      autoDispel
+    );
   }
 
   public damageAt(
@@ -556,7 +597,19 @@ export class Unit extends Widget {
     damageType: damagetype,
     weaponType: weapontype
   ) {
-    return UnitDamagePoint(this.handle, delay, radius, x, y, amount, attack, ranged, attackType, damageType, weaponType);
+    return UnitDamagePoint(
+      this.handle,
+      delay,
+      radius,
+      x,
+      y,
+      amount,
+      attack,
+      ranged,
+      attackType,
+      damageType,
+      weaponType
+    );
   }
 
   /**
@@ -571,8 +624,25 @@ export class Unit extends Widget {
    * @param damageType
    * @param weaponType
    */
-  public damageTarget(target: widget, amount: number, attack: boolean, ranged: boolean, attackType: attacktype, damageType: damagetype, weaponType: weapontype) {
-    return UnitDamageTarget(this.handle, target, amount, attack, ranged, attackType, damageType, weaponType);
+  public damageTarget(
+    target: widget,
+    amount: number,
+    attack: boolean,
+    ranged: boolean,
+    attackType: attacktype,
+    damageType: damagetype,
+    weaponType: weapontype
+  ) {
+    return UnitDamageTarget(
+      this.handle,
+      target,
+      amount,
+      attack,
+      ranged,
+      attackType,
+      damageType,
+      weaponType
+    );
   }
 
   /**
@@ -603,7 +673,10 @@ export class Unit extends Widget {
     return UnitDropItemSlot(this.handle, whichItem.handle, slot);
   }
 
-  public dropItemTarget(whichItem: Item, target: Widget /* | Unit | Item | Destructable*/) {
+  public dropItemTarget(
+    whichItem: Item,
+    target: Widget /* | Unit | Item | Destructable */
+  ) {
     return UnitDropItemTarget(this.handle, whichItem.handle, target.handle);
   }
 
@@ -659,26 +732,32 @@ export class Unit extends Widget {
     return BlzGetUnitDiceSides(this.handle, weaponIndex);
   }
 
-  public getField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield) {
+  public getField(
+    field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield
+  ) {
     const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     switch (fieldType) {
-      case "unitbooleanfield":
+      case "unitbooleanfield": {
         const fieldBool: unitbooleanfield = field as unitbooleanfield;
 
         return BlzGetUnitBooleanField(this.handle, fieldBool);
-      case "unitintegerfield":
+      }
+      case "unitintegerfield": {
         const fieldInt: unitintegerfield = field as unitintegerfield;
 
         return BlzGetUnitIntegerField(this.handle, fieldInt);
-      case "unitrealfield":
+      }
+      case "unitrealfield": {
         const fieldReal: unitrealfield = field as unitrealfield;
 
         return BlzGetUnitRealField(this.handle, fieldReal);
-      case "unitstringfield":
+      }
+      case "unitstringfield": {
         const fieldString: unitstringfield = field as unitstringfield;
 
         return BlzGetUnitStringField(this.handle, fieldString);
+      }
       default:
         return 0;
     }
@@ -712,8 +791,25 @@ export class Unit extends Widget {
     return GetHeroStr(this.handle, includeBonuses);
   }
 
-  public hasBuffs(removePositive: boolean, removeNegative: boolean, magic: boolean, physical: boolean, timedLife: boolean, aura: boolean, autoDispel: boolean) {
-    return UnitHasBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
+  public hasBuffs(
+    removePositive: boolean,
+    removeNegative: boolean,
+    magic: boolean,
+    physical: boolean,
+    timedLife: boolean,
+    aura: boolean,
+    autoDispel: boolean
+  ) {
+    return UnitHasBuffsEx(
+      this.handle,
+      removePositive,
+      removeNegative,
+      magic,
+      physical,
+      timedLife,
+      aura,
+      autoDispel
+    );
   }
 
   public hasItem(whichItem: Item) {
@@ -816,35 +912,76 @@ export class Unit extends Widget {
   }
 
   public issueBuildOrder(unit: string | number, x: number, y: number) {
-    return typeof unit === "string" ? IssueBuildOrder(this.handle, unit, x, y) : IssueBuildOrderById(this.handle, unit, x, y);
+    return typeof unit === "string"
+      ? IssueBuildOrder(this.handle, unit, x, y)
+      : IssueBuildOrderById(this.handle, unit, x, y);
   }
 
   public issueImmediateOrder(order: string | OrderId) {
-    return typeof order === "string" ? IssueImmediateOrder(this.handle, order) : IssueImmediateOrderById(this.handle, order);
+    return typeof order === "string"
+      ? IssueImmediateOrder(this.handle, order)
+      : IssueImmediateOrderById(this.handle, order);
   }
 
-  public issueInstantOrderAt(order: string | OrderId, x: number, y: number, instantTargetWidget: Widget) {
+  public issueInstantOrderAt(
+    order: string | OrderId,
+    x: number,
+    y: number,
+    instantTargetWidget: Widget
+  ) {
     return typeof order === "string"
-      ? IssueInstantPointOrder(this.handle, order, x, y, instantTargetWidget.handle)
-      : IssueInstantPointOrderById(this.handle, order, x, y, instantTargetWidget.handle);
+      ? IssueInstantPointOrder(
+          this.handle,
+          order,
+          x,
+          y,
+          instantTargetWidget.handle
+        )
+      : IssueInstantPointOrderById(
+          this.handle,
+          order,
+          x,
+          y,
+          instantTargetWidget.handle
+        );
   }
 
-  public issueInstantTargetOrder(order: string | OrderId, targetWidget: Widget, instantTargetWidget: Widget) {
+  public issueInstantTargetOrder(
+    order: string | OrderId,
+    targetWidget: Widget,
+    instantTargetWidget: Widget
+  ) {
     return typeof order === "string"
-      ? IssueInstantTargetOrder(this.handle, order, targetWidget.handle, instantTargetWidget.handle)
-      : IssueInstantTargetOrderById(this.handle, order, targetWidget.handle, instantTargetWidget.handle);
+      ? IssueInstantTargetOrder(
+          this.handle,
+          order,
+          targetWidget.handle,
+          instantTargetWidget.handle
+        )
+      : IssueInstantTargetOrderById(
+          this.handle,
+          order,
+          targetWidget.handle,
+          instantTargetWidget.handle
+        );
   }
 
   public issueOrderAt(order: string | OrderId, x: number, y: number) {
-    return typeof order === "string" ? IssuePointOrder(this.handle, order, x, y) : IssuePointOrderById(this.handle, order, x, y);
+    return typeof order === "string"
+      ? IssuePointOrder(this.handle, order, x, y)
+      : IssuePointOrderById(this.handle, order, x, y);
   }
 
   public issuePointOrder(order: string | OrderId, whichPoint: Point) {
-    return typeof order === "string" ? IssuePointOrderLoc(this.handle, order, whichPoint.handle) : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
+    return typeof order === "string"
+      ? IssuePointOrderLoc(this.handle, order, whichPoint.handle)
+      : IssuePointOrderByIdLoc(this.handle, order, whichPoint.handle);
   }
 
   public issueTargetOrder(order: string | OrderId, targetWidget: Widget) {
-    return typeof order === "string" ? IssueTargetOrder(this.handle, order, targetWidget.handle) : IssueTargetOrderById(this.handle, order, targetWidget.handle);
+    return typeof order === "string"
+      ? IssueTargetOrder(this.handle, order, targetWidget.handle)
+      : IssueTargetOrderById(this.handle, order, targetWidget.handle);
   }
 
   /**
@@ -898,8 +1035,21 @@ export class Unit extends Widget {
    * @note SetUnitLookAt is affected by animation speed and blend time.
    * @note [How to instantly set a unit's facing](http://www.wc3c.net/showthread.php?t=105830)
    */
-  public lookAt(whichBone: string, lookAtTarget: Unit, offsetX: number, offsetY: number, offsetZ: number) {
-    SetUnitLookAt(this.handle, whichBone, lookAtTarget.handle, offsetX, offsetY, offsetZ);
+  public lookAt(
+    whichBone: string,
+    lookAtTarget: Unit,
+    offsetX: number,
+    offsetY: number,
+    offsetZ: number
+  ) {
+    SetUnitLookAt(
+      this.handle,
+      whichBone,
+      lookAtTarget.handle,
+      offsetX,
+      offsetY,
+      offsetZ
+    );
   }
 
   /**
@@ -937,8 +1087,25 @@ export class Unit extends Widget {
     UnitRemoveBuffs(this.handle, removePositive, removeNegative);
   }
 
-  public removeBuffsEx(removePositive: boolean, removeNegative: boolean, magic: boolean, physical: boolean, timedLife: boolean, aura: boolean, autoDispel: boolean) {
-    UnitRemoveBuffsEx(this.handle, removePositive, removeNegative, magic, physical, timedLife, aura, autoDispel);
+  public removeBuffsEx(
+    removePositive: boolean,
+    removeNegative: boolean,
+    magic: boolean,
+    physical: boolean,
+    timedLife: boolean,
+    aura: boolean,
+    autoDispel: boolean
+  ) {
+    UnitRemoveBuffsEx(
+      this.handle,
+      removePositive,
+      removeNegative,
+      magic,
+      physical,
+      timedLife,
+      aura,
+      autoDispel
+    );
   }
 
   public removeGuardPosition() {
@@ -1069,17 +1236,39 @@ export class Unit extends Widget {
     BlzSetUnitFacingEx(this.handle, facingAngle);
   }
 
-  public setField(field: unitbooleanfield | unitintegerfield | unitrealfield | unitstringfield, value: boolean | number | string) {
+  public setField(
+    field:
+      | unitbooleanfield
+      | unitintegerfield
+      | unitrealfield
+      | unitstringfield,
+    value: boolean | number | string
+  ) {
     const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     if (fieldType === "unitbooleanfield" && typeof value === "boolean") {
-      return BlzSetUnitBooleanField(this.handle, field as unitbooleanfield, value);
-    } else if (fieldType === "unitintegerfield" && typeof value === "number") {
-      return BlzSetUnitIntegerField(this.handle, field as unitintegerfield, value);
-    } else if (fieldType === "unitrealfield" && typeof value === "number") {
+      return BlzSetUnitBooleanField(
+        this.handle,
+        field as unitbooleanfield,
+        value
+      );
+    }
+    if (fieldType === "unitintegerfield" && typeof value === "number") {
+      return BlzSetUnitIntegerField(
+        this.handle,
+        field as unitintegerfield,
+        value
+      );
+    }
+    if (fieldType === "unitrealfield" && typeof value === "number") {
       return BlzSetUnitRealField(this.handle, field as unitrealfield, value);
-    } else if (fieldType === "unitstringfield" && typeof value === "string") {
-      return BlzSetUnitStringField(this.handle, field as unitstringfield, value);
+    }
+    if (fieldType === "unitstringfield" && typeof value === "string") {
+      return BlzSetUnitStringField(
+        this.handle,
+        field as unitstringfield,
+        value
+      );
     }
 
     return false;
@@ -1101,8 +1290,25 @@ export class Unit extends Widget {
     SetItemTypeSlots(this.handle, slots);
   }
 
-  public setOwner(whichPlayer: MapPlayer, changeColor: boolean) {
+  public setOwner(whichPlayer: MapPlayer, changeColor = true) {
     SetUnitOwner(this.handle, whichPlayer.handle, changeColor);
+  }
+
+  public getOwner() {
+    return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
+  }
+
+  public setPoint(point: Point) {
+    SetUnitPositionLoc(this.handle, point.handle);
+  }
+
+  /**
+   * @bug If the unit is loaded into a zeppelin this will not return the position
+   * of the zeppelin but the last position of the unit before it was loaded into
+   * the zeppelin.
+   */
+  public getPoint() {
+    return Point.fromHandle(GetUnitLoc(this.handle));
   }
 
   public setPathing(flag: boolean) {
@@ -1173,7 +1379,12 @@ export class Unit extends Widget {
    * @param blue An integer from 0-255 determining the amount of blue color.
    * @param alpha An integer from 0-255 determining the amount of alpha color.
    */
-  public setVertexColor(red: number, green: number, blue: number, alpha: number) {
+  public setVertexColor(
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     SetUnitVertexColor(this.handle, red, green, blue, alpha);
   }
 
@@ -1241,7 +1452,7 @@ export class Unit extends Widget {
     return this.fromHandle(GetEnumUnit());
   }
 
-  public static fromEvent() {
+  public static override fromEvent() {
     return this.fromHandle(GetTriggerUnit());
   }
 
@@ -1249,8 +1460,10 @@ export class Unit extends Widget {
     return this.fromHandle(GetFilterUnit());
   }
 
-  public static fromHandle(handle: unit): Unit {
-    return this.getObject(handle);
+  public static override fromHandle(
+    handle: unit | undefined
+  ): Unit | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static getPointValueByType(unitType: number) {

@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile * */
 
 /**
  * This macro will inject the contents of the specified file into the source
@@ -6,10 +6,9 @@
  * @example
  * include("node_modules/resource/file.lua")
  */
- declare function include(path: string): void;
+declare function include(path: string): void;
 
- /**
-  * @param any Expression to be evaluated by Node.
-  */
- declare function compiletime(any: any): any;
- 
+/**
+ * @param any Expression to be evaluated by Node.
+ */
+declare function compiletime(any: any): any;

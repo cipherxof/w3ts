@@ -24,10 +24,10 @@ export class Color {
 
   public equals(other: Color) {
     return (
-      this.red == other.red &&
-      this.green == other.green &&
-      this.blue == other.blue &&
-      this.alpha == other.alpha
+      this.red === other.red &&
+      this.green === other.green &&
+      this.blue === other.blue &&
+      this.alpha === other.alpha
     );
   }
 
@@ -185,7 +185,7 @@ const orderedPlayerColors = [
 function toHex(value: ColorValue) {
   let hex = value.toString(16);
   if (hex.length < 2) {
-    hex = "0" + hex;
+    hex = `0${hex}`;
   }
   return hex;
 }

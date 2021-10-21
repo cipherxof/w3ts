@@ -29,7 +29,8 @@
  */
 export class BinaryReader {
   public readonly data: string;
-  private pos: number = 1;
+
+  private pos = 1;
 
   constructor(binaryString: string) {
     this.data = binaryString;

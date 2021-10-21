@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
@@ -6,7 +6,8 @@ import { Point } from "./point";
 import { Widget } from "./widget";
 
 export class Item extends Widget {
-  public readonly handle!: item;
+  // TODO: test if this works
+  public declare readonly handle: item;
 
   /**
    * Creates an item object at the specified coordinates.
@@ -18,8 +19,10 @@ export class Item extends Widget {
   constructor(itemId: number, x: number, y: number, skinId?: number) {
     if (Handle.initFromHandle()) {
       super();
+    } else if (skinId === undefined) {
+      super(CreateItem(itemId, x, y));
     } else {
-      super(skinId ? BlzCreateItemWithSkin(itemId, x, y, skinId) : CreateItem(itemId, x, y));
+      super(BlzCreateItemWithSkin(itemId, x, y, skinId));
     }
   }
 
@@ -47,7 +50,7 @@ export class Item extends Widget {
    * @async
    */
   get description() {
-    return BlzGetItemDescription(this.handle);
+    return BlzGetItemDescription(this.handle) ?? "";
   }
 
   set description(description: string) {
@@ -58,7 +61,7 @@ export class Item extends Widget {
    * @async
    */
   get extendedTooltip() {
-    return BlzGetItemExtendedTooltip(this.handle);
+    return BlzGetItemExtendedTooltip(this.handle) ?? "";
   }
 
   set extendedTooltip(tooltip: string) {
@@ -69,7 +72,7 @@ export class Item extends Widget {
    * @async
    */
   get icon() {
-    return BlzGetItemIconPath(this.handle);
+    return BlzGetItemIconPath(this.handle) ?? "";
   }
 
   set icon(path: string) {
@@ -80,7 +83,7 @@ export class Item extends Widget {
    * @async
    */
   get name() {
-    return GetItemName(this.handle);
+    return GetItemName(this.handle) ?? "";
   }
 
   set name(value: string) {
@@ -91,7 +94,7 @@ export class Item extends Widget {
    * @async
    */
   get tooltip() {
-    return BlzGetItemTooltip(this.handle);
+    return BlzGetItemTooltip(this.handle) ?? "";
   }
 
   set tooltip(tooltip: string) {
@@ -142,19 +145,19 @@ export class Item extends Widget {
     BlzSetItemSkin(this.handle, skinId);
   }
 
-  public get x() {
+  public override get x() {
     return GetItemX(this.handle);
   }
 
-  public set x(value: number) {
+  public override set x(value: number) {
     SetItemPosition(this.handle, value, this.y);
   }
 
-  public get y() {
+  public override get y() {
     return GetItemY(this.handle);
   }
 
-  public set y(value: number) {
+  public override set y(value: number) {
     SetItemPosition(this.handle, this.x, value);
   }
 
@@ -178,7 +181,9 @@ export class Item extends Widget {
     RemoveItem(this.handle);
   }
 
-  public getField(field: itembooleanfield | itemintegerfield | itemrealfield | itemstringfield) {
+  public getField(
+    field: itembooleanfield | itemintegerfield | itemrealfield | itemstringfield
+  ) {
     const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     switch (fieldType) {
@@ -223,17 +228,39 @@ export class Item extends Widget {
     SetItemDroppable(this.handle, flag);
   }
 
-  public setField(field: itembooleanfield | itemintegerfield | itemrealfield | itemstringfield, value: boolean | number | string) {
+  public setField(
+    field:
+      | itembooleanfield
+      | itemintegerfield
+      | itemrealfield
+      | itemstringfield,
+    value: boolean | number | string
+  ) {
     const fieldType = field.toString().substr(0, field.toString().indexOf(":"));
 
     if (fieldType === "unitbooleanfield" && typeof value === "boolean") {
-      return BlzSetItemBooleanField(this.handle, field as itembooleanfield, value);
-    } else if (fieldType === "unitintegerfield" && typeof value === "number") {
-      return BlzSetItemIntegerField(this.handle, field as itemintegerfield, value);
-    } else if (fieldType === "unitrealfield" && typeof value === "number") {
+      return BlzSetItemBooleanField(
+        this.handle,
+        field as itembooleanfield,
+        value
+      );
+    }
+    if (fieldType === "unitintegerfield" && typeof value === "number") {
+      return BlzSetItemIntegerField(
+        this.handle,
+        field as itemintegerfield,
+        value
+      );
+    }
+    if (fieldType === "unitrealfield" && typeof value === "number") {
       return BlzSetItemRealField(this.handle, field as itemrealfield, value);
-    } else if (fieldType === "unitstringfield" && typeof value === "string") {
-      return BlzSetItemStringField(this.handle, field as itemstringfield, value);
+    }
+    if (fieldType === "unitstringfield" && typeof value === "string") {
+      return BlzSetItemStringField(
+        this.handle,
+        field as itemstringfield,
+        value
+      );
     }
 
     return false;
@@ -251,12 +278,14 @@ export class Item extends Widget {
     SetItemPosition(this.handle, x, y);
   }
 
-  public static fromEvent(): Item {
+  public static override fromEvent() {
     return this.fromHandle(GetManipulatedItem());
   }
 
-  public static fromHandle(handle: item): Item {
-    return this.getObject(handle);
+  public static override fromHandle(
+    handle: item | undefined
+  ): Item | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static isIdPawnable(itemId: number) {

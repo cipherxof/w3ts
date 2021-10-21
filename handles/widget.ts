@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -35,7 +35,7 @@ export class Widget extends Handle<widget> {
     return this.fromHandle(GetTriggerWidget());
   }
 
-  public static fromHandle(handle: widget): Widget {
-    return this.getObject(handle);
+  public static fromHandle(handle: widget | undefined): Widget | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

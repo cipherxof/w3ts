@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -19,16 +19,34 @@ export class Sound extends Handle<sound> {
    * @param fadeOutRate How quickly the sound fades out. The higher the number, the faster the sound fades out. Maximum number is 127.
    * @param eaxSetting EAX is an acronym for environmental audio extensions. In the sound editor, this corresponds to the "Effect" setting.
    */
-  constructor(fileName: string, looping: boolean, is3D: boolean, stopWhenOutOfRange: boolean, fadeInRate: number, fadeOutRate: number, eaxSetting: string) {
+  constructor(
+    fileName: string,
+    looping: boolean,
+    is3D: boolean,
+    stopWhenOutOfRange: boolean,
+    fadeInRate: number,
+    fadeOutRate: number,
+    eaxSetting: string
+  ) {
     if (Handle.initFromHandle()) {
       super();
     } else {
-      super(CreateSound(fileName, looping, is3D, stopWhenOutOfRange, fadeInRate, fadeOutRate, eaxSetting));
+      super(
+        CreateSound(
+          fileName,
+          looping,
+          is3D,
+          stopWhenOutOfRange,
+          fadeInRate,
+          fadeOutRate,
+          eaxSetting
+        )
+      );
     }
   }
 
   public get dialogueSpeakerNameKey() {
-    return GetDialogueSpeakerNameKey(this.handle);
+    return GetDialogueSpeakerNameKey(this.handle) ?? "";
   }
 
   public set dialogueSpeakerNameKey(speakerName: string) {
@@ -36,7 +54,7 @@ export class Sound extends Handle<sound> {
   }
 
   public get dialogueTextKey() {
-    return GetDialogueTextKey(this.handle);
+    return GetDialogueTextKey(this.handle) ?? "";
   }
 
   public set dialogueTextKey(dialogueText: string) {
@@ -63,7 +81,11 @@ export class Sound extends Handle<sound> {
     KillSoundWhenDone(this.handle);
   }
 
-  public registerStacked(byPosition: boolean, rectWidth: number, rectHeight: number) {
+  public registerStacked(
+    byPosition: boolean,
+    rectWidth: number,
+    rectHeight: number
+  ) {
     RegisterStackedSound(this.handle, byPosition, rectWidth, rectHeight);
   }
 
@@ -178,12 +200,16 @@ export class Sound extends Handle<sound> {
     StopSound(this.handle, killWhenDone, fadeOut);
   }
 
-  public unregisterStacked(byPosition: boolean, rectWidth: number, rectHeight: number) {
+  public unregisterStacked(
+    byPosition: boolean,
+    rectWidth: number,
+    rectHeight: number
+  ) {
     UnregisterStackedSound(this.handle, byPosition, rectWidth, rectHeight);
   }
 
-  public static fromHandle(handle: sound): Sound {
-    return this.getObject(handle);
+  public static fromHandle(handle: sound | undefined): Sound | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static getFileDuration(fileName: string) {

@@ -33,13 +33,18 @@ export type SyncCallback = (res: ISyncResponse, req: SyncRequest) => void;
 
 class SyncIncomingPacket {
   public readonly chunk: number;
+
   public readonly chunks: number;
+
   public readonly data: string;
+
   public readonly req: SyncRequest;
 
   public constructor(prefix: string, data: string) {
     const isChunk = prefix === SYNC_PREFIX_CHUNK;
-    const header = base64Decode(isChunk ? data.substr(0, 10) : data.substr(0, 5));
+    const header = base64Decode(
+      isChunk ? data.substr(0, 10) : data.substr(0, 5)
+    );
     const reader = new BinaryReader(header);
     const id = reader.readUInt16();
     this.req = SyncRequest.fromIndex(id);
@@ -51,11 +56,19 @@ class SyncIncomingPacket {
 
 class SyncOutgoingPacket {
   public readonly chunk: number;
+
   public readonly chunks: number;
+
   public readonly data: string;
+
   public readonly req: SyncRequest;
 
-  public constructor(req: SyncRequest, data: string, chunk = -1, totalChunks = 0) {
+  public constructor(
+    req: SyncRequest,
+    data: string,
+    chunk = -1,
+    totalChunks = 0
+  ) {
     this.req = req;
     this.data = data;
     this.chunk = chunk;
@@ -98,21 +111,37 @@ class SyncOutgoingPacket {
  */
 export class SyncRequest {
   public readonly from: MapPlayer;
+
   public readonly id: number;
+
   public readonly options: ISyncOptions;
-  private _startTime: number = 0;
+
+  private _startTime = 0;
+
   private chunks: string[] = [];
+
   private currentChunk = 0;
+
   private destroyed = false;
+
   private onError?: SyncCallback;
+
   private onResponse?: SyncCallback;
+
   private status: SyncStatus = SyncStatus.None;
+
   private static readonly cache: SyncRequest[] = [];
+
   private static counter = 0;
+
   private static defaultOptions: ISyncOptions = { timeout: 0 };
+
   private static eventTrigger = new Trigger();
+
   private static index = 0;
+
   private static indicies: number[] = [];
+
   private static initialized = false;
 
   /**
@@ -120,12 +149,14 @@ export class SyncRequest {
    * @param from The player to send the data from.
    */
   constructor(from: MapPlayer);
+
   /**
    * Creates a new sync request and immediately attempts to send the data.
    * @param from The player to send the data from.
    * @param data The data to send.
    */
   constructor(from: MapPlayer, data: string);
+
   /**
    * Creates a new sync request. The data will be sent immediately if `data` is not empty.
    * @param from The player to send the data from.
@@ -136,7 +167,9 @@ export class SyncRequest {
     // initialize
     this.options = !options ? SyncRequest.defaultOptions : options;
     this.from = from;
-    this.id = this.allocate();
+
+    // TODO: test this change
+    this.id = SyncRequest.allocate();
 
     SyncRequest.indicies[this.id] = -1;
     SyncRequest.cache[this.id] = this;
@@ -190,7 +223,14 @@ export class SyncRequest {
       // if the data is too long then send it over multiple packets
       const chunks = Math.floor(data.length / SYNC_MAX_CHUNK_SIZE);
       for (let i = 0; i <= chunks; i++) {
-        this.send(new SyncOutgoingPacket(this, data.substr(i * SYNC_MAX_CHUNK_SIZE, SYNC_MAX_CHUNK_SIZE), i, chunks));
+        this.send(
+          new SyncOutgoingPacket(
+            this,
+            data.substr(i * SYNC_MAX_CHUNK_SIZE, SYNC_MAX_CHUNK_SIZE),
+            i,
+            chunks
+          )
+        );
       }
     }
 
@@ -200,9 +240,16 @@ export class SyncRequest {
     // handle timeout
     if (this.options.timeout > 0) {
       new Timer().start(this.options.timeout, false, () => {
-        Timer.fromExpired().destroy();
+        Timer.fromExpired()?.destroy();
         if (this.onError && this.status === SyncStatus.Syncing) {
-          this.onError({ data: "Timeout", status: SyncStatus.Timeout, time: this.startTime }, this);
+          this.onError(
+            {
+              data: "Timeout",
+              status: SyncStatus.Timeout,
+              time: this.startTime,
+            },
+            this
+          );
         }
       });
     }
@@ -222,15 +269,14 @@ export class SyncRequest {
   /**
    * Allocates a unique index.
    */
-  private allocate() {
+  private static allocate() {
     if (SyncRequest.index !== 0) {
       const id = SyncRequest.index;
       SyncRequest.index = SyncRequest.indicies[id];
       return id;
-    } else {
-      SyncRequest.counter++;
-      return SyncRequest.counter;
     }
+    SyncRequest.counter++;
+    return SyncRequest.counter;
   }
 
   /**
@@ -239,7 +285,10 @@ export class SyncRequest {
    */
   private send(packet: SyncOutgoingPacket) {
     const prefix = packet.chunk === -1 ? SYNC_PREFIX : SYNC_PREFIX_CHUNK;
-    if (this.from === MapPlayer.fromLocal() && !BlzSendSyncData(prefix, packet.toString())) {
+    if (
+      this.from === MapPlayer.fromLocal() &&
+      !BlzSendSyncData(prefix, packet.toString())
+    ) {
       print("SyncData: Network Error");
     }
   }
@@ -261,7 +310,11 @@ export class SyncRequest {
     }
     for (let i = 0; i < bj_MAX_PLAYER_SLOTS; i++) {
       const p = MapPlayer.fromIndex(i);
-      if (p.controller === MAP_CONTROL_USER && p.slotState === PLAYER_SLOT_STATE_PLAYING) {
+      if (
+        p !== undefined &&
+        p.controller === MAP_CONTROL_USER &&
+        p.slotState === PLAYER_SLOT_STATE_PLAYING
+      ) {
         this.eventTrigger.registerPlayerSyncEvent(p, SYNC_PREFIX, false);
         this.eventTrigger.registerPlayerSyncEvent(p, SYNC_PREFIX_CHUNK, false);
       }
@@ -276,9 +329,13 @@ export class SyncRequest {
    * Handler for all sync responses
    */
   private static onSync() {
-    const packet = new SyncIncomingPacket(BlzGetTriggerSyncPrefix(), BlzGetTriggerSyncData());
+    const syncPrefix = BlzGetTriggerSyncPrefix();
+    const syncData = BlzGetTriggerSyncData();
+    if (syncPrefix === undefined || syncData === undefined) return;
 
-    if (!packet.req) {
+    const packet = new SyncIncomingPacket(syncPrefix, syncData);
+
+    if (packet.req === undefined) {
       return;
     }
 
@@ -290,7 +347,10 @@ export class SyncRequest {
         const data = packet.req.chunks.join("");
         const status = SyncStatus.Success;
         packet.req.status = SyncStatus.Success;
-        packet.req.onResponse({ data, status, time: getElapsedTime() }, packet.req);
+        packet.req.onResponse(
+          { data, status, time: getElapsedTime() },
+          packet.req
+        );
       }
     }
   }
