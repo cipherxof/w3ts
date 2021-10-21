@@ -9,8 +9,8 @@
   },
   "eslint.run": "onType",
   "eslint.format.enable": true,
-  "editor.rulers": [200],
-  "editor.tabSize": 4,
+  "editor.rulers": [100],
+  "editor.tabSize": 2,
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true
 }
