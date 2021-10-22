@@ -16,13 +16,14 @@ let localStartTime = 0;
 let host: MapPlayer | undefined;
 let isChecking = false;
 
-export function getHost() {
+// eslint-disable-next-line consistent-return
+export function getHost(): MapPlayer | void {
   if (host) {
     return host;
-  } else if (!isChecking) {
-    checkTimer.start(0.00, false, findHost);
   }
-  return;
+  if (!isChecking) {
+    checkTimer.start(0.0, false, findHost);
+  }
 }
 
 export function onHostDetect(callback: () => void) {
@@ -50,53 +51,60 @@ function findHost() {
   const writer = new BinaryWriter();
   writer.writeFloat(localStartTime - localJoinTime);
 
-  new SyncRequest(MapPlayer.fromLocal(), base64Encode(writer.toString())).then((res, req) => {
-    const data = base64Decode(res.data);
-    const reader = new BinaryReader(data);
-    const syncedTime = reader.readFloat();
+  new SyncRequest(MapPlayer.fromLocal(), base64Encode(writer.toString()))
+    .then((res, req) => {
+      const data = base64Decode(res.data);
+      const reader = new BinaryReader(data);
+      const syncedTime = reader.readFloat();
 
-    // store how long the player has been in the game
-    const from = MapPlayer.fromEvent();
-    lobbyTimes[from.id] = syncedTime;
+      // store how long the player has been in the game
+      const from = MapPlayer.fromEvent() as MapPlayer;
+      lobbyTimes[from.id] = syncedTime;
 
-    // check which player has been in the game the longest
-    let hostTime = 0;
-    let hostId = 0;
+      // check which player has been in the game the longest
+      let hostTime = 0;
+      let hostId = 0;
 
-    for (let i = 0; i < bj_MAX_PLAYERS; i++) {
-      const p = MapPlayer.fromIndex(i);
+      for (let i = 0; i < bj_MAX_PLAYERS; i++) {
+        const p = MapPlayer.fromIndex(i);
 
-      // skip if the player is not playing
-      if (p.slotState !== PLAYER_SLOT_STATE_PLAYING || p.controller !== MAP_CONTROL_USER) {
-        continue;
+        // skip if the player is not playing
+        if (
+          p === undefined ||
+          p.slotState !== PLAYER_SLOT_STATE_PLAYING ||
+          p.controller !== MAP_CONTROL_USER
+        ) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
+        // if a playing user has not yet finished syncing then terminate execution
+        if (!lobbyTimes[p.id]) {
+          return;
+        }
+
+        // store the host with the longest game time
+        if (lobbyTimes[p.id] > hostTime) {
+          hostTime = lobbyTimes[p.id];
+          hostId = p.id;
+        }
       }
 
-      // if a playing user has not yet finished syncing then terminate execution
-      if (!lobbyTimes[p.id]) {
-        return;
-      }
-
-      // store the host with the longest game time
-      if (lobbyTimes[p.id] > hostTime) {
-        hostTime = lobbyTimes[p.id];
-        hostId = p.id;
-      }
-    }
-
-    // set the host, cleanup, and execute callbacks
-    host = MapPlayer.fromIndex(hostId);
-    checkTimer.destroy();
-    for (const cb of hostCallbacks) {
-      cb();
-    }
-  }).catch((res) => {
-    print(`findHost Error: ${res.status}`);
-    isChecking = false;
-  });
+      // set the host, cleanup, and execute callbacks
+      host = MapPlayer.fromIndex(hostId);
+      checkTimer.destroy();
+      hostCallbacks.forEach((cb) => {
+        cb();
+      });
+    })
+    .catch((res) => {
+      print(`findHost Error: ${res.status}`);
+      isChecking = false;
+    });
 }
 
 function onMain() {
-  checkTimer.start(0.00, false, findHost);
+  checkTimer.start(0.0, false, findHost);
 }
 
 addScriptHook(W3TS_HOOK.MAIN_AFTER, onMain);

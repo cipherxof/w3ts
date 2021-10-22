@@ -1,10 +1,9 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { Unit } from "./unit";
 
 export class TextTag extends Handle<texttag> {
-
   constructor() {
     if (Handle.initFromHandle()) {
       super();
@@ -51,7 +50,7 @@ export class TextTag extends Handle<texttag> {
 
   public setText(s: string, height: number, adjustHeight = false) {
     if (adjustHeight) {
-      height = height * 0.0023;
+      height *= 0.0023;
     }
     SetTextTagText(this.handle, s, height);
   }
@@ -61,16 +60,18 @@ export class TextTag extends Handle<texttag> {
   }
 
   public setVelocityAngle(speed: number, angle: number) {
-    const vel = speed * 0.071 / 128;
-    this.setVelocity(vel * Cos(angle * bj_DEGTORAD), vel * Sin(angle * bj_DEGTORAD));
+    const vel = (speed * 0.071) / 128;
+    this.setVelocity(
+      vel * Cos(angle * bj_DEGTORAD),
+      vel * Sin(angle * bj_DEGTORAD)
+    );
   }
 
   public setVisible(flag: boolean) {
     SetTextTagVisibility(this.handle, flag);
   }
 
-  public static fromHandle(handle: texttag): TextTag {
-    return this.getObject(handle);
+  public static fromHandle(handle: texttag | undefined): TextTag | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
-
 }

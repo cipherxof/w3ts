@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -49,11 +49,11 @@ export class Timer extends Handle<timer> {
   /**
    * @bug Might crash the game if called when there is no expired timer.
    */
-  public static fromExpired(): Timer {
+  public static fromExpired() {
     return this.fromHandle(GetExpiredTimer());
   }
 
-  public static fromHandle(handle: timer): Timer {
-    return this.getObject(handle);
+  public static fromHandle(handle: timer | undefined): Timer | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

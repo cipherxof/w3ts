@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -104,7 +104,7 @@ export class Quest extends Handle<quest> {
     ForceQuestDialogUpdate();
   }
 
-  public static fromHandle(handle: quest): Quest {
-    return this.getObject(handle);
+  public static fromHandle(handle: quest | undefined): Quest | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

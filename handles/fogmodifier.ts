@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
@@ -17,11 +17,29 @@ export class FogModifier extends Handle<fogmodifier> {
    * If it is set to true and the fogstate is masked, it will hide all the units in the fog modifier's radius and mask the area.
    * If set to false, it will only mask the areas that are not visible to the units.
    */
-  constructor(forWhichPlayer: MapPlayer, whichState: fogstate, centerX: number, centerY: number, radius: number, useSharedVision: boolean, afterUnits: boolean) {
+  constructor(
+    forWhichPlayer: MapPlayer,
+    whichState: fogstate,
+    centerX: number,
+    centerY: number,
+    radius: number,
+    useSharedVision: boolean,
+    afterUnits: boolean
+  ) {
     if (Handle.initFromHandle()) {
       super();
     } else {
-      super(CreateFogModifierRadius(forWhichPlayer.handle, whichState, centerX, centerY, radius, useSharedVision, afterUnits));
+      super(
+        CreateFogModifierRadius(
+          forWhichPlayer.handle,
+          whichState,
+          centerX,
+          centerY,
+          radius,
+          useSharedVision,
+          afterUnits
+        )
+      );
     }
   }
 
@@ -37,11 +55,27 @@ export class FogModifier extends Handle<fogmodifier> {
     FogModifierStop(this.handle);
   }
 
-  public static fromHandle(handle: fogmodifier): FogModifier {
-    return this.getObject(handle);
+  public static fromHandle(
+    handle: fogmodifier | undefined
+  ): FogModifier | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
-  public static fromRect(forWhichPlayer: MapPlayer, whichState: fogstate, where: Rectangle, useSharedVision: boolean, afterUnits: boolean): FogModifier {
-    return this.fromHandle(CreateFogModifierRect(forWhichPlayer.handle, whichState, where.handle, useSharedVision, afterUnits));
+  public static fromRect(
+    forWhichPlayer: MapPlayer,
+    whichState: fogstate,
+    where: Rectangle,
+    useSharedVision: boolean,
+    afterUnits: boolean
+  ) {
+    return this.fromHandle(
+      CreateFogModifierRect(
+        forWhichPlayer.handle,
+        whichState,
+        where.handle,
+        useSharedVision,
+        afterUnits
+      )
+    );
   }
 }

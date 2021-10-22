@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 
@@ -55,7 +55,21 @@ export class Image extends Handle<image> {
     if (Handle.initFromHandle()) {
       super();
     } else {
-      super(CreateImage(file, sizeX, sizeY, sizeZ, posX, posY, posZ, originX, originY, originZ, imageType));
+      super(
+        CreateImage(
+          file,
+          sizeX,
+          sizeY,
+          sizeZ,
+          posX,
+          posY,
+          posZ,
+          originX,
+          originY,
+          originZ,
+          imageType
+        )
+      );
     }
   }
 
@@ -126,7 +140,7 @@ export class Image extends Handle<image> {
     ShowImage(this.handle, flag);
   }
 
-  public static fromHandle(handle: image): Image {
-    return this.getObject(handle);
+  public static fromHandle(handle: image | undefined): Image | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

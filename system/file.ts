@@ -1,3 +1,8 @@
+/** @noSelfInFile */
+/* eslint-disable no-useless-escape */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-param-reassign */
+
 /**
  * A system which provides the ability to read and write files. There are no standard IO natives
  * so this system relies on an exploit which ended up being sanctioned by Blizzard, and because of this
@@ -28,15 +33,20 @@ export class File {
   // The string limit per Preload call.
   private static preloadLimit = 259;
 
-  private constructor() {}
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {
+    // nothing
+  }
 
   /**
    * Character we use for escape sequences. Avoiding `\` since it is
    * automatically escaped by `Preload`.
    */
   private static escapeCharacter = String.fromCharCode(27);
+
   private static escapedSelf = File.escapeCharacter + File.escapeCharacter;
-  private static escapedQuote = File.escapeCharacter + "q";
+
+  private static escapedQuote = `${File.escapeCharacter}q`;
 
   /**
    * Escapes the double quote character, which would otherwise bork file
@@ -64,12 +74,19 @@ export class File {
    */
   public static read(filename: string): string | undefined {
     const originalIcon = BlzGetAbilityIcon(this.dummyAbility);
+    if (originalIcon === undefined) return undefined;
+
     Preloader(filename);
+
     const preloadText = BlzGetAbilityIcon(this.dummyAbility);
+    if (preloadText === undefined) return undefined;
+
     BlzSetAbilityIcon(this.dummyAbility, originalIcon);
     if (preloadText !== originalIcon) {
       return File.unescape(preloadText);
     }
+
+    return undefined;
   }
 
   /**
@@ -78,12 +95,18 @@ export class File {
    * @param contents The contents to write to the file.
    * @param allowReading If set to true, boilerplate code will be included for reading the file with `File.read`.
    */
-  public static writeRaw(filename: string, contents: string, allowReading = false): File {
+  public static writeRaw(
+    filename: string,
+    contents: string,
+    allowReading = false
+  ): File {
     PreloadGenClear();
     PreloadGenStart();
 
     if (allowReading) {
-      Preload(`\")\n//! beginusercode\nlocal o=''\nPreload=function(s)o=o..s end\nPreloadEnd=function()end\n//!endusercode\n//`);
+      Preload(
+        `\")\n//! beginusercode\nlocal o=''\nPreload=function(s)o=o..s end\nPreloadEnd=function()end\n//!endusercode\n//`
+      );
       contents = File.escape(contents);
     }
 
@@ -92,7 +115,9 @@ export class File {
     }
 
     if (allowReading) {
-      Preload(`\")\n//! beginusercode\nBlzSetAbilityIcon(${this.dummyAbility},o)\n//!endusercode\n//`);
+      Preload(
+        `\")\n//! beginusercode\nBlzSetAbilityIcon(${this.dummyAbility},o)\n//!endusercode\n//`
+      );
     }
 
     PreloadGenEnd(filename);

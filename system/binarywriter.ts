@@ -29,6 +29,7 @@
  */
 export class BinaryWriter {
   public readonly values: (string | number)[] = [];
+
   private fmj = ">";
 
   public toString() {

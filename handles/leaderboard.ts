@@ -1,4 +1,4 @@
-/** @noSelfInFile **/
+/** @noSelfInFile */
 
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
@@ -29,7 +29,7 @@ export class Leaderboard extends Handle<leaderboard> {
     DestroyLeaderboard(this.handle);
   }
 
-  public display(flag: boolean = true) {
+  public display(flag = true) {
     LeaderboardDisplay(this.handle, flag);
   }
 
@@ -65,23 +65,51 @@ export class Leaderboard extends Handle<leaderboard> {
     LeaderboardSetItemLabel(this.handle, item, label);
   }
 
-  public setItemLabelColor(item: number, red: number, green: number, blue: number, alpha: number) {
+  public setItemLabelColor(
+    item: number,
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     LeaderboardSetItemLabelColor(this.handle, item, red, green, blue, alpha);
   }
 
-  public setItemStyle(item: number, showLabel: boolean = true, showValues: boolean = true, showIcons: boolean = true) {
-    LeaderboardSetItemStyle(this.handle, item, showLabel, showValues, showIcons);
+  public setItemStyle(
+    item: number,
+    showLabel = true,
+    showValues = true,
+    showIcons = true
+  ) {
+    LeaderboardSetItemStyle(
+      this.handle,
+      item,
+      showLabel,
+      showValues,
+      showIcons
+    );
   }
 
   public setItemValue(item: number, value: number) {
     LeaderboardSetItemValue(this.handle, item, value);
   }
 
-  public setItemValueColor(item: number, red: number, green: number, blue: number, alpha: number) {
+  public setItemValueColor(
+    item: number,
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     LeaderboardSetItemValueColor(this.handle, item, red, green, blue, alpha);
   }
 
-  public setLabelColor(red: number, green: number, blue: number, alpha: number) {
+  public setLabelColor(
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     LeaderboardSetLabelColor(this.handle, red, green, blue, alpha);
   }
 
@@ -89,23 +117,39 @@ export class Leaderboard extends Handle<leaderboard> {
     PlayerSetLeaderboard(p.handle, this.handle);
   }
 
-  public setStyle(showLabel: boolean = true, showNames: boolean = true, showValues: boolean = true, showIcons: boolean = true) {
-    LeaderboardSetStyle(this.handle, showLabel, showNames, showValues, showIcons);
+  public setStyle(
+    showLabel = true,
+    showNames = true,
+    showValues = true,
+    showIcons = true
+  ) {
+    LeaderboardSetStyle(
+      this.handle,
+      showLabel,
+      showNames,
+      showValues,
+      showIcons
+    );
   }
 
-  public setValueColor(red: number, green: number, blue: number, alpha: number) {
+  public setValueColor(
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number
+  ) {
     LeaderboardSetValueColor(this.handle, red, green, blue, alpha);
   }
 
-  public sortByLabel(asc: boolean = true) {
+  public sortByLabel(asc = true) {
     LeaderboardSortItemsByLabel(this.handle, asc);
   }
 
-  public sortByPlayer(asc: boolean = true) {
+  public sortByPlayer(asc = true) {
     LeaderboardSortItemsByPlayer(this.handle, asc);
   }
 
-  public sortByValue(asc: boolean = true) {
+  public sortByValue(asc = true) {
     LeaderboardSortItemsByValue(this.handle, asc);
   }
 
@@ -114,11 +158,13 @@ export class Leaderboard extends Handle<leaderboard> {
   }
 
   public get label() {
-    return LeaderboardGetLabelText(this.handle);
+    return LeaderboardGetLabelText(this.handle) ?? "";
   }
 
-  public static fromHandle(handle: leaderboard): Leaderboard {
-    return this.getObject(handle);
+  public static fromHandle(
+    handle: leaderboard | undefined
+  ): Leaderboard | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromPlayer(p: MapPlayer) {

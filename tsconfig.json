@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "es6"
-    ],
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictNullChecks": true,
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "moduleResolution": "Classic",
     "types": [
+      "typescript-to-lua/language-extensions",
       "lua-types/core/coroutine",
       "lua-types/core/global",
       "lua-types/core/math",
@@ -19,15 +14,25 @@
       "lua-types/core/table",
       "lua-types/core/os",
       "lua-types/special/5.3",
-      "war3-types/core/compat",
-      "war3-types/core/common",
-      "war3-types/core/blizzard",
-      "war3-types/core/commonai",
-      "war3-types/core/polyfill",
-      "war3-types/special/w3ts"
-    ]
+      "war3-types-strict/1.32.10"
+    ],
+    "allowJs": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    //"exactOptionalPropertyTypes": true,
+    //"useUnknownInCatchVariables": true,
+    "newLine": "lf"
   },
   "include": [
-    "./"
-  ]
+    "./index.ts",
+    "globals",
+    "handles",
+    "hooks",
+    "system"
+  ],
+  "exclude": []
 }
