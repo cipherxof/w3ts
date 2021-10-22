@@ -4,14 +4,13 @@
   "description": "TypeScript API for Warcraft III custom maps.",
   "author": "TriggerHappy",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "./index.ts",
   "scripts": {
     "build": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix"
   },
   "peerDependencies": {
     "lua-types": "^2.11.0",
-    "typescript": "^4.4.4",
-    "war3-types-strict": "github:TinkerWorX/war3-types-strict"
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.1.0",
@@ -30,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/cipherxof/w3ts/issues"
   },
-  "homepage": "https://github.com/cipherxof/w3ts#readme"
+  "homepage": "https://github.com/cipherxof/w3ts#readme",
+  "dependencies": {
+    "war3-types-strict": "github:Z-Machine/war3-types-strict"
+  }
 }

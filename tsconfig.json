@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["ESNext"],
-    "moduleResolution": "Node",
+    "moduleResolution": "Classic",
     "types": [
       "typescript-to-lua/language-extensions",
       "lua-types/core/coroutine",
@@ -23,11 +23,16 @@
     "noImplicitThis": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "exactOptionalPropertyTypes": true,
-    "useUnknownInCatchVariables": true,
+    //"exactOptionalPropertyTypes": true,
+    //"useUnknownInCatchVariables": true,
     "newLine": "lf"
   },
   "include": [
-    "./"
-  ]
+    "./index.ts",
+    "globals",
+    "handles",
+    "hooks",
+    "system"
+  ],
+  "exclude": []
 }
