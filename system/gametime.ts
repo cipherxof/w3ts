@@ -1,5 +1,5 @@
 import { Timer } from "../handles/timer";
-import { addScriptHook, W3TS_HOOK } from "../index";
+import { addScriptHook, W3TS_HOOK } from "../hooks/index";
 
 let elapsedTime = 0.0;
 let gameTimer: Timer | undefined;
@@ -13,4 +13,4 @@ addScriptHook(W3TS_HOOK.MAIN_AFTER, () => {
   gameTimer = new Timer().start(30, true, () => {
     elapsedTime += 30;
   });
-})
+});
