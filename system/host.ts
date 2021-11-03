@@ -9,22 +9,12 @@ import { BinaryWriter } from "./binarywriter";
 import { SyncRequest } from "./sync";
 
 const lobbyTimes: number[] = [];
-const checkTimer = new Timer();
 const hostCallbacks: Array<() => void> = [];
 let localJoinTime = 0;
 let localStartTime = 0;
 let host: MapPlayer | undefined;
+let checkTimer: Timer | undefined;
 let isChecking = false;
-
-// eslint-disable-next-line consistent-return
-export function getHost(): MapPlayer | void {
-  if (host) {
-    return host;
-  }
-  if (!isChecking) {
-    checkTimer.start(0.0, false, findHost);
-  }
-}
 
 export function onHostDetect(callback: () => void) {
   if (host) {
@@ -92,7 +82,9 @@ function findHost() {
 
       // set the host, cleanup, and execute callbacks
       host = MapPlayer.fromIndex(hostId);
-      checkTimer.destroy();
+      if (checkTimer) {
+        checkTimer.destroy();
+      }
       hostCallbacks.forEach((cb) => {
         cb();
       });
@@ -104,6 +96,7 @@ function findHost() {
 }
 
 function onMain() {
+  checkTimer = new Timer();
   checkTimer.start(0.0, false, findHost);
 }
 
