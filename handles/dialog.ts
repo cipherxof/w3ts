@@ -4,6 +4,9 @@ import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class DialogButton extends Handle<button> {
+  /**
+   * @deprecated use `DialogButton.create` instead.
+   */
   constructor(
     whichDialog: Dialog,
     text: string,
@@ -13,11 +16,49 @@ export class DialogButton extends Handle<button> {
   ) {
     if (Handle.initFromHandle()) {
       super();
-    } else if (quit === false) {
-      super(DialogAddButton(whichDialog.handle, text, hotkey));
-    } else {
-      super(DialogAddQuitButton(whichDialog.handle, score, text, hotkey));
+      return;
     }
+
+    let handle: button | undefined;
+
+    if (quit === false) {
+      handle = DialogAddButton(whichDialog.handle, text, hotkey);
+    } else {
+      handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey);
+    }
+
+    if (handle === undefined) {
+      error("w3ts failed to create button handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  public static create(
+    whichDialog: Dialog,
+    text: string,
+    hotkey = 0,
+    quit = false,
+    score = false
+  ): DialogButton | undefined {
+    let handle: button | undefined;
+
+    if (quit === false) {
+      handle = DialogAddButton(whichDialog.handle, text, hotkey);
+    } else {
+      handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey);
+    }
+
+    if (handle) {
+      const obj = this.getObject(handle) as DialogButton;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+
+    return undefined;
   }
 
   public static fromEvent() {
@@ -32,12 +73,41 @@ export class DialogButton extends Handle<button> {
 }
 
 export class Dialog extends Handle<dialog> {
+  /**
+   * @deprecated use `Dialog.create` instead.
+   */
   constructor() {
-    super(Handle.initFromHandle() ? undefined : DialogCreate());
+    if (Handle.initFromHandle()) {
+      super();
+      return;
+    }
+
+    const handle = DialogCreate();
+
+    if (handle === undefined) {
+      error("w3ts failed to create dialog handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  public static create(): Dialog | undefined {
+    const handle = DialogCreate();
+
+    if (handle) {
+      const obj = this.getObject(handle) as Dialog;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+
+    return undefined;
   }
 
   public addButton(text: string, hotkey = 0, quit = false, score = false) {
-    return new DialogButton(this, text, hotkey, quit, score);
+    return DialogButton.create(this, text, hotkey, quit, score);
   }
 
   public clear() {

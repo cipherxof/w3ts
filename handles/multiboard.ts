@@ -3,12 +3,36 @@
 import { Handle } from "./handle";
 
 export class MultiboardItem extends Handle<multiboarditem> {
+  /**
+   * @deprecated use `MultiboardItem.create` instead.
+   */
   constructor(board: Multiboard, x: number, y: number) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(MultiboardGetItem(board.handle, x - 1, y - 1));
+      return;
     }
+    const handle = MultiboardGetItem(board.handle, x - 1, y - 1);
+    if (handle === undefined) {
+      error("w3ts failed to create multiboarditem handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(
+    board: Multiboard,
+    x: number,
+    y: number
+  ): MultiboardItem | undefined {
+    const handle = MultiboardGetItem(board.handle, x - 1, y - 1);
+    if (handle) {
+      const obj = this.getObject(handle) as MultiboardItem;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public destroy() {
@@ -47,15 +71,36 @@ export class MultiboardItem extends Handle<multiboarditem> {
 
 export class Multiboard extends Handle<multiboard> {
   /**
-   * Create a Multiboard object
+   * @deprecated use `Multiboard.create` instead.
    * @bug Do not use this in a global initialisation as it crashes the game there.
    */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateMultiboard());
+      return;
     }
+    const handle = CreateMultiboard();
+    if (handle === undefined) {
+      error("w3ts failed to create multiboard handle.", 3);
+    }
+    super(handle);
+  }
+
+  /**
+   * Create a Multiboard object
+   * @bug Do not use this in a global initialisation as it crashes the game there.
+   */
+  public static create(): Multiboard | undefined {
+    const handle = CreateMultiboard();
+    if (handle) {
+      const obj = this.getObject(handle) as Multiboard;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public get columns() {
@@ -94,7 +139,7 @@ export class Multiboard extends Handle<multiboard> {
   }
 
   public createItem(x: number, y: number) {
-    return new MultiboardItem(this, x, y);
+    return MultiboardItem.create(this, x, y);
   }
 
   public destroy() {

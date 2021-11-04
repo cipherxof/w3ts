@@ -3,8 +3,8 @@
 import { OrderId } from "../globals/order";
 import { Destructable } from "./destructable";
 import { Force } from "./force";
-import { Group } from "./group";
 import { Handle } from "./handle";
+import { Group } from "./group";
 import { Item } from "./item";
 import { MapPlayer } from "./player";
 import { Point } from "./point";
@@ -12,11 +12,10 @@ import { Sound } from "./sound";
 import { Widget } from "./widget";
 
 export class Unit extends Widget {
-  // TODO: test if this works
   public declare readonly handle: unit;
 
   /**
-   * Creates a unit.
+   * @deprecated use `Unit.create` instead.
    * @param owner The owner of the unit.
    * @param unitId The rawcode of the unit.
    * @param x The x-coordinate of the unit.
@@ -29,16 +28,58 @@ export class Unit extends Widget {
     unitId: number,
     x: number,
     y: number,
-    face: number = bj_UNIT_FACING,
+    face?: number,
     skinId?: number
   ) {
-    if (Handle.initFromHandle()) {
+    if (Handle.initFromHandle() === true) {
       super();
-    } else if (skinId === undefined) {
-      super(CreateUnit(owner.handle, unitId, x, y, face));
-    } else {
-      super(BlzCreateUnitWithSkin(owner.handle, unitId, x, y, face, skinId));
+      return;
     }
+
+    if (face === undefined) face = bj_UNIT_FACING;
+    const handle =
+      skinId === undefined
+        ? CreateUnit(owner.handle, unitId, x, y, face)
+        : BlzCreateUnitWithSkin(owner.handle, unitId, x, y, face, skinId);
+
+    if (handle === undefined) {
+      error("w3ts failed to create unit handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  /**
+   * Creates a unit.
+   * @param owner The owner of the unit.
+   * @param unitId The rawcode of the unit.
+   * @param x The x-coordinate of the unit.
+   * @param y The y-coordinate of the unit.
+   * @param face The direction that the unit will be facing in degrees.
+   * @param skinId The skin of the unit.
+   */
+  public static create(
+    owner: MapPlayer,
+    unitId: number,
+    x: number,
+    y: number,
+    face?: number,
+    skinId?: number
+  ): Unit | undefined {
+    if (face === undefined) face = bj_UNIT_FACING;
+    const handle =
+      skinId === undefined
+        ? CreateUnit(owner.handle, unitId, x, y, face)
+        : BlzCreateUnitWithSkin(owner.handle, unitId, x, y, face, skinId);
+    if (handle) {
+      const obj = this.getObject(handle) as Unit;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   /**
@@ -1294,6 +1335,7 @@ export class Unit extends Widget {
     SetUnitOwner(this.handle, whichPlayer.handle, changeColor);
   }
 
+  // TODO: test if GetOwningPlayer() ever returns null.
   public getOwner() {
     return MapPlayer.fromHandle(GetOwningPlayer(this.handle));
   }

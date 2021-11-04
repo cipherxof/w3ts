@@ -4,8 +4,48 @@ import { Handle } from "./handle";
 import { Widget } from "./widget";
 
 export class Destructable extends Widget {
-  // TODO: test if this works
   public declare readonly handle: destructable;
+
+  /**
+   * @deprecated use `Destructable.create` instead.
+   * @param objectId The rawcode of the destructable to be created.
+   * @param x The x-coordinate of the Destructable.
+   * @param y The y-coordinate of the Destructable.
+   * @param z The z-coordinate of the Destructable.
+   * @param face The facing of the Destructable.
+   * @param scale The X-Y-Z scaling value of the Destructable.
+   * @param variation The integer representing the variation of the Destructable to be created.
+   */
+  constructor(
+    objectId: number,
+    x: number,
+    y: number,
+    z: number,
+    face: number,
+    scale: number,
+    variation: number
+  ) {
+    if (Handle.initFromHandle()) {
+      super();
+      return;
+    }
+
+    const handle = CreateDestructableZ(
+      objectId,
+      x,
+      y,
+      z,
+      face,
+      scale,
+      variation
+    );
+
+    if (handle === undefined) {
+      error("w3ts failed to create destructable handle.", 3);
+    }
+
+    super(handle);
+  }
 
   /**
    * Creates a destructable at the specified coordinates.
@@ -15,22 +55,63 @@ export class Destructable extends Widget {
    * @param z The z-coordinate of the Destructable.
    * @param face The facing of the Destructable.
    * @param scale The X-Y-Z scaling value of the Destructable.
-   * @param varation The integer representing the variation of the Destructable to be created.
+   * @param variation The integer representing the variation of the Destructable to be created.
+   * @param skinId The integer representing the skin of the Destructable to be created.
    */
-  constructor(
+  public static create(
     objectId: number,
     x: number,
     y: number,
-    z: number,
-    face: number,
-    scale: number,
-    varation: number
-  ) {
-    if (Handle.initFromHandle()) {
-      super();
+    z?: number,
+    face?: number,
+    scale?: number,
+    variation?: number,
+    skinId?: number
+  ): Destructable | undefined {
+    if (face === undefined) face = 0;
+    if (scale === undefined) scale = 1;
+    if (variation === undefined) variation = 0;
+
+    let handle: destructable | undefined;
+
+    if (z !== undefined) {
+      if (skinId !== undefined) {
+        handle = BlzCreateDestructableZWithSkin(
+          objectId,
+          x,
+          y,
+          z,
+          face,
+          scale,
+          variation,
+          skinId
+        );
+      } else {
+        handle = CreateDestructableZ(objectId, x, y, z, face, scale, variation);
+      }
+    } else if (skinId !== undefined) {
+      handle = BlzCreateDeadDestructableWithSkin(
+        objectId,
+        x,
+        y,
+        face,
+        scale,
+        variation,
+        skinId
+      );
     } else {
-      super(CreateDestructableZ(objectId, x, y, z, face, scale, varation));
+      handle = CreateDestructable(objectId, x, y, face, scale, variation);
     }
+
+    if (handle) {
+      const obj = this.getObject(handle) as Destructable;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public set invulnerable(flag: boolean) {

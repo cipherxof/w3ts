@@ -6,11 +6,10 @@ import { Point } from "./point";
 import { Widget } from "./widget";
 
 export class Item extends Widget {
-  // TODO: test if this works
   public declare readonly handle: item;
 
   /**
-   * Creates an item object at the specified coordinates.
+   * @deprecated use `Item.create` instead.
    * @param itemId The rawcode of the item.
    * @param x The x-coordinate of the item
    * @param y The y-coordinate of the item
@@ -19,11 +18,47 @@ export class Item extends Widget {
   constructor(itemId: number, x: number, y: number, skinId?: number) {
     if (Handle.initFromHandle()) {
       super();
-    } else if (skinId === undefined) {
-      super(CreateItem(itemId, x, y));
-    } else {
-      super(BlzCreateItemWithSkin(itemId, x, y, skinId));
+      return;
     }
+
+    const handle =
+      skinId === undefined
+        ? CreateItem(itemId, x, y)
+        : BlzCreateItemWithSkin(itemId, x, y, skinId);
+
+    if (handle === undefined) {
+      error("w3ts failed to create item handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  /**
+   * Creates an item object at the specified coordinates.
+   * @param itemId The rawcode of the item.
+   * @param x The x-coordinate of the item
+   * @param y The y-coordinate of the item
+   * @param skinId  The skin ID of the item.
+   */
+  public static create(
+    itemId: number,
+    x: number,
+    y: number,
+    skinId?: number
+  ): Item | undefined {
+    const handle =
+      skinId === undefined
+        ? CreateItem(itemId, x, y)
+        : BlzCreateItemWithSkin(itemId, x, y, skinId);
+    if (handle) {
+      const obj = this.getObject(handle) as Item;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public get charges() {

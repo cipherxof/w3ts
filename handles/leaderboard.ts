@@ -5,16 +5,38 @@ import { MapPlayer } from "./player";
 
 export class Leaderboard extends Handle<leaderboard> {
   /**
-   * Create a Leaderboard object
-   * @note Leaderboards initially have 0 rows, 0 columns, and no label.
-   * @bug Do not use this in a global initialisation as it crashes the game there.
+   * @deprecated use `Leaderboard.create` instead.
    */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateLeaderboard());
+      return;
     }
+    const handle = CreateLeaderboard();
+
+    if (handle === undefined) {
+      error("w3ts failed to create leaderboard handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  /**
+   * Create a Leaderboard object
+   * @note Leaderboards initially have 0 rows, 0 columns, and no label.
+   * @bug Do not use this in a global initialisation as it crashes the game there.
+   */
+  public static create(): Leaderboard | undefined {
+    const handle = CreateLeaderboard();
+    if (handle) {
+      const obj = this.getObject(handle) as Leaderboard;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public addItem(label: string, value: number, p: MapPlayer) {

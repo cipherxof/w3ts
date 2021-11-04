@@ -8,12 +8,34 @@ import { Unit } from "./unit";
 import { Widget } from "./widget";
 
 export class Group extends Handle<group> {
+  /**
+   * @deprecated use `Group.create` instead.
+   */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateGroup());
+      return;
     }
+    const handle = CreateGroup();
+
+    if (handle === undefined) {
+      error("w3ts failed to create group handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  public static create(): Group | undefined {
+    const handle = CreateGroup();
+    if (handle) {
+      const obj = this.getObject(handle) as Group;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public addGroupFast(addGroup: Group): number {

@@ -320,10 +320,36 @@ export class Camera {
 
 export class CameraSetup extends Handle<camerasetup> {
   /**
-   * Creates a new CameraSetup object.
+   * @deprecated use `CameraSetup.create` instead.
    */
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateCameraSetup());
+    if (Handle.initFromHandle()) {
+      super();
+      return;
+    }
+
+    const handle = CreateCameraSetup();
+    if (handle === undefined) {
+      error("w3ts failed to create camerasetup handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  /**
+   * Creates a new CameraSetup object.
+   */
+  public static create(): CameraSetup | undefined {
+    const handle = CreateCameraSetup();
+    if (handle) {
+      const obj = this.getObject(handle) as CameraSetup;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   /**
@@ -477,7 +503,9 @@ export class CameraSetup extends Handle<camerasetup> {
     CameraSetupSetField(this.handle, whichField, value, duration);
   }
 
-  public static fromHandle(handle: camerasetup): camerasetup {
-    return this.getObject(handle);
+  public static fromHandle(
+    handle: camerasetup | undefined
+  ): CameraSetup | undefined {
+    return handle ? this.getObject(handle) : undefined;
   }
 }

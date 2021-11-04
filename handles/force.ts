@@ -4,12 +4,36 @@ import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class Force extends Handle<force> {
+  /**
+   * @deprecated use `Force.create` instead.
+   */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateForce());
+      return;
     }
+
+    const handle = CreateForce();
+
+    if (handle === undefined) {
+      error("w3ts failed to create force handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  public static create(): Force | undefined {
+    const handle = CreateForce();
+
+    if (handle) {
+      const obj = this.getObject(handle) as Force;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public addPlayer(whichPlayer: MapPlayer) {

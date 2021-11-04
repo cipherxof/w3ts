@@ -4,19 +4,44 @@ import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class GameCache extends Handle<gamecache> {
-  public readonly filename: string;
+  public readonly filename?: string;
 
   /**
-   * @note You cannot create more than 255 gamecaches
+   * @deprecated use `GameCache.create` instead.
    */
   constructor(campaignFile: string) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(InitGameCache(campaignFile));
+      return;
     }
 
+    const handle = InitGameCache(campaignFile);
+
+    if (handle === undefined) {
+      error("w3ts failed to create gamecache handle.", 3);
+    }
+
+    super(handle);
     this.filename = campaignFile;
+  }
+
+  /**
+   * @note You cannot create more than 255 gamecaches
+   */
+  public static create(campaignFile: string): GameCache | undefined {
+    const handle = InitGameCache(campaignFile);
+
+    if (handle) {
+      const obj = this.getObject(handle) as GameCache;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+      values.filename = campaignFile;
+
+      return Object.assign(obj, values);
+    }
+
+    return undefined;
   }
 
   public flush() {

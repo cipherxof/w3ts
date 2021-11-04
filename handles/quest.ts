@@ -3,12 +3,33 @@
 import { Handle } from "./handle";
 
 export class QuestItem extends Handle<questitem> {
+  public readonly quest?: Quest;
+
   constructor(whichQuest: Quest) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(QuestCreateItem(whichQuest.handle));
+      return;
     }
+    const handle = QuestCreateItem(whichQuest.handle);
+    if (handle === undefined) {
+      error("w3ts failed to create questitem handle.", 3);
+    }
+    super(handle);
+    this.quest = whichQuest;
+  }
+
+  public static create(whichQuest: Quest): QuestItem | undefined {
+    const handle = QuestCreateItem(whichQuest.handle);
+    if (handle) {
+      const obj = this.getObject(handle) as QuestItem;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+      values.quest = whichQuest;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public setDescription(description: string) {
@@ -26,10 +47,35 @@ export class QuestItem extends Handle<questitem> {
 
 export class Quest extends Handle<quest> {
   /**
+   * @deprecated use `Quest.create` instead.
    * @bug Do not use this in a global initialisation as it crashes the game there.
    */
   constructor() {
-    super(Handle.initFromHandle() ? undefined : CreateQuest());
+    if (Handle.initFromHandle()) {
+      super();
+      return;
+    }
+    const handle = CreateQuest();
+    if (handle === undefined) {
+      error("w3ts failed to create quest handle.", 3);
+    }
+    super(handle);
+  }
+
+  /**
+   * @bug Do not use this in a global initialisation as it crashes the game there.
+   */
+  public static create(): Quest | undefined {
+    const handle = CreateQuest();
+    if (handle) {
+      const obj = this.getObject(handle) as Quest;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public get completed() {

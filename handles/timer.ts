@@ -3,12 +3,27 @@
 import { Handle } from "./handle";
 
 export class Timer extends Handle<timer> {
+  /** @deprecated use `Timer.create` instead. */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateTimer());
+      return;
     }
+    const handle = CreateTimer();
+    if (handle === undefined) {
+      error("w3ts failed to create timer handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(): Timer {
+    const handle = CreateTimer();
+    const obj = this.getObject(handle) as Timer;
+
+    const values: Record<string, unknown> = {};
+    values.handle = handle;
+
+    return Object.assign(obj, values);
   }
 
   public get elapsed(): number {

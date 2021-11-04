@@ -4,6 +4,37 @@ import { Handle } from "./handle";
 
 export class Sound extends Handle<sound> {
   /**
+   * @deprecated use `Sound.create` instead.
+   */
+  constructor(
+    fileName: string,
+    looping: boolean,
+    is3D: boolean,
+    stopWhenOutOfRange: boolean,
+    fadeInRate: number,
+    fadeOutRate: number,
+    eaxSetting: string
+  ) {
+    if (Handle.initFromHandle()) {
+      super();
+      return;
+    }
+    const handle = CreateSound(
+      fileName,
+      looping,
+      is3D,
+      stopWhenOutOfRange,
+      fadeInRate,
+      fadeOutRate,
+      eaxSetting
+    );
+    if (handle === undefined) {
+      error("w3ts failed to create sound handle.", 3);
+    }
+    super(handle);
+  }
+
+  /**
    * Creates a sound handle.
    * @note You can only play the same sound handle once.
    * @note You can only play the same sound filepath four times.
@@ -19,7 +50,7 @@ export class Sound extends Handle<sound> {
    * @param fadeOutRate How quickly the sound fades out. The higher the number, the faster the sound fades out. Maximum number is 127.
    * @param eaxSetting EAX is an acronym for environmental audio extensions. In the sound editor, this corresponds to the "Effect" setting.
    */
-  constructor(
+  public static create(
     fileName: string,
     looping: boolean,
     is3D: boolean,
@@ -27,22 +58,25 @@ export class Sound extends Handle<sound> {
     fadeInRate: number,
     fadeOutRate: number,
     eaxSetting: string
-  ) {
-    if (Handle.initFromHandle()) {
-      super();
-    } else {
-      super(
-        CreateSound(
-          fileName,
-          looping,
-          is3D,
-          stopWhenOutOfRange,
-          fadeInRate,
-          fadeOutRate,
-          eaxSetting
-        )
-      );
+  ): Sound | undefined {
+    const handle = CreateSound(
+      fileName,
+      looping,
+      is3D,
+      stopWhenOutOfRange,
+      fadeInRate,
+      fadeOutRate,
+      eaxSetting
+    );
+    if (handle) {
+      const obj = this.getObject(handle) as Sound;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
     }
+    return undefined;
   }
 
   public get dialogueSpeakerNameKey() {

@@ -4,12 +4,30 @@ import { Handle } from "./handle";
 import { Unit } from "./unit";
 
 export class TextTag extends Handle<texttag> {
+  /** @deprecated use `TextTag.create` instead. */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateTextTag());
+      return;
     }
+    const handle = CreateTextTag();
+    if (handle === undefined) {
+      error("w3ts failed to create texttag handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(): TextTag | undefined {
+    const handle = CreateTextTag();
+    if (handle) {
+      const obj = this.getObject(handle) as TextTag;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public destroy() {
