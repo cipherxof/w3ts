@@ -79,7 +79,7 @@ export class Trigger extends Handle<trigger> {
    *
    * @example
    * ```ts
-   * const t = new Trigger()
+   * const t = Trigger.create()
    *
    * // trigger fires if a unit is attacked
    * t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)

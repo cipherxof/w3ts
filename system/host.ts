@@ -9,7 +9,7 @@ import { BinaryWriter } from "./binarywriter";
 import { SyncRequest } from "./sync";
 
 const lobbyTimes: number[] = [];
-const checkTimer = new Timer();
+const checkTimer = Timer.create();
 const hostCallbacks: Array<() => void> = [];
 let localJoinTime = 0;
 let localStartTime = 0;
