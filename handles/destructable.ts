@@ -6,16 +6,9 @@ import { Widget } from "./widget";
 export class Destructable extends Widget {
   public declare readonly handle: destructable;
 
-  /**
-   * @deprecated use `Destructable.create` instead.
-   * @param objectId The rawcode of the destructable to be created.
-   * @param x The x-coordinate of the Destructable.
-   * @param y The y-coordinate of the Destructable.
-   * @param z The z-coordinate of the Destructable.
-   * @param face The facing of the Destructable.
-   * @param scale The X-Y-Z scaling value of the Destructable.
-   * @param variation The integer representing the variation of the Destructable to be created.
-   */
+  public readonly skin?: number;
+
+  /** @deprecated use `Destructable.create` or `Destructable.createZ` instead. */
   constructor(
     objectId: number,
     x: number,
@@ -48,11 +41,10 @@ export class Destructable extends Widget {
   }
 
   /**
-   * Creates a destructable at the specified coordinates.
+   * Creates a destructable at the specified x-y coordinates.
    * @param objectId The rawcode of the destructable to be created.
    * @param x The x-coordinate of the Destructable.
    * @param y The y-coordinate of the Destructable.
-   * @param z The z-coordinate of the Destructable.
    * @param face The facing of the Destructable.
    * @param scale The X-Y-Z scaling value of the Destructable.
    * @param variation The integer representing the variation of the Destructable to be created.
@@ -62,7 +54,6 @@ export class Destructable extends Widget {
     objectId: number,
     x: number,
     y: number,
-    z?: number,
     face?: number,
     scale?: number,
     variation?: number,
@@ -74,22 +65,7 @@ export class Destructable extends Widget {
 
     let handle: destructable | undefined;
 
-    if (z !== undefined) {
-      if (skinId !== undefined) {
-        handle = BlzCreateDestructableZWithSkin(
-          objectId,
-          x,
-          y,
-          z,
-          face,
-          scale,
-          variation,
-          skinId
-        );
-      } else {
-        handle = CreateDestructableZ(objectId, x, y, z, face, scale, variation);
-      }
-    } else if (skinId !== undefined) {
+    if (skinId !== undefined) {
       handle = BlzCreateDestructableWithSkin(
         objectId,
         x,
@@ -108,6 +84,64 @@ export class Destructable extends Widget {
 
       const values: Record<string, unknown> = {};
       values.handle = handle;
+      if (skinId !== undefined) {
+        values.skin = skinId;
+      }
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
+  }
+
+  /**
+   * Creates a destructable at the specified x-y-z coordinates.
+   * @param objectId The rawcode of the destructable to be created.
+   * @param x The x-coordinate of the Destructable.
+   * @param y The y-coordinate of the Destructable.
+   * @param z The z-coordinate of the Destructable.
+   * @param face The facing of the Destructable.
+   * @param scale The X-Y-Z scaling value of the Destructable.
+   * @param variation The integer representing the variation of the Destructable to be created.
+   * @param skinId The integer representing the skin of the Destructable to be created.
+   */
+  public static createZ(
+    objectId: number,
+    x: number,
+    y: number,
+    z: number,
+    face?: number,
+    scale?: number,
+    variation?: number,
+    skinId?: number
+  ): Destructable | undefined {
+    if (face === undefined) face = 0;
+    if (scale === undefined) scale = 1;
+    if (variation === undefined) variation = 0;
+
+    let handle: destructable | undefined;
+    if (skinId !== undefined) {
+      handle = BlzCreateDestructableZWithSkin(
+        objectId,
+        x,
+        y,
+        z,
+        face,
+        scale,
+        variation,
+        skinId
+      );
+    } else {
+      handle = CreateDestructableZ(objectId, x, y, z, face, scale, variation);
+    }
+
+    if (handle) {
+      const obj = this.getObject(handle) as Destructable;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+      if (skinId !== undefined) {
+        values.skin = skinId;
+      }
 
       return Object.assign(obj, values);
     }
