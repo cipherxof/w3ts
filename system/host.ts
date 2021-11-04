@@ -9,10 +9,6 @@ import { BinaryWriter } from "./binarywriter";
 import { SyncRequest } from "./sync";
 
 const lobbyTimes: number[] = [];
-<<<<<<< HEAD
-const checkTimer = Timer.create();
-=======
->>>>>>> 463d183f464089dbb20e0d50de5ded990d4aac94
 const hostCallbacks: Array<() => void> = [];
 let localJoinTime = 0;
 let localStartTime = 0;
@@ -100,7 +96,7 @@ function findHost() {
 }
 
 function onMain() {
-  checkTimer = new Timer();
+  checkTimer = Timer.create();
   checkTimer.start(0.0, false, findHost);
 }
 
