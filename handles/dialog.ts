@@ -31,6 +31,27 @@ export class DialogButton extends Handle<button> {
   }
 }
 
+/**
+ *
+ * @example Create a simple dialog.
+ * ```ts
+ * const dialog = new Dialog();
+ * const trigger = new Trigger();
+ *
+ * trigger.registerDialogEvent(dialog);
+ * trigger.addAction(() => {
+ *   const clicked = DialogButton.fromEvent();
+ * });
+ *
+ * new Timer().start(1.00, false, () => {
+ *   new DialogButton(dialog, "Stay", 0);
+ *   new DialogButton(dialog, "Leave", 0, true);
+ *
+ *   dialog.setMessage("Welcome to TypeScript!");
+ *   dialog.display(Players[0], true);
+ * });
+ * ```
+ */
 export class Dialog extends Handle<dialog> {
   constructor() {
     super(Handle.initFromHandle() ? undefined : DialogCreate());
