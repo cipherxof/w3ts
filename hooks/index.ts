@@ -38,6 +38,8 @@ export function hookedConfig() {
 main = hookedMain;
 config = hookedConfig;
 
+type W3tsHookType = "main::before" | "main::after" | "config::before" | "config::after";
+
 export enum W3TS_HOOK {
   MAIN_BEFORE = "main::before",
   MAIN_AFTER = "main::after",
@@ -53,7 +55,7 @@ const entryPoints: { [key: string]: scriptHookSignature[] } = {
 };
 
 export function addScriptHook(
-  entryPoint: string,
+  entryPoint: W3tsHookType,
   hook: scriptHookSignature
 ): boolean {
   if (!(entryPoint in entryPoints)) {
