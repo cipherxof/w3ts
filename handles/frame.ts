@@ -8,24 +8,24 @@ import { Handle } from "./handle";
  *
  * @example Create a simple button.
  * ```ts
- * // Create a "GLUEBUTTON" named "Facebutton", the clickable Button, for game UI
- * const buttonFrame = new Frame("FaceButton", Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0), 0, 0, "GLUEBUTTON", "");
- *
- * // Create a BACKDROP named "FaceButtonIcon", the visible image, for buttonFrame.
- * const buttonIconFrame = new Frame("FaceButton", buttonFrame, 0, 0, "BACKDROP", "");
- *
- * // buttonIconFrame will mimic buttonFrame in size and position
- * buttonIconFrame.setAllPoints(buttonFrame);
- *
- * // Set a Texture
- * buttonIconFrame.setTexture("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn", 0, true);
- *
- * // Place the buttonFrame to the center of the screen
- * buttonFrame.setAbsPoint(FRAMEPOINT_CENTER, 0.4, 0.3);
- *
- * // Give that buttonFrame a size
- * buttonFrame.setSize(0.05, 0.05);
- * ```
+ * const gameui = Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0);
+ * if (gameui) {
+ *  // Create a "GLUEBUTTON" named "Facebutton", the clickable Button, for game UI
+ *  const buttonFrame = Frame.createType("FaceButton", gameui, 0, "GLUEBUTTON", "");
+ *  if (buttonFrame) {
+ *    // Create a BACKDROP named "FaceButtonIcon", the visible image, for buttonFrame.
+ *    const buttonIconFrame = Frame.createType("FaceButton", buttonFrame, 0, "BACKDROP", "");
+ *    // buttonIconFrame will mimic buttonFrame in size and position
+ *    buttonIconFrame?.setAllPoints(buttonFrame);
+ *    // Set a Texture
+ *    buttonIconFrame?.setTexture("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn", 0, true);
+ *    // Place the buttonFrame to the center of the screen
+ *    buttonFrame.setAbsPoint(FRAMEPOINT_CENTER, 0.4, 0.3);
+ *    // Give that buttonFrame a size
+ *    buttonFrame.setSize(0.05, 0.05);
+ *  }
+ *}
+ *```
  *
  * There are many aspects to modifying the UI and it can become complicated, so here are some
  * guides:
