@@ -5,6 +5,7 @@ import { Handle } from "./handle";
 export class QuestItem extends Handle<questitem> {
   public readonly quest?: Quest;
 
+  /** @deprecated use `QuestItem.create` instead. */
   constructor(whichQuest: Quest) {
     if (Handle.initFromHandle()) {
       super();
@@ -119,9 +120,9 @@ export class Quest extends Handle<quest> {
   }
 
   public addItem(description: string) {
-    const questItem = new QuestItem(this);
+    const questItem = QuestItem.create(this);
 
-    questItem.setDescription(description);
+    questItem?.setDescription(description);
 
     return questItem;
   }
