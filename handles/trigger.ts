@@ -22,7 +22,7 @@ export class Trigger extends Handle<trigger> {
   }
 
   public static create(): Trigger {
-    const handle = CreateTimer();
+    const handle = CreateTrigger();
     const obj = this.getObject(handle) as Trigger;
 
     const values: Record<string, unknown> = {};
