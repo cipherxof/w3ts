@@ -90,7 +90,7 @@ export class Destructable extends Widget {
         handle = CreateDestructableZ(objectId, x, y, z, face, scale, variation);
       }
     } else if (skinId !== undefined) {
-      handle = BlzCreateDeadDestructableWithSkin(
+      handle = BlzCreateDestructableWithSkin(
         objectId,
         x,
         y,
