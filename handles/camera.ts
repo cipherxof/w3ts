@@ -477,7 +477,7 @@ export class CameraSetup extends Handle<camerasetup> {
     CameraSetupSetField(this.handle, whichField, value, duration);
   }
 
-  public static fromHandle(handle: camerasetup): camerasetup {
+  public static fromHandle(handle: camerasetup): CameraSetup {
     return this.getObject(handle);
   }
 }
