@@ -8,12 +8,27 @@ import { Unit } from "./unit";
 import { Widget } from "./widget";
 
 export class Trigger extends Handle<trigger> {
+  /** @deprecated use `Trigger.create` instead. */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateTrigger());
+      return;
     }
+    const handle = CreateTrigger();
+    if (handle === undefined) {
+      error("w3ts failed to create trigger handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(): Trigger {
+    const handle = CreateTrigger();
+    const obj = this.getObject(handle) as Trigger;
+
+    const values: Record<string, unknown> = {};
+    values.handle = handle;
+
+    return Object.assign(obj, values);
   }
 
   public set enabled(flag: boolean) {
@@ -64,7 +79,7 @@ export class Trigger extends Handle<trigger> {
    *
    * @example
    * ```ts
-   * const t = new Trigger()
+   * const t = Trigger.create()
    *
    * // trigger fires if a unit is attacked
    * t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)

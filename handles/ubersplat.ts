@@ -3,6 +3,7 @@
 import { Handle } from "./handle";
 
 export class Ubersplat extends Handle<ubersplat> {
+  /** @deprecated use `Ubersplat.create` instead. */
   constructor(
     x: number,
     y: number,
@@ -16,21 +17,56 @@ export class Ubersplat extends Handle<ubersplat> {
   ) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(
-        CreateUbersplat(
-          x,
-          y,
-          name,
-          red,
-          green,
-          blue,
-          alpha,
-          forcePaused,
-          noBirthTime
-        )
-      );
+      return;
     }
+    const handle = CreateUbersplat(
+      x,
+      y,
+      name,
+      red,
+      green,
+      blue,
+      alpha,
+      forcePaused,
+      noBirthTime
+    );
+    if (handle === undefined) {
+      error("w3ts failed to create ubersplat handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(
+    x: number,
+    y: number,
+    name: string,
+    red: number,
+    green: number,
+    blue: number,
+    alpha: number,
+    forcePaused: boolean,
+    noBirthTime: boolean
+  ): Ubersplat | undefined {
+    const handle = CreateUbersplat(
+      x,
+      y,
+      name,
+      red,
+      green,
+      blue,
+      alpha,
+      forcePaused,
+      noBirthTime
+    );
+    if (handle) {
+      const obj = this.getObject(handle) as Ubersplat;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public destroy() {

@@ -4,6 +4,9 @@ import { Handle } from "./handle";
 import { MapPlayer } from "./player";
 
 export class DialogButton extends Handle<button> {
+  /**
+   * @deprecated use `DialogButton.create` instead.
+   */
   constructor(
     whichDialog: Dialog,
     text: string,
@@ -13,11 +16,49 @@ export class DialogButton extends Handle<button> {
   ) {
     if (Handle.initFromHandle()) {
       super();
-    } else if (quit === false) {
-      super(DialogAddButton(whichDialog.handle, text, hotkey));
-    } else {
-      super(DialogAddQuitButton(whichDialog.handle, score, text, hotkey));
+      return;
     }
+
+    let handle: button | undefined;
+
+    if (quit === false) {
+      handle = DialogAddButton(whichDialog.handle, text, hotkey);
+    } else {
+      handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey);
+    }
+
+    if (handle === undefined) {
+      error("w3ts failed to create button handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  public static create(
+    whichDialog: Dialog,
+    text: string,
+    hotkey = 0,
+    quit = false,
+    score = false
+  ): DialogButton | undefined {
+    let handle: button | undefined;
+
+    if (quit === false) {
+      handle = DialogAddButton(whichDialog.handle, text, hotkey);
+    } else {
+      handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey);
+    }
+
+    if (handle) {
+      const obj = this.getObject(handle) as DialogButton;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+
+    return undefined;
   }
 
   public static fromEvent() {
@@ -35,30 +76,61 @@ export class DialogButton extends Handle<button> {
  *
  * @example Create a simple dialog.
  * ```ts
- * const dialog = new Dialog();
- * const trigger = new Trigger();
+ * const dialog = Dialog.create();
+ * if (dialog) {
+ *   const trigger = Trigger.create();
  *
- * trigger.registerDialogEvent(dialog);
- * trigger.addAction(() => {
- *   const clicked = DialogButton.fromEvent();
- * });
+ *   trigger.registerDialogEvent(dialog);
+ *   trigger.addAction(() => {
+ *     const clicked = DialogButton.fromEvent();
+ *   });
  *
- * new Timer().start(1.00, false, () => {
- *   new DialogButton(dialog, "Stay", 0);
- *   new DialogButton(dialog, "Leave", 0, true);
+ *   Timer.create().start(1.00, false, () => {
+ *     DialogButton.create(dialog, "Stay", 0);
+ *     DialogButton.create(dialog, "Leave", 0, true);
  *
- *   dialog.setMessage("Welcome to TypeScript!");
- *   dialog.display(Players[0], true);
- * });
+ *     dialog.setMessage("Welcome to TypeScript!");
+ *     dialog.display(Players[0], true);
+ *   });
+ * }
  * ```
  */
 export class Dialog extends Handle<dialog> {
+  /**
+   * @deprecated use `Dialog.create` instead.
+   */
   constructor() {
-    super(Handle.initFromHandle() ? undefined : DialogCreate());
+    if (Handle.initFromHandle()) {
+      super();
+      return;
+    }
+
+    const handle = DialogCreate();
+
+    if (handle === undefined) {
+      error("w3ts failed to create dialog handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  public static create(): Dialog | undefined {
+    const handle = DialogCreate();
+
+    if (handle) {
+      const obj = this.getObject(handle) as Dialog;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+
+    return undefined;
   }
 
   public addButton(text: string, hotkey = 0, quit = false, score = false) {
-    return new DialogButton(this, text, hotkey, quit, score);
+    return DialogButton.create(this, text, hotkey, quit, score);
   }
 
   public clear() {

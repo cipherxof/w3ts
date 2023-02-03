@@ -10,7 +10,7 @@ export function getElapsedTime() {
 }
 
 addScriptHook(W3TS_HOOK.MAIN_AFTER, () => {
-  gameTimer = new Timer().start(30, true, () => {
+  gameTimer = Timer.create().start(30, true, () => {
     elapsedTime += 30;
   });
 });

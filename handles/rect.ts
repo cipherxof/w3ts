@@ -4,12 +4,34 @@ import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class Rectangle extends Handle<rect> {
+  /**
+   * @deprecated use `Rectangle.create` instead.
+   */
   constructor(minX: number, minY: number, maxX: number, maxY: number) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(Rect(minX, minY, maxX, maxY));
+      return;
     }
+    const handle = Rect(minX, minY, maxX, maxY);
+    if (handle === undefined) {
+      error("w3ts failed to create rect handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(
+    minX: number,
+    minY: number,
+    maxX: number,
+    maxY: number
+  ): Rectangle {
+    const handle = Rect(minX, minY, maxX, maxY);
+    const obj = this.getObject(handle) as Rectangle;
+
+    const values: Record<string, unknown> = {};
+    values.handle = handle;
+
+    return Object.assign(obj, values);
   }
 
   public get centerX() {

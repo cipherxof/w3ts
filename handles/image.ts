@@ -23,21 +23,7 @@ export enum ImageType {
 
 export class Image extends Handle<image> {
   /**
-   * Creates a new image, the first ID given being 0 and then counting upwards (0, 1, 2, 3, ...).
-   * Multiple images with the same type are drawn in their order of creation,
-   * meaning that the image created first is drawn below the image created after.
-   * @param file The path to the image. The image itself should have its border alpha-ed out
-   * completely. If an invalid path is specified CreateImage returns image(-1).
-   * @param sizeX The x-dimensions of the image.
-   * @param sizeY The y-dimensions of the image.
-   * @param sizeZ The z-dimensions of the image.
-   * @param posX The x-cooridnate of where to create the image. This is the bottom left corner of the image.
-   * @param posY The y-cooridnate of where to create the image. This is the bottom left corner of the image.
-   * @param posZ The z-cooridnate of where to create the image.
-   * @param originX Moves the origin (bottom left corner) of the image from posX in negative X-direction.
-   * @param originY Moves the origin (bottom left corner) of the image from posY in negative Y-direction.
-   * @param originZ Moves the origin (bottom left corner) of the image from posZ in negative Z-direction.
-   * @param imageType
+   * @deprecated use `Image.create` instead.
    */
   constructor(
     file: string,
@@ -54,23 +40,80 @@ export class Image extends Handle<image> {
   ) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(
-        CreateImage(
-          file,
-          sizeX,
-          sizeY,
-          sizeZ,
-          posX,
-          posY,
-          posZ,
-          originX,
-          originY,
-          originZ,
-          imageType
-        )
-      );
+      return;
     }
+    const handle = CreateImage(
+      file,
+      sizeX,
+      sizeY,
+      sizeZ,
+      posX,
+      posY,
+      posZ,
+      originX,
+      originY,
+      originZ,
+      imageType
+    );
+
+    if (handle === undefined) {
+      error("w3ts failed to create image handle.", 3);
+    }
+    super(handle);
+  }
+
+  /**
+   * Creates a new image, the first ID given being 0 and then counting upwards (0, 1, 2, 3, ...).
+   * Multiple images with the same type are drawn in their order of creation,
+   * meaning that the image created first is drawn below the image created after.
+   * @param file The path to the image. The image itself should have its border alpha-ed out
+   * completely. If an invalid path is specified CreateImage returns image(-1).
+   * @param sizeX The x-dimensions of the image.
+   * @param sizeY The y-dimensions of the image.
+   * @param sizeZ The z-dimensions of the image.
+   * @param posX The x-cooridnate of where to create the image. This is the bottom left corner of the image.
+   * @param posY The y-cooridnate of where to create the image. This is the bottom left corner of the image.
+   * @param posZ The z-cooridnate of where to create the image.
+   * @param originX Moves the origin (bottom left corner) of the image from posX in negative X-direction.
+   * @param originY Moves the origin (bottom left corner) of the image from posY in negative Y-direction.
+   * @param originZ Moves the origin (bottom left corner) of the image from posZ in negative Z-direction.
+   * @param imageType
+   */
+  public static create(
+    file: string,
+    sizeX: number,
+    sizeY: number,
+    sizeZ: number,
+    posX: number,
+    posY: number,
+    posZ: number,
+    originX: number,
+    originY: number,
+    originZ: number,
+    imageType: ImageType
+  ): Image | undefined {
+    const handle = CreateImage(
+      file,
+      sizeX,
+      sizeY,
+      sizeZ,
+      posX,
+      posY,
+      posZ,
+      originX,
+      originY,
+      originZ,
+      imageType
+    );
+    if (handle) {
+      const obj = this.getObject(handle) as Image;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   /**

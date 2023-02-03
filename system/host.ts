@@ -96,7 +96,7 @@ function findHost() {
 }
 
 function onMain() {
-  checkTimer = new Timer();
+  checkTimer = Timer.create();
   checkTimer.start(0.0, false, findHost);
 }
 

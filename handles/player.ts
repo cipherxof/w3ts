@@ -5,12 +5,32 @@ import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class MapPlayer extends Handle<player> {
+  /**
+   * @deprecated use `MapPlayer.create` instead.
+   */
   private constructor(index: number) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(Player(index));
+      return;
     }
+    const handle = Player(index);
+    if (handle === undefined) {
+      error("w3ts failed to create player handle.", 3);
+    }
+    super(handle);
+  }
+
+  private static create(index: number): MapPlayer | undefined {
+    const handle = Player(index);
+    if (handle) {
+      const obj = this.getObject(handle) as MapPlayer;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public set color(color: playercolor) {

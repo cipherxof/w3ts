@@ -8,24 +8,24 @@ import { Handle } from "./handle";
  *
  * @example Create a simple button.
  * ```ts
- * // Create a "GLUEBUTTON" named "Facebutton", the clickable Button, for game UI
- * const buttonFrame = new Frame("FaceButton", Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0), 0, 0, "GLUEBUTTON", "");
- *
- * // Create a BACKDROP named "FaceButtonIcon", the visible image, for buttonFrame.
- * const buttonIconFrame = new Frame("FaceButton", buttonFrame, 0, 0, "BACKDROP", "");
- *
- * // buttonIconFrame will mimic buttonFrame in size and position
- * buttonIconFrame.setAllPoints(buttonFrame);
- *
- * // Set a Texture
- * buttonIconFrame.setTexture("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn", 0, true);
- *
- * // Place the buttonFrame to the center of the screen
- * buttonFrame.setAbsPoint(FRAMEPOINT_CENTER, 0.4, 0.3);
- *
- * // Give that buttonFrame a size
- * buttonFrame.setSize(0.05, 0.05);
- * ```
+ * const gameui = Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0);
+ * if (gameui) {
+ *  // Create a "GLUEBUTTON" named "Facebutton", the clickable Button, for game UI
+ *  const buttonFrame = Frame.createType("FaceButton", gameui, 0, "GLUEBUTTON", "");
+ *  if (buttonFrame) {
+ *    // Create a BACKDROP named "FaceButtonIcon", the visible image, for buttonFrame.
+ *    const buttonIconFrame = Frame.createType("FaceButton", buttonFrame, 0, "BACKDROP", "");
+ *    // buttonIconFrame will mimic buttonFrame in size and position
+ *    buttonIconFrame?.setAllPoints(buttonFrame);
+ *    // Set a Texture
+ *    buttonIconFrame?.setTexture("ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn", 0, true);
+ *    // Place the buttonFrame to the center of the screen
+ *    buttonFrame.setAbsPoint(FRAMEPOINT_CENTER, 0.4, 0.3);
+ *    // Give that buttonFrame a size
+ *    buttonFrame.setSize(0.05, 0.05);
+ *  }
+ *}
+ *```
  *
  * There are many aspects to modifying the UI and it can become complicated, so here are some
  * guides:
@@ -36,7 +36,7 @@ import { Handle } from "./handle";
  */
 export class Frame extends Handle<framehandle> {
   /**
-   * Creates a Frame.
+   * @deprecated use `Frame.create` instead.
    * @param name The name of the frame to be accessed with `Frame.fromName`.
    * @param owner The parent frame.
    * @param priority
@@ -50,7 +50,7 @@ export class Frame extends Handle<framehandle> {
   );
 
   /**
-   * Creates a SimpleFrame.
+   * @deprecated use `Frame.createSimple` instead.
    *
    * https://www.hiveworkshop.com/threads/ui-simpleframes.320385/
    * @param name The name of the frame to be accessed with `Frame.fromName`.
@@ -61,7 +61,7 @@ export class Frame extends Handle<framehandle> {
   constructor(name: string, owner: Frame, priority: number);
 
   /**
-   * Create a Frame by type.
+   * @deprecated use `Frame.createType` instead.
    * @param name The name of the frame to be accessed with `Frame.fromName`.
    * @param owner The parent frame.
    * @param priority
@@ -88,21 +88,115 @@ export class Frame extends Handle<framehandle> {
   ) {
     if (Handle.initFromHandle()) {
       super();
-    } else if (createContext === undefined) {
-      super(BlzCreateSimpleFrame(name, owner.handle, priority));
+      return;
+    }
+
+    let handle: framehandle | undefined;
+
+    if (createContext === undefined) {
+      handle = BlzCreateSimpleFrame(name, owner.handle, priority);
     } else if (typeName !== undefined && inherits !== undefined) {
-      super(
-        BlzCreateFrameByType(
-          typeName,
-          name,
-          owner.handle,
-          inherits,
-          createContext
-        )
+      handle = BlzCreateFrameByType(
+        typeName,
+        name,
+        owner.handle,
+        inherits,
+        createContext
       );
     } else {
-      super(BlzCreateFrame(name, owner.handle, priority, createContext));
+      handle = BlzCreateFrame(name, owner.handle, priority, createContext);
     }
+
+    if (handle === undefined) {
+      error("w3ts failed to create framehandle handle.", 3);
+    }
+
+    super(handle);
+  }
+
+  /**
+   * Creates a Frame.
+   * @param name The name of the frame to be accessed with `Frame.fromName`.
+   * @param owner The parent frame.
+   * @param priority Should be a natural number (greater equal to 0).
+   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
+   */
+  public static create(
+    name: string,
+    owner: Frame,
+    priority: number,
+    createContext: number
+  ): Frame | undefined {
+    const handle = BlzCreateFrame(name, owner.handle, priority, createContext);
+    if (handle) {
+      const obj = this.getObject(handle) as Frame;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
+  }
+
+  /**
+   * Creates a SimpleFrame.
+   *
+   * https://www.hiveworkshop.com/threads/ui-simpleframes.320385/
+   * @param name The name of the frame to be accessed with `Frame.fromName`.
+   * @param owner The parent frame.
+   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
+   */
+  public static createSimple(
+    name: string,
+    owner: Frame,
+    createContext: number
+  ): Frame | undefined {
+    const handle = BlzCreateSimpleFrame(name, owner.handle, createContext);
+    if (handle) {
+      const obj = this.getObject(handle) as Frame;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
+  }
+
+  /**
+   * Create a Frame by type.
+   * @param name The name of the frame to be accessed with `Frame.fromName`.
+   * @param owner The parent frame.
+   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
+   * @param typeName The type of Frame.
+   * @param inherits The name of the Frame it inherits.
+   */
+  public static createType(
+    name: string,
+    owner: Frame,
+    createContext: number,
+    typeName: string,
+    inherits: string
+  ): Frame | undefined {
+    const handle = BlzCreateFrameByType(
+      typeName,
+      name,
+      owner.handle,
+      inherits,
+      createContext
+    );
+
+    if (handle) {
+      const obj = this.getObject(handle) as Frame;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+
+    return undefined;
   }
 
   public set alpha(alpha: number) {
@@ -146,7 +240,7 @@ export class Frame extends Handle<framehandle> {
   }
 
   /**
-   * @deprecated use getParent/setParent instead.
+   * @deprecated use `getParent` and `setParent` instead.
    */
   public set parent(parent: Frame) {
     BlzFrameSetParent(this.handle, parent.handle);

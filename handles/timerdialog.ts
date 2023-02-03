@@ -4,12 +4,30 @@ import { Handle } from "./handle";
 import { Timer } from "./timer";
 
 export class TimerDialog extends Handle<timerdialog> {
+  /** @deprecated use `TimerDialog.create` instead. */
   constructor(t: Timer) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateTimerDialog(t.handle));
+      return;
     }
+    const handle = CreateTimerDialog(t.handle);
+    if (handle === undefined) {
+      error("w3ts failed to create timer handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(t: Timer): TimerDialog | undefined {
+    const handle = CreateTimerDialog(t.handle);
+    if (handle) {
+      const obj = this.getObject(handle) as TimerDialog;
+
+      const values: Record<string, unknown> = {};
+      values.handle = handle;
+
+      return Object.assign(obj, values);
+    }
+    return undefined;
   }
 
   public get display() {

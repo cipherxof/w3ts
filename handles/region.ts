@@ -6,12 +6,29 @@ import { Rectangle } from "./rect";
 import { Unit } from "./unit";
 
 export class Region extends Handle<region> {
+  /**
+   * @deprecated use `Region.create` instead.
+   */
   constructor() {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(CreateRegion());
+      return;
     }
+    const handle = CreateRegion();
+    if (handle === undefined) {
+      error("w3ts failed to create rect handle.", 3);
+    }
+    super(handle);
+  }
+
+  public static create(): Region {
+    const handle = CreateRegion();
+    const obj = this.getObject(handle) as Region;
+
+    const values: Record<string, unknown> = {};
+    values.handle = handle;
+
+    return Object.assign(obj, values);
   }
 
   public addCell(x: number, y: number) {

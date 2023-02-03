@@ -136,7 +136,7 @@ export class SyncRequest {
 
   private static defaultOptions: ISyncOptions = { timeout: 0 };
 
-  private static eventTrigger = new Trigger();
+  private static eventTrigger = Trigger.create();
 
   private static index = 0;
 
@@ -239,7 +239,7 @@ export class SyncRequest {
 
     // handle timeout
     if (this.options.timeout > 0) {
-      new Timer().start(this.options.timeout, false, () => {
+      Timer.create().start(this.options.timeout, false, () => {
         Timer.fromExpired()?.destroy();
         if (this.onError && this.status === SyncStatus.Syncing) {
           this.onError(

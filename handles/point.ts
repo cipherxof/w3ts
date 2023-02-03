@@ -4,16 +4,33 @@ import { Handle } from "./handle";
 
 export class Point extends Handle<location> {
   /**
-   * Creates a new location handle. Generally, raw coordinates should be used instead.
-   * @param x
-   * @param y
+   * @deprecated use `Point.create` instead.
    */
   constructor(x: number, y: number) {
     if (Handle.initFromHandle()) {
       super();
-    } else {
-      super(Location(x, y));
+      return;
     }
+    const handle = Location(x, y);
+    if (handle === undefined) {
+      error("w3ts failed to create player handle.", 3);
+    }
+    super(handle);
+  }
+
+  /**
+   * Creates a new location handle. Generally, raw coordinates should be used instead.
+   * @param x
+   * @param y
+   */
+  public static create(x: number, y: number): Point {
+    const handle = Location(x, y);
+    const obj = this.getObject(handle) as Point;
+
+    const values: Record<string, unknown> = {};
+    values.handle = handle;
+
+    return Object.assign(obj, values);
   }
 
   public get x(): number {
