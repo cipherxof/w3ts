@@ -38,7 +38,11 @@ export function hookedConfig() {
 main = hookedMain;
 config = hookedConfig;
 
-type W3tsHookType = "main::before" | "main::after" | "config::before" | "config::after";
+type W3tsHookType =
+  | "main::before"
+  | "main::after"
+  | "config::before"
+  | "config::after";
 
 export enum W3TS_HOOK {
   MAIN_BEFORE = "main::before",

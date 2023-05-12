@@ -1,26 +1,32 @@
 {
   "name": "w3ts",
-  "version": "2.4.0",
+  "version": "3.0.2",
   "description": "TypeScript API for Warcraft III custom maps.",
   "author": "TriggerHappy",
   "license": "MIT",
   "main": "./index.ts",
   "scripts": {
-    "build": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix"
+    "build": "tstl -p tsconfig.json",
+    "prepublish": "npm run build && cp package.json ./dist/"
+  },
+  "dependencies": {
+    "war3-types-strict": "^0.1.3"
   },
   "peerDependencies": {
-    "lua-types": "^2.11.0",
-    "typescript": "^4.4.4"
+    "lua-types": "^2.13.1",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
+    "@typescript-to-lua/language-extensions": "^1.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.4.1"
+    "prettier": "^2.4.1",
+    "typescript-to-lua": "^1.15.1"
   },
   "repository": {
     "type": "git",
@@ -30,7 +36,9 @@
     "url": "https://github.com/cipherxof/w3ts/issues"
   },
   "homepage": "https://github.com/cipherxof/w3ts#readme",
-  "dependencies": {
-    "war3-types-strict": "github:Z-Machine/war3-types-strict"
-  }
+  "files": [
+    "./**/*.lua",
+    "./**/*.d.ts"
+  ],
+  "types": "./index.d.ts"
 }
