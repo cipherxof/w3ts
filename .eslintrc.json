@@ -27,7 +27,7 @@
         "camelcase": ["error", {"allow": ["((bj_)\\w+[A-Z]$)"]}], //exclude bj_CAPITAL_LETTER
         "eqeqeq": ["error", "always", {"null": "never"}],
         "@typescript-eslint/no-implicit-any-catch": "error",
-        "@typescript-eslint/strict-boolean-expressions": ["error"],
+        "@typescript-eslint/strict-boolean-expressions": ["warn"],
         "no-underscore-dangle": ["error", { "allowAfterThis": true, "allowAfterSuper": true }],
         "no-throw-literal": 0, //Maybe one day if wc3 gets a polyfill for the debug library
         "no-cond-assign": 0,

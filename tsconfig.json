@@ -4,7 +4,7 @@
     "lib": ["ESNext"],
     "moduleResolution": "Classic",
     "types": [
-      "typescript-to-lua/language-extensions",
+      "@typescript-to-lua/language-extensions",
       "lua-types/core/coroutine",
       "lua-types/core/global",
       "lua-types/core/math",
@@ -14,7 +14,7 @@
       "lua-types/core/table",
       "lua-types/core/os",
       "lua-types/special/5.3",
-      "war3-types-strict/1.32.10"
+      "war3-types-strict/1.33.0"
     ],
     "allowJs": false,
     "strict": true,
