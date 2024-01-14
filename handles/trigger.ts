@@ -4,6 +4,7 @@ import { Dialog, DialogButton } from "./dialog";
 import { Frame } from "./frame";
 import { Handle } from "./handle";
 import { MapPlayer } from "./player";
+import { Region } from "./region";
 import { Unit } from "./unit";
 import { Widget } from "./widget";
 
@@ -162,24 +163,24 @@ export class Trigger extends Handle<trigger> {
   }
 
   public registerEnterRegion(
-    whichRegion: region,
+    whichRegion: Region,
     filter: boolexpr | (() => boolean) | undefined
   ) {
     return TriggerRegisterEnterRegion(
       this.handle,
-      whichRegion,
+      whichRegion.handle,
       typeof filter === "function" ? Filter(filter) : filter
     );
   }
 
   public registerFilterUnitEvent(
-    whichUnit: unit,
+    whichUnit: Unit,
     whichEvent: unitevent,
     filter: boolexpr | (() => boolean) | undefined
   ) {
     return TriggerRegisterFilterUnitEvent(
       this.handle,
-      whichUnit,
+      whichUnit.handle,
       whichEvent,
       typeof filter === "function" ? Filter(filter) : filter
     );
@@ -203,12 +204,12 @@ export class Trigger extends Handle<trigger> {
   }
 
   public registerLeaveRegion(
-    whichRegion: region,
+    whichRegion: Region,
     filter: boolexpr | (() => boolean) | undefined
   ) {
     return TriggerRegisterLeaveRegion(
       this.handle,
-      whichRegion,
+      whichRegion.handle,
       typeof filter === "function" ? Filter(filter) : filter
     );
   }
@@ -337,14 +338,14 @@ export class Trigger extends Handle<trigger> {
     return TriggerRegisterUnitEvent(this.handle, whichUnit.handle, whichEvent);
   }
 
-  public registerUnitInRage(
-    whichUnit: unit,
+  public registerUnitInRange(
+    whichUnit: Unit,
     range: number,
     filter: boolexpr | (() => boolean) | undefined
   ) {
     return TriggerRegisterUnitInRange(
       this.handle,
-      whichUnit,
+      whichUnit.handle,
       range,
       typeof filter === "function" ? Filter(filter) : filter
     );

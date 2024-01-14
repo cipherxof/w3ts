@@ -366,6 +366,10 @@ export class Frame extends Handle<framehandle> {
     return this;
   }
 
+  public setTextAlignment(vert: textaligntype, horz: textaligntype) {
+    BlzFrameSetTextAlignment(this.handle, vert, horz);
+  }
+
   public setModel(modelFile: string, cameraIndex: number) {
     BlzFrameSetModel(this.handle, modelFile, cameraIndex);
     return this;
