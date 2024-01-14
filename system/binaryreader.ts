@@ -39,7 +39,7 @@ export class BinaryReader {
   public read(fmt: string, size: number) {
     const unpacked = string.unpack(fmt, this.data, this.pos);
     this.pos += size;
-    if (unpacked.length <= 0) {
+    if (typeof unpacked === 'number' || unpacked.length <= 0) {
       return 0;
     }
     return unpacked[0];
