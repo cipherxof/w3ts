@@ -281,7 +281,7 @@ export class SyncRequest {
 
   /**
    * Encode and send the data from the correct player.
-   * @param data
+   * @param packet
    */
   private send(packet: SyncOutgoingPacket) {
     const prefix = packet.chunk === -1 ? SYNC_PREFIX : SYNC_PREFIX_CHUNK;

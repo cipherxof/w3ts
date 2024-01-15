@@ -24,14 +24,8 @@ export class Rectangle extends Handle<rect> {
     minY: number,
     maxX: number,
     maxY: number
-  ): Rectangle {
-    const handle = Rect(minX, minY, maxX, maxY);
-    const obj = this.getObject(handle) as Rectangle;
-
-    const values: Record<string, unknown> = {};
-    values.handle = handle;
-
-    return Object.assign(obj, values);
+  ) {
+    return this.fromHandle(Rect(minX, minY, maxX, maxY))!;
   }
 
   public get centerX() {
@@ -95,10 +89,6 @@ export class Rectangle extends Handle<rect> {
 
   public setRectFromPoint(min: Point, max: Point) {
     SetRectFromLoc(this.handle, min.handle, max.handle);
-  }
-
-  public static fromHandle(handle: rect | undefined): Rectangle | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromPoint(min: Point, max: Point) {

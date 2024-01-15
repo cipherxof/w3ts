@@ -31,17 +31,7 @@ export class GameCache extends Handle<gamecache> {
   public static create(campaignFile: string): GameCache | undefined {
     const handle = InitGameCache(campaignFile);
 
-    if (handle) {
-      const obj = this.getObject(handle) as GameCache;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-      values.filename = campaignFile;
-
-      return Object.assign(obj, values);
-    }
-
-    return undefined;
+    return this.fromHandle(handle, { filename: campaignFile });
   }
 
   public flush() {
@@ -176,12 +166,6 @@ export class GameCache extends Handle<gamecache> {
 
   public syncUnit(missionKey: string, key: string) {
     return SyncStoredUnit(this.handle, missionKey, key);
-  }
-
-  public static fromHandle(
-    handle: gamecache | undefined
-  ): GameCache | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static reloadFromDisk() {

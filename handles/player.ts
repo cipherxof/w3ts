@@ -8,7 +8,7 @@ export class MapPlayer extends Handle<player> {
   /**
    * @deprecated use `MapPlayer.create` instead.
    */
-  private constructor(index: number) {
+  constructor(index: number) {
     if (Handle.initFromHandle()) {
       super();
       return;
@@ -20,17 +20,8 @@ export class MapPlayer extends Handle<player> {
     super(handle);
   }
 
-  private static create(index: number): MapPlayer | undefined {
-    const handle = Player(index);
-    if (handle) {
-      const obj = this.getObject(handle) as MapPlayer;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  private static create(index: number) {
+    return this.fromHandle(Player(index));
   }
 
   public set color(color: playercolor) {
@@ -308,10 +299,6 @@ export class MapPlayer extends Handle<player> {
 
   public static fromFilter() {
     return MapPlayer.fromHandle(GetFilterPlayer());
-  }
-
-  public static fromHandle(handle: player | undefined): MapPlayer | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromIndex(index: number) {
