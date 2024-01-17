@@ -33,6 +33,11 @@ export class File {
   // The string limit per Preload call.
   private static preloadLimit = 259;
 
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {
+    // nothing
+  }
+
   /**
    * Character we use for escape sequences. Avoiding `\` since it is
    * automatically escaped by `Preload`.

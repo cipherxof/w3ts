@@ -28,7 +28,7 @@
         }],
         "default-param-last": 0,
         "linebreak-style": 0,
-        "camelcase": ["error", {"allow": ["((bj_)\\w+[A-Z]$)"]}], //exclude bj_CAPITAL_LETTER
+        "camelcase": ["error", {"allow": ["((bj_)\\w+[A-Z]$)", "bj_lastCreatedGroup"]}], //exclude bj_CAPITAL_LETTER
         "eqeqeq": ["error", "always", {"null": "never"}],
         "@typescript-eslint/no-implicit-any-catch": "error",
         "@typescript-eslint/strict-boolean-expressions": ["warn"],

@@ -56,7 +56,6 @@ export class Frame extends Handle<framehandle> {
    * @param name The name of the frame to be accessed with `Frame.fromName`.
    * @param priority
    * @param owner The parent frame.
-   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
   constructor(name: string, owner: Frame, priority: number);
 
