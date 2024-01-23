@@ -26,6 +26,7 @@
         "prettier/prettier": ["warn", {
             "endOfLine": "auto"
         }],
+        "arrow-body-style": 0,
         "default-param-last": 0,
         "linebreak-style": 0,
         "camelcase": ["error", {"allow": ["((bj_)\\w+[A-Z]$)", "bj_lastCreatedGroup"]}], //exclude bj_CAPITAL_LETTER
