@@ -1,15 +1,11 @@
 /** @noSelfInFile */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const map: WeakMap<handle, any> = new WeakMap<handle, any>();
+const map = new WeakMap<handle, Handle<handle>>();
 
 export class Handle<T extends handle> {
-  public readonly handle: T;
-
   private static initHandle: handle | undefined;
 
-  protected constructor(handle?: T) {
-    this.handle = handle === undefined ? (Handle.initHandle as T) : handle;
+  constructor(public readonly handle = Handle.initHandle as T) {
     map.set(this.handle, this);
   }
 
@@ -25,14 +21,25 @@ export class Handle<T extends handle> {
     return Handle.initHandle !== undefined;
   }
 
-  protected static getObject(handle: handle) {
-    const obj = map.get(handle);
-    if (obj !== undefined) {
-      return obj;
+  static fromHandle<C extends Handle<handle>>(
+    this: new (...args: any[]) => C,
+    handle: (C extends Handle<infer H> ? H : never) | undefined,
+    values?: Partial<C>
+  ) {
+    if (handle === undefined) {
+      return undefined;
     }
-    Handle.initHandle = handle;
-    const newObj = new this();
-    Handle.initHandle = undefined;
-    return newObj;
+    let obj = map.get(handle) as C;
+    if (obj === undefined) {
+      Handle.initHandle = handle;
+      obj = new this();
+      Handle.initHandle = undefined;
+    } else {
+      Object.assign(obj, { handle });
+    }
+    if (values) {
+      Object.assign(obj, values);
+    }
+    return obj;
   }
 }

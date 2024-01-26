@@ -23,14 +23,8 @@ export class Point extends Handle<location> {
    * @param x
    * @param y
    */
-  public static create(x: number, y: number): Point {
-    const handle = Location(x, y);
-    const obj = this.getObject(handle) as Point;
-
-    const values: Record<string, unknown> = {};
-    values.handle = handle;
-
-    return Object.assign(obj, values);
+  public static create(x: number, y: number) {
+    return this.fromHandle(Location(x, y))!;
   }
 
   public get x(): number {
@@ -66,9 +60,5 @@ export class Point extends Handle<location> {
 
   public setPosition(x: number, y: number) {
     MoveLocation(this.handle, x, y);
-  }
-
-  public static fromHandle(handle: location | undefined): Point | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

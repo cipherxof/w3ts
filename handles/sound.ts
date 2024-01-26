@@ -58,7 +58,7 @@ export class Sound extends Handle<sound> {
     fadeInRate: number,
     fadeOutRate: number,
     eaxSetting: string
-  ): Sound | undefined {
+  ) {
     const handle = CreateSound(
       fileName,
       looping,
@@ -68,15 +68,7 @@ export class Sound extends Handle<sound> {
       fadeOutRate,
       eaxSetting
     );
-    if (handle) {
-      const obj = this.getObject(handle) as Sound;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public get dialogueSpeakerNameKey() {
@@ -240,10 +232,6 @@ export class Sound extends Handle<sound> {
     rectHeight: number
   ) {
     UnregisterStackedSound(this.handle, byPosition, rectWidth, rectHeight);
-  }
-
-  public static fromHandle(handle: sound | undefined): Sound | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static getFileDuration(fileName: string) {

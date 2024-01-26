@@ -46,7 +46,7 @@ export class Ubersplat extends Handle<ubersplat> {
     alpha: number,
     forcePaused: boolean,
     noBirthTime: boolean
-  ): Ubersplat | undefined {
+  ) {
     const handle = CreateUbersplat(
       x,
       y,
@@ -58,15 +58,7 @@ export class Ubersplat extends Handle<ubersplat> {
       forcePaused,
       noBirthTime
     );
-    if (handle) {
-      const obj = this.getObject(handle) as Ubersplat;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public destroy() {
@@ -97,11 +89,5 @@ export class Ubersplat extends Handle<ubersplat> {
 
   public show(flag: boolean) {
     ShowUbersplat(this.handle, flag);
-  }
-
-  public static fromHandle(
-    handle: ubersplat | undefined
-  ): Ubersplat | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

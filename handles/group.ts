@@ -25,17 +25,8 @@ export class Group extends Handle<group> {
     super(handle);
   }
 
-  public static create(): Group | undefined {
-    const handle = CreateGroup();
-    if (handle) {
-      const obj = this.getObject(handle) as Group;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  public static create() {
+    return this.fromHandle(CreateGroup());
   }
 
   public addGroupFast(addGroup: Group): number {
@@ -268,10 +259,6 @@ export class Group extends Handle<group> {
 
   public removeUnit(whichUnit: Unit): boolean {
     return GroupRemoveUnit(this.handle, whichUnit.handle);
-  }
-
-  public static fromHandle(handle: group | undefined): Group | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static getEnumUnit() {

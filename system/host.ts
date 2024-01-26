@@ -2,7 +2,7 @@
 
 import { MapPlayer } from "../handles/index";
 import { Timer } from "../handles/timer";
-import { addScriptHook, W3TS_HOOK } from "../hooks/index";
+import { addInitHook } from "../hooks/index";
 import { base64Decode, base64Encode } from "./base64";
 import { BinaryReader } from "./binaryreader";
 import { BinaryWriter } from "./binarywriter";
@@ -48,7 +48,7 @@ function findHost() {
       const syncedTime = reader.readFloat();
 
       // store how long the player has been in the game
-      const from = MapPlayer.fromEvent() as MapPlayer;
+      const from = MapPlayer.fromEvent()!;
       lobbyTimes[from.id] = syncedTime;
 
       // check which player has been in the game the longest
@@ -100,5 +100,5 @@ function onMain() {
   checkTimer.start(0.0, false, findHost);
 }
 
-addScriptHook(W3TS_HOOK.MAIN_AFTER, onMain);
-addScriptHook(W3TS_HOOK.CONFIG_BEFORE, onConfig);
+addInitHook("main", onMain);
+addInitHook("config", onConfig, true);

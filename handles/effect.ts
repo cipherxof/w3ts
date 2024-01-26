@@ -65,18 +65,8 @@ export class Effect extends Handle<effect> {
     modelName: string,
     x: number,
     y: number
-  ): Effect | undefined {
-    const handle = AddSpecialEffect(modelName, x, y);
-    if (handle) {
-      const obj = this.getObject(handle) as Effect;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-
-    return undefined;
+  ) {
+    return this.fromHandle(AddSpecialEffect(modelName, x, y));
   }
 
   /**
@@ -92,23 +82,14 @@ export class Effect extends Handle<effect> {
     modelName: string,
     targetWidget: Widget,
     attachPointName: string
-  ): Effect | undefined {
-    const handle = AddSpecialEffectTarget(
-      modelName,
-      targetWidget.handle,
-      attachPointName
+  ) {
+    return this.fromHandle(
+      AddSpecialEffectTarget(modelName, targetWidget.handle, attachPointName),
+      {
+        attachWidget: targetWidget,
+        attachPointName,
+      }
     );
-    if (handle) {
-      const obj = this.getObject(handle) as Effect;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-      values.attachWidget = targetWidget;
-      values.attachPointName = attachPointName;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
   }
 
   /**
@@ -123,17 +104,8 @@ export class Effect extends Handle<effect> {
     effectType: effecttype,
     x: number,
     y: number
-  ): Effect | undefined {
-    const handle = AddSpellEffectById(abilityId, effectType, x, y);
-    if (handle) {
-      const obj = this.getObject(handle) as Effect;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  ) {
+    return this.fromHandle(AddSpellEffectById(abilityId, effectType, x, y));
   }
 
   /**
@@ -151,24 +123,17 @@ export class Effect extends Handle<effect> {
     effectType: effecttype,
     targetWidget: Widget,
     attachPointName: string
-  ): Effect | undefined {
+  ) {
     const handle = AddSpellEffectTargetById(
       abilityId,
       effectType,
       targetWidget.handle,
       attachPointName
     );
-    if (handle) {
-      const obj = this.getObject(handle) as Effect;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-      values.attachWidget = targetWidget;
-      values.attachPointName = attachPointName;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle, {
+      attachWidget: targetWidget,
+      attachPointName,
+    });
   }
 
   public get scale() {
@@ -296,9 +261,5 @@ export class Effect extends Handle<effect> {
 
   public setYaw(y: number) {
     BlzSetSpecialEffectYaw(this.handle, y);
-  }
-
-  public static fromHandle(handle: effect | undefined): Effect | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

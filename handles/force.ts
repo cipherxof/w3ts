@@ -25,15 +25,7 @@ export class Force extends Handle<force> {
   public static create(): Force | undefined {
     const handle = CreateForce();
 
-    if (handle) {
-      const obj = this.getObject(handle) as Force;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public addPlayer(whichPlayer: MapPlayer) {
@@ -118,9 +110,5 @@ export class Force extends Handle<force> {
 
   public static fromPlayer(whichPlayer: MapPlayer) {
     return this.fromHandle(GetForceOfPlayer(whichPlayer.handle));
-  }
-
-  public static fromHandle(handle: force | undefined): Force | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

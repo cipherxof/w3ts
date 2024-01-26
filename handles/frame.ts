@@ -56,7 +56,6 @@ export class Frame extends Handle<framehandle> {
    * @param name The name of the frame to be accessed with `Frame.fromName`.
    * @param priority
    * @param owner The parent frame.
-   * @param createContext The ID assigned to a frame to be accessed with `Frame.fromName`. This value does not have to be unique and can be overwritten.
    */
   constructor(name: string, owner: Frame, priority: number);
 
@@ -128,15 +127,7 @@ export class Frame extends Handle<framehandle> {
     createContext: number
   ): Frame | undefined {
     const handle = BlzCreateFrame(name, owner.handle, priority, createContext);
-    if (handle) {
-      const obj = this.getObject(handle) as Frame;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   /**
@@ -153,15 +144,7 @@ export class Frame extends Handle<framehandle> {
     createContext: number
   ): Frame | undefined {
     const handle = BlzCreateSimpleFrame(name, owner.handle, createContext);
-    if (handle) {
-      const obj = this.getObject(handle) as Frame;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   /**
@@ -187,16 +170,7 @@ export class Frame extends Handle<framehandle> {
       createContext
     );
 
-    if (handle) {
-      const obj = this.getObject(handle) as Frame;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public set alpha(alpha: number) {
@@ -247,9 +221,7 @@ export class Frame extends Handle<framehandle> {
   }
 
   public get parent() {
-    return Frame.fromHandle(
-      BlzFrameGetParent(this.handle) as framehandle
-    ) as Frame;
+    return Frame.fromHandle(BlzFrameGetParent(this.handle))!;
   }
 
   public set text(text: string) {
@@ -466,10 +438,6 @@ export class Frame extends Handle<framehandle> {
 
   public static fromEvent() {
     return this.fromHandle(BlzGetTriggerFrame());
-  }
-
-  public static fromHandle(handle: framehandle | undefined): Frame | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromName(name: string, createContext: number) {

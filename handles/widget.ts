@@ -34,8 +34,4 @@ export class Widget extends Handle<widget> {
   public static fromEvent() {
     return this.fromHandle(GetTriggerWidget());
   }
-
-  public static fromHandle(handle: widget | undefined): Widget | undefined {
-    return handle ? this.getObject(handle) : undefined;
-  }
 }

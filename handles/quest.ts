@@ -21,16 +21,7 @@ export class QuestItem extends Handle<questitem> {
 
   public static create(whichQuest: Quest): QuestItem | undefined {
     const handle = QuestCreateItem(whichQuest.handle);
-    if (handle) {
-      const obj = this.getObject(handle) as QuestItem;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-      values.quest = whichQuest;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle, { quest: whichQuest });
   }
 
   public setDescription(description: string) {
@@ -66,17 +57,8 @@ export class Quest extends Handle<quest> {
   /**
    * @bug Do not use this in a global initialisation as it crashes the game there.
    */
-  public static create(): Quest | undefined {
-    const handle = CreateQuest();
-    if (handle) {
-      const obj = this.getObject(handle) as Quest;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  public static create() {
+    return this.fromHandle(CreateQuest());
   }
 
   public get completed() {
@@ -149,9 +131,5 @@ export class Quest extends Handle<quest> {
 
   public static forceQuestDialogUpdate() {
     ForceQuestDialogUpdate();
-  }
-
-  public static fromHandle(handle: quest | undefined): Quest | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

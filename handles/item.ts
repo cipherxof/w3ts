@@ -50,15 +50,7 @@ export class Item extends Widget {
       skinId === undefined
         ? CreateItem(itemId, x, y)
         : BlzCreateItemWithSkin(itemId, x, y, skinId);
-    if (handle) {
-      const obj = this.getObject(handle) as Item;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public get charges() {
@@ -70,7 +62,7 @@ export class Item extends Widget {
   }
 
   public set invulnerable(flag: boolean) {
-    SetItemInvulnerable(this.handle, true);
+    SetItemInvulnerable(this.handle, flag);
   }
 
   public get invulnerable() {
@@ -315,12 +307,6 @@ export class Item extends Widget {
 
   public static override fromEvent() {
     return this.fromHandle(GetManipulatedItem());
-  }
-
-  public static override fromHandle(
-    handle: item | undefined
-  ): Item | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static isIdPawnable(itemId: number) {

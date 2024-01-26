@@ -21,14 +21,8 @@ export class Region extends Handle<region> {
     super(handle);
   }
 
-  public static create(): Region {
-    const handle = CreateRegion();
-    const obj = this.getObject(handle) as Region;
-
-    const values: Record<string, unknown> = {};
-    values.handle = handle;
-
-    return Object.assign(obj, values);
+  public static create() {
+    return this.fromHandle(CreateRegion());
   }
 
   public addCell(x: number, y: number) {
@@ -73,9 +67,5 @@ export class Region extends Handle<region> {
 
   public static fromEvent() {
     return this.fromHandle(GetTriggeringRegion());
-  }
-
-  public static fromHandle(handle: region | undefined): Region | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }
