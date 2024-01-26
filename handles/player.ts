@@ -315,6 +315,6 @@ export class MapPlayer extends Handle<player> {
         print("$$$$$$$$$ LOCAL PLAYER IS NULL. TELL ME");
       }
     }
-    return this.fromHandle(pl) as MapPlayer;
+    return this.fromHandle(pl)!;
   }
 }

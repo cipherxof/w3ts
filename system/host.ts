@@ -48,7 +48,7 @@ function findHost() {
       const syncedTime = reader.readFloat();
 
       // store how long the player has been in the game
-      const from = MapPlayer.fromEvent() as MapPlayer;
+      const from = MapPlayer.fromEvent()!;
       lobbyTimes[from.id] = syncedTime;
 
       // check which player has been in the game the longest

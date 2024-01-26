@@ -308,7 +308,7 @@ export class Unit extends Widget {
    * @deprecated use getPoint/setPoint instead.
    */
   public get point() {
-    return Point.fromHandle(GetUnitLoc(this.handle) as location) as Point;
+    return Point.fromHandle(GetUnitLoc(this.handle))!;
   }
 
   public set point(whichPoint: Point) {

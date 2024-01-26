@@ -221,9 +221,7 @@ export class Frame extends Handle<framehandle> {
   }
 
   public get parent() {
-    return Frame.fromHandle(
-      BlzFrameGetParent(this.handle) as framehandle
-    ) as Frame;
+    return Frame.fromHandle(BlzFrameGetParent(this.handle))!;
   }
 
   public set text(text: string) {
