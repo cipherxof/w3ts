@@ -78,16 +78,7 @@ export class FogModifier extends Handle<fogmodifier> {
       afterUnits
     );
 
-    if (handle) {
-      const obj = this.getObject(handle) as FogModifier;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public destroy() {
@@ -100,12 +91,6 @@ export class FogModifier extends Handle<fogmodifier> {
 
   public stop() {
     FogModifierStop(this.handle);
-  }
-
-  public static fromHandle(
-    handle: fogmodifier | undefined
-  ): FogModifier | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static fromRect(

@@ -17,17 +17,8 @@ export class TextTag extends Handle<texttag> {
     super(handle);
   }
 
-  public static create(): TextTag | undefined {
-    const handle = CreateTextTag();
-    if (handle) {
-      const obj = this.getObject(handle) as TextTag;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  public static create() {
+    return this.fromHandle(CreateTextTag());
   }
 
   public destroy() {
@@ -87,9 +78,5 @@ export class TextTag extends Handle<texttag> {
 
   public setVisible(flag: boolean) {
     SetTextTagVisibility(this.handle, flag);
-  }
-
-  public static fromHandle(handle: texttag | undefined): TextTag | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

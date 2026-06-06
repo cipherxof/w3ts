@@ -31,7 +31,7 @@ export class Unit extends Widget {
     face?: number,
     skinId?: number
   ) {
-    if (Handle.initFromHandle() === true) {
+    if (Handle.initFromHandle()) {
       super();
       return;
     }
@@ -63,23 +63,14 @@ export class Unit extends Widget {
     unitId: number,
     x: number,
     y: number,
-    face?: number,
+    face = bj_UNIT_FACING,
     skinId?: number
-  ): Unit | undefined {
-    if (face === undefined) face = bj_UNIT_FACING;
+  ) {
     const handle =
       skinId === undefined
         ? CreateUnit(owner.handle, unitId, x, y, face)
         : BlzCreateUnitWithSkin(owner.handle, unitId, x, y, face, skinId);
-    if (handle) {
-      const obj = this.getObject(handle) as Unit;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   /**
@@ -317,7 +308,7 @@ export class Unit extends Widget {
    * @deprecated use getPoint/setPoint instead.
    */
   public get point() {
-    return Point.fromHandle(GetUnitLoc(this.handle) as location) as Point;
+    return Point.fromHandle(GetUnitLoc(this.handle))!;
   }
 
   public set point(whichPoint: Point) {
@@ -1065,7 +1056,7 @@ export class Unit extends Widget {
    * except a null string. To lock the chest, the string must start with `"bone_chest"`.
    * All leading spaces are ignored, it is case insensitive, and anything after the
    * first non-leading space will be ignored.
-   * @param lookAtTargetThe bone will be locked to face this unit.
+   * @param lookAtTarget The bone will be locked to face this unit.
    * @param offsetX The x-offset from lookAtTarget's origin point.
    * @param offsetY The y-offset from lookAtTarget's origin point.
    * @param offsetZ The z-offset from lookAtTarget's origin point (this already factors in the terrain Z).
@@ -1500,12 +1491,6 @@ export class Unit extends Widget {
 
   public static fromFilter() {
     return this.fromHandle(GetFilterUnit());
-  }
-
-  public static override fromHandle(
-    handle: unit | undefined
-  ): Unit | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   public static getPointValueByType(unitType: number) {

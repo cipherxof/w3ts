@@ -22,14 +22,8 @@ export class Trigger extends Handle<trigger> {
     super(handle);
   }
 
-  public static create(): Trigger {
-    const handle = CreateTrigger();
-    const obj = this.getObject(handle) as Trigger;
-
-    const values: Record<string, unknown> = {};
-    values.handle = handle;
-
-    return Object.assign(obj, values);
+  public static create() {
+    return this.fromHandle(CreateTrigger())!;
   }
 
   public set enabled(flag: boolean) {
@@ -96,8 +90,7 @@ export class Trigger extends Handle<trigger> {
    */
   public addCondition(condition: boolexpr | (() => boolean)) {
     if (typeof condition === "function") {
-      const cf = Condition(condition);
-      return cf ? TriggerAddCondition(this.handle, cf) : undefined;
+      return TriggerAddCondition(this.handle, Condition(condition));
     }
     return TriggerAddCondition(this.handle, condition);
   }
@@ -404,9 +397,5 @@ export class Trigger extends Handle<trigger> {
 
   public static fromEvent() {
     return this.fromHandle(GetTriggeringTrigger());
-  }
-
-  public static fromHandle(handle: trigger | undefined): Trigger | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

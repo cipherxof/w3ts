@@ -4,11 +4,6 @@ import { Handle } from "./handle";
 import { Point } from "./point";
 
 export class Camera {
-  // eslint-disable-next-line no-useless-constructor
-  private constructor() {
-    // nothing
-  }
-
   public static set visible(flag: boolean) {
     DisplayCineFilter(flag);
   }
@@ -339,17 +334,8 @@ export class CameraSetup extends Handle<camerasetup> {
   /**
    * Creates a new CameraSetup object.
    */
-  public static create(): CameraSetup | undefined {
-    const handle = CreateCameraSetup();
-    if (handle) {
-      const obj = this.getObject(handle) as CameraSetup;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  public static create() {
+    return this.fromHandle(CreateCameraSetup());
   }
 
   /**
@@ -501,11 +487,5 @@ export class CameraSetup extends Handle<camerasetup> {
    */
   public setField(whichField: camerafield, value: number, duration: number) {
     CameraSetupSetField(this.handle, whichField, value, duration);
-  }
-
-  public static fromHandle(
-    handle: camerasetup | undefined
-  ): CameraSetup | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

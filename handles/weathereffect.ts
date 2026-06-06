@@ -29,17 +29,8 @@ export class WeatherEffect extends Handle<weathereffect> {
   public static create(
     where: Rectangle,
     effectID: number
-  ): WeatherEffect | undefined {
-    const handle = AddWeatherEffect(where.handle, effectID);
-    if (handle) {
-      const obj = this.getObject(handle) as WeatherEffect;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  ) {
+    return this.fromHandle(AddWeatherEffect(where.handle, effectID));
   }
 
   public destroy() {
@@ -48,9 +39,5 @@ export class WeatherEffect extends Handle<weathereffect> {
 
   public enable(flag: boolean) {
     EnableWeatherEffect(this.handle, flag);
-  }
-
-  public static fromHandle(handle: weathereffect): WeatherEffect {
-    return this.getObject(handle);
   }
 }

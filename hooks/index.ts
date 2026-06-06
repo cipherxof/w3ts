@@ -1,42 +1,7 @@
 /** @noSelfInFile */
 
-declare let main: () => void;
-declare let config: () => void;
-
-const oldMain = main;
-const oldConfig = config;
-
-type scriptHookSignature = () => void;
-
-const hooksMainBefore: scriptHookSignature[] = [];
-const hooksMainAfter: scriptHookSignature[] = [];
-const hooksConfigBefore: scriptHookSignature[] = [];
-const hooksConfigAfter: scriptHookSignature[] = [];
-
-export const executeHooksMainBefore = () =>
-  hooksMainBefore.forEach((func) => func());
-export const executeHooksMainAfter = () =>
-  hooksMainAfter.forEach((func) => func());
-
-export function hookedMain() {
-  executeHooksMainBefore();
-  oldMain();
-  executeHooksMainAfter();
-}
-
-export const executeHooksConfigBefore = () =>
-  hooksConfigBefore.forEach((func) => func());
-export const executeHooksConfigAfter = () =>
-  hooksConfigAfter.forEach((func) => func());
-
-export function hookedConfig() {
-  executeHooksConfigBefore();
-  oldConfig();
-  executeHooksConfigAfter();
-}
-
-main = hookedMain;
-config = hookedConfig;
+// 'dom' library is disabled, hence declaring this manually.
+type VoidFunction = () => void;
 
 type W3tsHookType =
   | "main::before"
@@ -44,6 +9,52 @@ type W3tsHookType =
   | "config::before"
   | "config::after";
 
+export type ValidInitializationFunctionName =
+  | "main"
+  | "config"
+  | "InitGlobals"
+  | "InitCustomTriggers"
+  | "RunInitializationTriggers"
+  | "MarkGameStarted";
+
+const globalTable = globalThis as unknown as Record<
+  string,
+  undefined | VoidFunction
+>;
+
+const wasCalled = {} as Record<ValidInitializationFunctionName, boolean>;
+
+export const addInitHook = (
+  entryFnName: ValidInitializationFunctionName,
+  hookCallbackFn: VoidFunction,
+  callBefore = false
+) => {
+  const old = globalTable[entryFnName];
+  if (wasCalled[entryFnName]) {
+    error(`w3ts: ${entryFnName} was already called before addInitHook`, 3);
+    return false;
+  }
+  if (typeof old !== "function") {
+    error(`w3ts: invalid function provided to addInitHook`, 3);
+    return false;
+  }
+  globalTable[entryFnName] = () => {
+    wasCalled[entryFnName] = true;
+    globalTable[entryFnName] = undefined;
+    if (!callBefore) {
+      old();
+    }
+    pcall(hookCallbackFn);
+    if (callBefore) {
+      old();
+    }
+  };
+  return true;
+};
+
+/**
+ * @deprecated use `addInitHook` with string literals instead.
+ */
 export enum W3TS_HOOK {
   MAIN_BEFORE = "main::before",
   MAIN_AFTER = "main::after",
@@ -51,20 +62,16 @@ export enum W3TS_HOOK {
   CONFIG_AFTER = "config::after",
 }
 
-const entryPoints: { [key: string]: scriptHookSignature[] } = {
-  [W3TS_HOOK.MAIN_BEFORE]: hooksMainBefore,
-  [W3TS_HOOK.MAIN_AFTER]: hooksMainAfter,
-  [W3TS_HOOK.CONFIG_BEFORE]: hooksConfigBefore,
-  [W3TS_HOOK.CONFIG_AFTER]: hooksConfigAfter,
-};
-
-export function addScriptHook(
+/**
+ * @deprecated use `addInitHook` with string literals instead.
+ */
+export const addScriptHook = (
   entryPoint: W3tsHookType,
-  hook: scriptHookSignature
-): boolean {
-  if (!(entryPoint in entryPoints)) {
-    return false;
-  }
-  entryPoints[entryPoint].push(hook);
-  return true;
-}
+  hook: VoidFunction
+) => {
+  const [funcName, whenToCall] = entryPoint.split("::") as [
+    "main" | "config",
+    "before" | "after"
+  ];
+  return addInitHook(funcName, hook, whenToCall === "before");
+};

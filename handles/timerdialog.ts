@@ -17,17 +17,8 @@ export class TimerDialog extends Handle<timerdialog> {
     super(handle);
   }
 
-  public static create(t: Timer): TimerDialog | undefined {
-    const handle = CreateTimerDialog(t.handle);
-    if (handle) {
-      const obj = this.getObject(handle) as TimerDialog;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  public static create(t: Timer) {
+    return this.fromHandle(CreateTimerDialog(t.handle));
   }
 
   public get display() {
@@ -79,11 +70,5 @@ export class TimerDialog extends Handle<timerdialog> {
    */
   public setTimeColor(red: number, green: number, blue: number, alpha: number) {
     TimerDialogSetTimeColor(this.handle, red, green, blue, alpha);
-  }
-
-  public static fromHandle(
-    handle: timerdialog | undefined
-  ): TimerDialog | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

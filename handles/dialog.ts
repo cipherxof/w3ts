@@ -21,7 +21,7 @@ export class DialogButton extends Handle<button> {
 
     let handle: button | undefined;
 
-    if (quit === false) {
+    if (!quit) {
       handle = DialogAddButton(whichDialog.handle, text, hotkey);
     } else {
       handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey);
@@ -40,35 +40,20 @@ export class DialogButton extends Handle<button> {
     hotkey = 0,
     quit = false,
     score = false
-  ): DialogButton | undefined {
+  ) {
     let handle: button | undefined;
 
-    if (quit === false) {
+    if (!quit) {
       handle = DialogAddButton(whichDialog.handle, text, hotkey);
     } else {
       handle = DialogAddQuitButton(whichDialog.handle, score, text, hotkey);
     }
 
-    if (handle) {
-      const obj = this.getObject(handle) as DialogButton;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public static fromEvent() {
     return this.fromHandle(GetClickedButton());
-  }
-
-  public static fromHandle(
-    handle: button | undefined
-  ): DialogButton | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }
 
@@ -114,19 +99,8 @@ export class Dialog extends Handle<dialog> {
     super(handle);
   }
 
-  public static create(): Dialog | undefined {
-    const handle = DialogCreate();
-
-    if (handle) {
-      const obj = this.getObject(handle) as Dialog;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-
-    return undefined;
+  public static create() {
+    return this.fromHandle(DialogCreate());
   }
 
   public addButton(text: string, hotkey = 0, quit = false, score = false) {
@@ -154,9 +128,5 @@ export class Dialog extends Handle<dialog> {
 
   public static fromEvent() {
     return this.fromHandle(GetClickedDialog());
-  }
-
-  public static fromHandle(handle: dialog | undefined): Dialog | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

@@ -22,17 +22,9 @@ export class MultiboardItem extends Handle<multiboarditem> {
     board: Multiboard,
     x: number,
     y: number
-  ): MultiboardItem | undefined {
+  ) {
     const handle = MultiboardGetItem(board.handle, x - 1, y - 1);
-    if (handle) {
-      const obj = this.getObject(handle) as MultiboardItem;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   public destroy() {
@@ -63,10 +55,6 @@ export class MultiboardItem extends Handle<multiboarditem> {
   public setWidth(width: number) {
     MultiboardSetItemWidth(this.handle, width);
   }
-
-  public static fromHandle(handle: multiboarditem): MultiboardItem {
-    return this.getObject(handle);
-  }
 }
 
 export class Multiboard extends Handle<multiboard> {
@@ -90,17 +78,8 @@ export class Multiboard extends Handle<multiboard> {
    * Create a Multiboard object
    * @bug Do not use this in a global initialisation as it crashes the game there.
    */
-  public static create(): Multiboard | undefined {
-    const handle = CreateMultiboard();
-    if (handle) {
-      const obj = this.getObject(handle) as Multiboard;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+  public static create() {
+    return this.fromHandle(CreateMultiboard());
   }
 
   public get columns() {
@@ -196,12 +175,6 @@ export class Multiboard extends Handle<multiboard> {
     alpha: number
   ) {
     MultiboardSetTitleTextColor(this.handle, red, green, blue, alpha);
-  }
-
-  public static fromHandle(
-    handle: multiboard | undefined
-  ): Multiboard | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 
   /**

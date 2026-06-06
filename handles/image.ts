@@ -105,15 +105,7 @@ export class Image extends Handle<image> {
       originZ,
       imageType
     );
-    if (handle) {
-      const obj = this.getObject(handle) as Image;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(handle);
   }
 
   /**
@@ -181,9 +173,5 @@ export class Image extends Handle<image> {
    */
   public show(flag: boolean) {
     ShowImage(this.handle, flag);
-  }
-
-  public static fromHandle(handle: image | undefined): Image | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

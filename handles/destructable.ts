@@ -54,15 +54,11 @@ export class Destructable extends Widget {
     objectId: number,
     x: number,
     y: number,
-    face?: number,
-    scale?: number,
-    variation?: number,
+    face = 0,
+    scale = 1,
+    variation = 0,
     skinId?: number
-  ): Destructable | undefined {
-    if (face === undefined) face = 0;
-    if (scale === undefined) scale = 1;
-    if (variation === undefined) variation = 0;
-
+  ) {
     let handle: destructable | undefined;
 
     if (skinId !== undefined) {
@@ -79,18 +75,10 @@ export class Destructable extends Widget {
       handle = CreateDestructable(objectId, x, y, face, scale, variation);
     }
 
-    if (handle) {
-      const obj = this.getObject(handle) as Destructable;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-      if (skinId !== undefined) {
-        values.skin = skinId;
-      }
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(
+      handle,
+      skinId !== undefined ? { skin: skinId } : undefined
+    );
   }
 
   /**
@@ -134,18 +122,10 @@ export class Destructable extends Widget {
       handle = CreateDestructableZ(objectId, x, y, z, face, scale, variation);
     }
 
-    if (handle) {
-      const obj = this.getObject(handle) as Destructable;
-
-      const values: Record<string, unknown> = {};
-      values.handle = handle;
-      if (skinId !== undefined) {
-        values.skin = skinId;
-      }
-
-      return Object.assign(obj, values);
-    }
-    return undefined;
+    return this.fromHandle(
+      handle,
+      skinId !== undefined ? { skin: skinId } : undefined
+    );
   }
 
   public set invulnerable(flag: boolean) {
@@ -237,11 +217,5 @@ export class Destructable extends Widget {
 
   public static override fromEvent() {
     return this.fromHandle(GetTriggerDestructable());
-  }
-
-  public static override fromHandle(
-    handle: destructable | undefined
-  ): Destructable | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }

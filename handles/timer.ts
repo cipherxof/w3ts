@@ -16,14 +16,8 @@ export class Timer extends Handle<timer> {
     super(handle);
   }
 
-  public static create(): Timer {
-    const handle = CreateTimer();
-    const obj = this.getObject(handle) as Timer;
-
-    const values: Record<string, unknown> = {};
-    values.handle = handle;
-
-    return Object.assign(obj, values);
+  public static create() {
+    return this.fromHandle(CreateTimer())!;
   }
 
   public get elapsed(): number {
@@ -66,9 +60,5 @@ export class Timer extends Handle<timer> {
    */
   public static fromExpired() {
     return this.fromHandle(GetExpiredTimer());
-  }
-
-  public static fromHandle(handle: timer | undefined): Timer | undefined {
-    return handle ? this.getObject(handle) : undefined;
   }
 }
