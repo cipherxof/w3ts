@@ -15,7 +15,7 @@
       "lua-types/core/table",
       "lua-types/core/os",
       "lua-types/special/5.3",
-      "war3-types-strict/1.33.0"
+      "war3-types-strict/3.0.0"
     ],
     "declaration": true,
     "allowJs": false,
@@ -29,19 +29,13 @@
     //"useUnknownInCatchVariables": true,
     "newLine": "lf"
   },
-  "include": [
-    "./index.ts",
-    "globals",
-    "handles",
-    "hooks",
-    "system"
-  ],
+  "include": ["./index.ts", "globals", "handles", "hooks", "system"],
   "exclude": [],
   "tstl": {
     "buildMode": "library",
     "luaTarget": "5.3",
     "noHeader": true,
     "noImplicitSelf": true,
-    "sourceMapTraceback": false,
+    "sourceMapTraceback": false
   }
 }
